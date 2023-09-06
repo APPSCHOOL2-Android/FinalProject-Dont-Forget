@@ -1,3 +1,67 @@
 <resources>
-    <string name="app_name">DontForgetProject</string>
+    <string name="app_name">까먹지마</string>
+
+    <!--할일-->
+    <string name="todo_search">할일 검색</string>
+    <string name="todo_detail">할일 상세</string>
+    <string name="todo_date">날짜</string>
+    <string name="todo_category">카테고리</string>
+    <string name="todo_notification">알림</string>
+    <string name="todo_location">위치</string>
+    <string name="todo_add">할일 추가</string>
+
+    <!--카테고리-->
+    <string name="category">카테고리</string>
+    <string name="category_detail">카테고리 상세</string>
+    <string name="category_add">카테고리 추가</string>
+    <string name="category_shared">공유하고 있는 카테고리</string>
+    <string name="category_color">색상</string>
+    <string name="category_createBy">만든 사람</string>
+    <string name="category_participation">참여인원</string>
+    <string name="category_participation_choose">참여인원 선택하기</string>
+    <!--친구목록-->
+    <string name="friend">친구</string>
+    <string name="friend_list">친구목록</string>
+    <string name="friend_request">친구 요청함</string>
+    <string name="friend_search">친구 검색</string>
+    <string name="friend_delete">친구 삭제</string>
+    <!--마이페이지-->
+    <string name="myPage">마이페이지</string>
+    <string name="myPage_modify">내 정보 수정</string>
+    <string name="myPage_modify_addPhoto">사진 추가</string>
+    <string name="myPage_modify_name">이름</string>
+    <string name="myPage_modify_introduce">자기 소개</string>
+    <string name="myPage_theme">테마 설정</string>
+    <string name="myPage_theme_white">화이트</string>
+    <string name="myPage_theme_dark">다크</string>
+    <string name="myPage_logout">로그아웃</string>
+    <string name="myPage_withdraw">회원탈퇴</string>
+
+    <!--메뉴-->
+    <string name="menu_category">카테고리</string>
+    <string name="menu_friend">친구</string>작성하기
+    <string name="menu_home">홈</string>
+    <string name="menu_notification">알림</string>
+    <string name="menu_myPage">마이페이지</string>
+
+    <!--버튼-->
+    <string name="button_modify">수정하기</string>
+    <string name="button_delete">삭제하기</string>
+    <string name="button_modify_complete">수정완료</string>
+    <string name="button_write">작성하기</string>
+    <string name="button_exit">나가기</string>
+    <string name="button_toMake">만들기</string>
+    <string name="button_addPeople">인원추가</string>
+
+    <!--다이얼로그-->
+    <string name="dialog_cancel">취소</string>
+    <string name="dialog_delete">삭제</string>
+    <string name="dialog_alert">경고</string>
+    <string name="dialog_modify">수정</string>
+    <string name="dialog_check">확인</string>
+    <string name="dialog_refuse">거절</string>
+    <string name="dialog_withdraw">탈퇴</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
