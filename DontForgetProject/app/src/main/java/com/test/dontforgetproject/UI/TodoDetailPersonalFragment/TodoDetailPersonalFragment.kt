@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.TodoDetailPersonalFragment
 
+import android.content.DialogInterface
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PERSONAL_FRAGMENT
 import com.test.dontforgetproject.R
@@ -59,6 +61,17 @@ class TodoDetailPersonalFragment : Fragment() {
             buttonTodoDetailPersonalEditComplete.setOnClickListener {
                 linearLayoutTodoDetailPersonalEdit.visibility = View.VISIBLE
                 buttonTodoDetailPersonalEditComplete.visibility = View.GONE
+            }
+
+            buttonTodoDetailPersonalDelete.setOnClickListener {
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setTitle("삭제")
+                builder.setMessage("삭제하시겠습니까?")
+                builder.setNegativeButton("취소",null)
+                builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
+                    mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
+                }
+                builder.show()
             }
         }
 

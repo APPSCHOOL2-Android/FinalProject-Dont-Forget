@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment
 
+import android.content.DialogInterface
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
@@ -28,6 +30,9 @@ class TodoDetailPublicOwnerFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentTodoDetailPublicOwnerBinding.run {
+
+            buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
+
             toolbarTodoDetailPublicOwner.run {
                 title = "할일 상세"
 
@@ -47,13 +52,34 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
 
             buttonTodoDetailPublicOwnerEdit.setOnClickListener {
-                buttonTodoDetailPublicOwnerEdit.visibility = View.GONE
+                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.GONE
                 buttonTodoDetailPublicOwnerEditComplete.visibility = View.VISIBLE
             }
 
             buttonTodoDetailPublicOwnerEditComplete.setOnClickListener {
-                buttonTodoDetailPublicOwnerEdit.visibility = View.VISIBLE
+
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setTitle("경고")
+                builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
+                builder.setNegativeButton("취소",null)
+                builder.setPositiveButton("수정"){ dialogInterface: DialogInterface, i: Int ->
+
+                }
+                builder.show()
+
+                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.VISIBLE
                 buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
+            }
+
+            buttonTodoDetailPublicOwnerDelete.setOnClickListener {
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setTitle("경고")
+                builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
+                builder.setNegativeButton("취소",null)
+                builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
+                    mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
+                }
+                builder.show()
             }
         }
         return fragmentTodoDetailPublicOwnerBinding.root
