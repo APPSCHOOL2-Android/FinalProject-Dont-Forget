@@ -6,6 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
-
+    <style name="Theme.DontForgetProject.Toolbar" parent="ThemeOverlay.Material3.Toolbar.Surface">
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="Theme.KeepGardeningProject_customer" parent="Base.Theme.DontForgetProject" />
     <style name="Theme.DontForgetProject" parent="Base.Theme.DontForgetProject" />
 </resources>
