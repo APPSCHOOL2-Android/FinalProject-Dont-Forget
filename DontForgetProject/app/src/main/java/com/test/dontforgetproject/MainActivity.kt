@@ -9,6 +9,21 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
+import com.test.dontforgetproject.UI.CategoryAddFragment.CategoryAddFragment
+import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOptionPersonalFragment
+import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicFragment
+import com.test.dontforgetproject.UI.CategoryOptionPublicOwnerFragment.CategoryOptionPublicOwnerFragment
+import com.test.dontforgetproject.UI.FriendsDetailFragment.FriendsDetailFragment
+import com.test.dontforgetproject.UI.MainAlertFragment.MainAlertFragment
+import com.test.dontforgetproject.UI.MainCategoryFragment.MainCategoryFragment
+import com.test.dontforgetproject.UI.MainFragment.MainFragment
+import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsFragment
+import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
+import com.test.dontforgetproject.UI.MyPageModifyFragment.MyPageModifyFragment
+import com.test.dontforgetproject.UI.MyPageThemeFragment.MyPageThemeFragment
+import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
+import com.test.dontforgetproject.UI.TodoAddSearchFragment.TodoAddSearchFragment
+import com.test.dontforgetproject.UI.TodoDetailFragment.TodoDetailFragment
 import com.test.dontforgetproject.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
 
@@ -24,6 +39,21 @@ class MainActivity : AppCompatActivity() {
     }
     companion object{
         // 화면 분기
+        val CATEGORY_ADD_FRAGMENT = "CategoryAddFragment"
+        val CATEGORY_OPTION_PERSONAL_FRAGMENT = "CategoryOptionPersonalFragment"
+        val CATEGORY_OPTION_PUBLIC_FRAGMENT = "CategoryOptionPublicFragment"
+        val CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT = "CategoryOptionPublicOwnerFragment"
+        val FRIENDS_DETAIL_FRAGMENT = "FriendsDetailFragment"
+        val MAIN_ALERT_FRAGMENT = "MainAlertFragment"
+        val MAIN_CATEGORY_FRAGMENT = "MainCategoryFragment"
+        val MAIN_FRAGMENT = "MainFragment"
+        val MAIN_FRIENDS_FRAGMENT = "MainFriendsFragment"
+        val MAIN_HOME_FRAGMENT = "MainHomeFragment"
+        val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
+        val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
+        val TODO_ADD_FRAGMENT = "TodoAddFragment"
+        val TODO_ADD_SEARCH_FRAGMENT = "TodoAddSearchFragment"
+        val TODO_DETAIL_FRAGMENT = "TodoDetailFragment"
 
 
     }
@@ -41,6 +71,21 @@ class MainActivity : AppCompatActivity() {
 
         // 새로운 Fragment를 담을 변수
         newFragment = when(name){
+            CATEGORY_ADD_FRAGMENT -> CategoryAddFragment()
+            CATEGORY_OPTION_PERSONAL_FRAGMENT -> CategoryOptionPersonalFragment()
+            CATEGORY_OPTION_PUBLIC_FRAGMENT -> CategoryOptionPublicFragment()
+            CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT -> CategoryOptionPublicOwnerFragment()
+            FRIENDS_DETAIL_FRAGMENT -> FriendsDetailFragment()
+            MAIN_ALERT_FRAGMENT -> MainAlertFragment()
+            MAIN_CATEGORY_FRAGMENT -> MainCategoryFragment()
+            MAIN_FRAGMENT -> MainFragment()
+            MAIN_FRIENDS_FRAGMENT -> MainFriendsFragment()
+            MAIN_HOME_FRAGMENT -> MainHomeFragment()
+            MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
+            MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
+            TODO_ADD_FRAGMENT -> TodoAddFragment()
+            TODO_ADD_SEARCH_FRAGMENT -> TodoAddSearchFragment()
+            TODO_DETAIL_FRAGMENT -> TodoDetailFragment()
             else -> Fragment()
         }
 
@@ -49,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         if(newFragment != null) {
 
             // 애니메이션 설정
+
             if(oldFragment != null){
                 oldFragment?.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
                 oldFragment?.reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
