@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--padding-->
+    <dimen name="padding_size_normal">15dp</dimen>
+
+    <!--vertical-->
+    <dimen name="margin_vertical_big1">32dp</dimen>
+    <dimen name="margin_vertical_big2">40dp</dimen>
+    <dimen name="margin_vertical_big3">48dp</dimen>
+    <dimen name="margin_vertical_small1">4dp</dimen>
+    <dimen name="margin_vertical_small2">8dp</dimen>
+    <dimen name="margin_vertical_small3">12dp</dimen>
+
+    <!--font size-->
+    <dimen name="font_size_small">14sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_big">18sp</dimen>
+    <dimen name="font_size_bigbig">20sp</dimen>
+
+    <!--profile image size-->
+    <dimen name="image_size_profile">80dp</dimen>
+
+</resources>
