@@ -1,6 +1,7 @@
 package com.test.dontforgetproject
 
 import android.content.Context
+import android.graphics.Paint.Join
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -14,6 +15,8 @@ import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOpti
 import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPublicOwnerFragment.CategoryOptionPublicOwnerFragment
 import com.test.dontforgetproject.UI.FriendsDetailFragment.FriendsDetailFragment
+import com.test.dontforgetproject.UI.JoinFragment.JoinFragment
+import com.test.dontforgetproject.UI.LoginFragment.LoginFragment
 import com.test.dontforgetproject.UI.MainAlertFragment.MainAlertFragment
 import com.test.dontforgetproject.UI.MainCategoryFragment.MainCategoryFragment
 import com.test.dontforgetproject.UI.MainFragment.MainFragment
@@ -44,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         val CATEGORY_OPTION_PUBLIC_FRAGMENT = "CategoryOptionPublicFragment"
         val CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT = "CategoryOptionPublicOwnerFragment"
         val FRIENDS_DETAIL_FRAGMENT = "FriendsDetailFragment"
+        val JOIN_FRAGMENT = "JoinFragment"
+        val LOGIN_FRAGMENT = "LoginFragment"
         val MAIN_ALERT_FRAGMENT = "MainAlertFragment"
         val MAIN_CATEGORY_FRAGMENT = "MainCategoryFragment"
         val MAIN_FRAGMENT = "MainFragment"
@@ -76,6 +81,8 @@ class MainActivity : AppCompatActivity() {
             CATEGORY_OPTION_PUBLIC_FRAGMENT -> CategoryOptionPublicFragment()
             CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT -> CategoryOptionPublicOwnerFragment()
             FRIENDS_DETAIL_FRAGMENT -> FriendsDetailFragment()
+            JOIN_FRAGMENT -> JoinFragment()
+            LOGIN_FRAGMENT -> LoginFragment()
             MAIN_ALERT_FRAGMENT -> MainAlertFragment()
             MAIN_CATEGORY_FRAGMENT -> MainCategoryFragment()
             MAIN_FRAGMENT -> MainFragment()
