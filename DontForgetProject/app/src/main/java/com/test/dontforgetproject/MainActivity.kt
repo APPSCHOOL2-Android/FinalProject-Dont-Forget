@@ -1,7 +1,6 @@
 package com.test.dontforgetproject
 
 import android.content.Context
-import android.graphics.Paint.Join
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -26,7 +25,9 @@ import com.test.dontforgetproject.UI.MyPageModifyFragment.MyPageModifyFragment
 import com.test.dontforgetproject.UI.MyPageThemeFragment.MyPageThemeFragment
 import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
 import com.test.dontforgetproject.UI.TodoAddSearchFragment.TodoAddSearchFragment
-import com.test.dontforgetproject.UI.TodoDetailFragment.TodoDetailFragment
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment
+import com.test.dontforgetproject.UI.TodoDetailPublicFragment.TodoDetailPublicFragment
+import com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment.TodoDetailPublicOwnerFragment
 import com.test.dontforgetproject.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+        replaceFragment(TODO_DETAIL_PUBLIC_FRAGMENT, false, null)
     }
     companion object{
         // 화면 분기
@@ -58,9 +60,9 @@ class MainActivity : AppCompatActivity() {
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
         val TODO_ADD_SEARCH_FRAGMENT = "TodoAddSearchFragment"
-        val TODO_DETAIL_FRAGMENT = "TodoDetailFragment"
-
-
+        val TODO_DETAIL_PERSONAL_FRAGMENT = "TodoDetailPersonalFragment"
+        val TODO_DETAIL_PUBLIC_FRAGMENT = "TodoDetailPublicFragment"
+        val TODO_DETAIL_PUBLIC_OWNER_FRAGMENT = "TodoDetailPublicOwnerFragment"
     }
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
 
@@ -92,7 +94,9 @@ class MainActivity : AppCompatActivity() {
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
             TODO_ADD_SEARCH_FRAGMENT -> TodoAddSearchFragment()
-            TODO_DETAIL_FRAGMENT -> TodoDetailFragment()
+            TODO_DETAIL_PERSONAL_FRAGMENT -> TodoDetailPersonalFragment()
+            TODO_DETAIL_PUBLIC_FRAGMENT -> TodoDetailPublicFragment()
+            TODO_DETAIL_PUBLIC_OWNER_FRAGMENT -> TodoDetailPublicOwnerFragment()
             else -> Fragment()
         }
 
