@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/padding_size_normal"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/scdream_light"
+        android:text="친구 요청"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_size_medium" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/margin_vertical_small3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:fontFamily="@font/scdream_light"
+            android:id="@+id/editText_dialogMainFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="친구의 고유코드를 입력해주세요"
+            android:inputType="text"
+            android:textSize="@dimen/font_size_big" />
+    </LinearLayout>
+</LinearLayout>
