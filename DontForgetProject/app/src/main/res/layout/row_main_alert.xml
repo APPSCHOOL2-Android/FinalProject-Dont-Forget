@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/margin_vertical_small2">
+    android:padding="@dimen/margin_vertical_small2"
+    android:transitionGroup="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_rowMainAlert"
@@ -30,7 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/margin_vertical_small2"
-                android:text="알림 내용" />
+                android:fontFamily="@font/scdream_regular"
+                android:text="알림 내용"
+                android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
