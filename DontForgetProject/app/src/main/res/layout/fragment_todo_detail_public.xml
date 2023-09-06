@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".UI.TodoDetailPublicFragment.TodoDetailPublicFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_todoDetailPublic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_todoDetailPublic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_small2"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        app:boxBackgroundMode="filled">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_todoDetailPublic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/scdream_regular"
+            android:hint="할일"
+            android:textSize="@dimen/font_size_medium" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_todoDetailPublic_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_small2"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        android:clickable="false"
+        android:fontFamily="@font/scdream_regular"
+        android:text="카테고리"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_size_medium" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_todoDetailPublic_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_big2"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_todoDetailPublic_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accentLightGray"
+            android:clickable="false"
+            android:fontFamily="@font/scdream_regular"
+            android:text="날짜"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_medium" />
+
+        <TextView
+            android:id="@+id/textView_todoDetailPublic_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/scdream_regular"
+            android:text="2023.09.05."
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/font_size_medium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_todoDetailPublic_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_todoDetailPublic_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accentLightGray"
+            android:clickable="false"
+            android:fontFamily="@font/scdream_regular"
+            android:text="알림"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_medium" />
+
+        <TextView
+            android:id="@+id/textView_todoDetailPublic_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/scdream_regular"
+            android:text="오전 3시"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/font_size_medium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_todoDetailPublic_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_todoDetailPublic_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accentLightGray"
+            android:clickable="false"
+            android:fontFamily="@font/scdream_regular"
+            android:text="위치"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_medium" />
+
+        <TextView
+            android:id="@+id/textView_todoDetailPublic_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/scdream_regular"
+            android:text="서면역"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/font_size_medium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_todoDetailPublic_made"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_size_normal"
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginRight="@dimen/padding_size_normal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_todoDetailPublic_made"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accentLightGray"
+            android:clickable="false"
+            android:fontFamily="@font/scdream_regular"
+            android:text="만든 사람"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_medium" />
+
+        <TextView
+            android:id="@+id/textView_todoDetailPublic_made"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/scdream_regular"
+            android:text="OOO"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/font_size_medium" />
+    </LinearLayout>
+
+</LinearLayout>
