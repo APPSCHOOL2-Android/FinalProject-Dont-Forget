@@ -64,6 +64,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                     var bundle = Bundle()
                     bundle.putString("name","${list.get(adapterPosition)}")
                     Log.d("Lim names2","${list.get(adapterPosition)}")
+                    Toast.makeText(mainActivity,"선택한 카테고리는 ${list.get(adapterPosition)}입니다",Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
             }

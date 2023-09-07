@@ -66,7 +66,7 @@ class TodoAddFragment : Fragment() {
                         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                         .build()
                     materialDatePicker.addOnPositiveButtonClickListener {
-                        val dateformatter = SimpleDateFormat("yyyy-MM-dd")
+                        val dateformatter = SimpleDateFormat("yyyy년 MM월 dd일")
                         val dates = dateformatter.format(Date(it))
                         date = dates
                         Toast.makeText(mainActivity,"선택할 날짜는 ${date}입니다",Toast.LENGTH_SHORT).show()
@@ -93,12 +93,11 @@ class TodoAddFragment : Fragment() {
                                 time = "${hour}:${minute}"
                                 if ("${hour}".toInt()>12){
                                     textViewTodoAddAlert.text=  " 오후 ${hour}시 ${minute}분"
-                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시${minute}분 입니다",Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }else{
                                     textViewTodoAddAlert.text= " 오전 ${hour}시 ${minute}분"
-                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시${minute}분 입니다",Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }
-
 
                             }
 
