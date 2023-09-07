@@ -8,8 +8,13 @@
     <color name = "accentSemiGray">#F9F9F9</color>
     <color name = "accentGray">#D9D9D9</color>
 
+
     <color name="accentSemiDark">#323232</color>
     <color name="accentDarkGray">#535353</color>
+
+    <color name = "accentLightGray">#F5F5F5</color>
+    <color name = "accentDarkGray">#aaaaaa</color>
+
 
     <!--카테고리 색상-->
     <color name = "category1">#FACE34</color>
