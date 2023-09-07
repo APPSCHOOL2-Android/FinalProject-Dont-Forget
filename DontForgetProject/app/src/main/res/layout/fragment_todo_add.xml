@@ -20,16 +20,21 @@
         android:orientation="vertical"
         android:padding="@dimen/padding_size_normal">
 
-        <EditText
-            android:id="@+id/editText_todoAdd"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_vertical_big3"
-            android:ems="10"
-            android:fontFamily="@font/scdream_regular"
-            android:hint="추가할 할일을 입력해주세요."
-            android:inputType="text|textMultiLine"
-            android:scrollHorizontally="true" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText_todoAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_vertical_big3"
+                android:ems="10"
+                android:fontFamily="@font/scdream_regular"
+                android:hint="추가할 할일을 입력해주세요."
+                android:inputType="text|textMultiLine"
+                android:scrollHorizontally="true" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/linearlayout_todoAdd_category"
