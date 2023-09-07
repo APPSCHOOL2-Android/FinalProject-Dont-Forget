@@ -7,14 +7,15 @@
     android:orientation="vertical"
     tools:context=".UI.FriendsDetailFragment.FriendsDetailFragment">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_friendsDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:titleTextAppearance="@style/toolbar_text"></androidx.appcompat.widget.Toolbar>
+        android:theme="@style/Theme.DontForgetProject.Toolbar">
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
 
     <LinearLayout

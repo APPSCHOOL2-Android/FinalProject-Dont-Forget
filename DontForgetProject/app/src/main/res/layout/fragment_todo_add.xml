@@ -11,9 +11,9 @@
         android:id="@+id/toolbar_todo_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
