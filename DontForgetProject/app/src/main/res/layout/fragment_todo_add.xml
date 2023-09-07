@@ -8,12 +8,11 @@
     tools:context=".UI.TodoAddFragment.TodoAddFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_todo_add"
+        android:id="@+id/toolbar_todoAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+        android:theme="?attr/actionBarTheme" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
         android:padding="@dimen/padding_size_normal">
 
         <EditText
-            android:id="@+id/editText_todo_add"
+            android:id="@+id/editText_todoAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_vertical_big3"
@@ -33,7 +32,7 @@
             android:scrollHorizontally="true" />
 
         <LinearLayout
-            android:id="@+id/linearlayout_todo_add_category"
+            android:id="@+id/linearlayout_todoAdd_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -96,7 +95,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_todo_add_date"
+            android:id="@+id/linearlayout_todoAdd_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -132,7 +131,7 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:id="@+id/textView_todo_add_date"
+                android:id="@+id/textView_todoAdd_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -144,7 +143,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_todo_add_alert"
+            android:id="@+id/linearlayout_todoAdd_alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -180,7 +179,7 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:id="@+id/textView_todo_add_alert"
+                android:id="@+id/textView_todoAdd_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -191,7 +190,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_todo_add_location"
+            android:id="@+id/linearlayout_todoAdd_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -227,7 +226,7 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:id="@+id/textView_todo_add_location"
+                android:id="@+id/textView_todoAdd_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
