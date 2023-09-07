@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.CategoryOptionPublicFragment.CategoryOptionPublicFragment">
+    tools:context=".UI.CategoryAddPublicFragment.CategoryAddPublicFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_categoryOptionPublic"
+        android:id="@+id/toolbar_categoryAddPublic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -29,7 +29,7 @@
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_categoryOptionPublic_name"
+                android:id="@+id/editText_categoryAddPublic_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/scdream_regular"
@@ -53,39 +53,13 @@
                 android:textSize="@dimen/font_size_medium" />
 
             <TextView
-                android:id="@+id/textView_categoryOptionPublic_colorPicker"
+                android:id="@+id/textView_categoryAddPublic_colorPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small2"
                 android:layout_marginBottom="@dimen/margin_vertical_small2"
                 android:background="@drawable/oval_style" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical_small3"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/category_createBy"
-                android:textSize="@dimen/font_size_medium" />
-
-            <TextView
-                android:id="@+id/textView_categoryOptionPublic_ownerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/scdream_regular"
-                android:gravity="right"
-                android:text="이채연"
-                android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +77,15 @@
                 android:text="@string/category_participation"
                 android:textSize="@dimen/font_size_medium" />
 
-
+            <Button
+                android:id="@+id/button_categoryAddPublic_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F4F4F4"
+                android:fontFamily="@font/scdream_regular"
+                android:text="인원추가"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -114,7 +96,7 @@
             app:cardCornerRadius="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_categoryOptionPublic"
+                android:id="@+id/recyclerView_categoryAddPublic"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:background="@color/white"
@@ -130,19 +112,19 @@
 
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2" />
 
             <Button
-                android:id="@+id/button_categoryOptionPublic_exit"
+                android:id="@+id/button_categoryAddPublic_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#F5F5F5"
                 android:fontFamily="@font/scdream_bold"
-                android:text="@string/button_exit"
-                android:textColor="@color/accentRed"
+                android:text="@string/button_toMake"
+                android:textColor="@color/black"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
     </LinearLayout>

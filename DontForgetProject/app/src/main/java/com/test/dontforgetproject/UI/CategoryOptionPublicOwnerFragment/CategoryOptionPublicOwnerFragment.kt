@@ -5,56 +5,73 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBinding
+import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicOwnerBinding
+import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
+import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CategoryOptionPublicOwnerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CategoryOptionPublicOwnerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var categoryOptionPublicOwnerBinding: FragmentCategoryOptionPublicOwnerBinding
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category_option_public_owner, container, false)
+        categoryOptionPublicOwnerBinding = FragmentCategoryOptionPublicOwnerBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
+
+        categoryOptionPublicOwnerBinding.run {
+            toolbarCategoryOptionPublicOwner.run {
+                title = "카테고리 관리"
+                setNavigationIcon(R.drawable.ic_arrow_back_24px)
+            }
+
+            recyclerViewCategoryOptionPublicOwner.run {
+                adapter = CategoryOptionPublicRecyclerViewAdpater()
+                layoutManager = LinearLayoutManager(context)
+            }
+        }
+
+        return categoryOptionPublicOwnerBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoryOptionPublicOwnerFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CategoryOptionPublicOwnerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    inner class CategoryOptionPublicRecyclerViewAdpater : RecyclerView.Adapter<CategoryOptionPublicRecyclerViewAdpater.CategoryOptionPublicViewHolder>() {
+        inner class CategoryOptionPublicViewHolder(rowCategoryOptionPublicOwnerBinding: RowCategoryOptionPublicOwnerBinding) :
+            RecyclerView.ViewHolder(rowCategoryOptionPublicOwnerBinding.root) {
+
+            var userName: TextView
+
+            init {
+                userName = rowCategoryOptionPublicOwnerBinding.textViewRowCategoryOptionPublicOwnerName
             }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryOptionPublicViewHolder {
+            val rowCategoryOptionPublicOwnerBinding = RowCategoryOptionPublicOwnerBinding.inflate(layoutInflater)
+            val categoryOptionPublicViewHolder = CategoryOptionPublicViewHolder(rowCategoryOptionPublicOwnerBinding)
+
+            rowCategoryOptionPublicOwnerBinding.root.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            return categoryOptionPublicViewHolder
+        }
+
+        override fun getItemCount(): Int {
+            return 7
+        }
+
+        override fun onBindViewHolder(holder: CategoryOptionPublicViewHolder, position: Int) {
+            holder.userName.text = "이름"
+        }
     }
 }
