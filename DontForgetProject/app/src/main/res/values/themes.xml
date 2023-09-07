@@ -25,4 +25,18 @@
         <item name="android:fontFamily">@font/scdream_light</item>
         <item name="android:textSize">@dimen/font_size_medium</item>
     </style>
+
+    <!--툴바 텍스트-->
+    <style name="toolbar_text" parent="Widget.AppCompat.Toolbar">
+        <item name="android:fontFamily">@font/scdream_regular</item>
+        <item name="android:textSize">@dimen/font_size_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--다이얼로그 텍스트-->
+    <style name="dialog_text" parent="Theme.AppCompat.Dialog">
+        <item name="android:fontFamily">@font/scdream_regular</item>
+        <item name="android:textSize">@dimen/font_size_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

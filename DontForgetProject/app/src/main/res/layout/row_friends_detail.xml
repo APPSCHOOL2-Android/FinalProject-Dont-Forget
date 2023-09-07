@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingBottom="@dimen/margin_vertical_small2"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/margin_vertical_small2">
 
     <TextView
-        android:id="@+id/textView_rowMainFriends_name"
+        android:id="@+id/textView_rowFriendsDetail_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_stroke_rectangler"
+        android:background="@drawable/background_shadow"
+        android:elevation="10dp"
         android:fontFamily="@font/scdream_regular"
-        android:paddingStart="15dp"
+        android:paddingStart="@dimen/padding_size_normal"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:text="사람이름"
+        android:text="카테고리"
+        android:textColor="@color/accentRed"
         android:textSize="@dimen/font_size_medium" />
 </LinearLayout>

@@ -6,14 +6,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_marginTop="20dp"
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/scdream_light"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/scdream_bold"
         android:text="친구 요청"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_size_medium" />
+        android:textSize="@dimen/font_size_big" />
 
     <LinearLayout
         android:layout_marginTop="@dimen/margin_vertical_small3"

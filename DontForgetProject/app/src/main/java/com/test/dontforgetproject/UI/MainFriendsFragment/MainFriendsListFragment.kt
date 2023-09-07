@@ -55,6 +55,10 @@ class MainFriendsListFragment : Fragment() {
             
             init{
                 textViewRowMainFriendsName = rowMainFriendsBinding.textViewRowMainFriendsName
+
+                rowMainFriendsBinding.root.setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.FRIENDS_DETAIL_FRAGMENT,true,null)
+                }
             }
         }
 
