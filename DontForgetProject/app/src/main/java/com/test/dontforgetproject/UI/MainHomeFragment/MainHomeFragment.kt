@@ -1,19 +1,23 @@
 package com.test.dontforgetproject.UI.MainHomeFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
 import com.test.dontforgetproject.databinding.RowCategoryTabBinding
 import com.test.dontforgetproject.databinding.RowTodoBinding
 
 class MainHomeFragment : Fragment() {
 
-    lateinit var binding:FragmentMainHomeBinding
+    lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -24,6 +28,28 @@ class MainHomeFragment : Fragment() {
         binding = FragmentMainHomeBinding.inflate(inflater, container, false)
 
         binding.run {
+            textInputEditTextMainHomeFragment.onFocusChangeListener =
+                View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        textInputLayoutMainHomeFragment.run {
+                            endIconMode = TextInputLayout.END_ICON_CUSTOM
+                            setEndIconDrawable(R.drawable.ic_close_24px)
+                            setEndIconOnClickListener {
+                                val inputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                inputMethodManager.hideSoftInputFromWindow(textInputEditTextMainHomeFragment.windowToken, 0)
+                                textInputEditTextMainHomeFragment.text = null
+                                textInputEditTextMainHomeFragment.clearFocus()
+                            }
+                        }
+                        scrollViewMainHomeFragment.visibility = View.GONE
+                        constraintLayoutMainHomeFragment.visibility = View.VISIBLE
+                    } else {
+                        textInputLayoutMainHomeFragment.endIconMode = TextInputLayout.END_ICON_NONE
+                        scrollViewMainHomeFragment.visibility = View.VISIBLE
+                        constraintLayoutMainHomeFragment.visibility = View.GONE
+                    }
+                }
+
             recyclerViewMainHomeFragmentCategory.run {
                 adapter = CategoryTabRecyclerViewAdapter()
             }
@@ -43,7 +69,7 @@ class MainHomeFragment : Fragment() {
 
         inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
-                val textViewCategoryName = binding.textViewItemCategoryTab
+            val textViewCategoryName = binding.textViewItemCategoryTab
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
