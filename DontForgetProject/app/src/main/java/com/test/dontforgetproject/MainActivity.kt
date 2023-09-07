@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+        activityMainBinding.run{
+            replaceFragment(MAIN_FRIENDS_FRAGMENT,false,null)
+        }
     }
     companion object{
         // 화면 분기
