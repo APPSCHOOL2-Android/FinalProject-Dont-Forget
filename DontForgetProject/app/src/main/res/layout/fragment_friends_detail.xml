@@ -46,10 +46,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small2"
-                android:fontFamily="@font/scdream_bold"
+                android:fontFamily="@font/scdream_regular"
                 android:text="친구이름"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_size_medium" />
+
+            <TextView
+                android:id="@+id/textView_friendsDetail_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:fontFamily="@font/scdream_light"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_medium"
+                android:text="999999" />
 
             <TextView
                 android:id="@+id/textView_friendsDetail_email"
@@ -107,11 +117,12 @@
 
         <Button
             android:id="@+id/button_friendsDetail_delete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_size_normal"
-            android:backgroundTint="@color/accentGray"
-            android:fontFamily="@font/scdream_regular"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/scdream_bold"
             android:text="친구 삭제"
             android:textColor="@color/accentRed"
             android:textSize="@dimen/font_size_medium" />
