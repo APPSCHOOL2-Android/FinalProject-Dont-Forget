@@ -52,7 +52,7 @@ class TodoAddFragment : Fragment() {
                     var bottomDialog = TodoAddBottomDialog()
                     //bundle로 category name 가져옴
                     var bundle = Bundle()
-                    bundle.getString("category","${chipTodoAddName.text}")
+                    bundle.getString("category","${textViewTodoAddCategory}.text}")
                     bottomDialog.arguments = bundle
                     bottomDialog.show(mainActivity.supportFragmentManager,"카테고리")
                 }
@@ -113,7 +113,7 @@ class TodoAddFragment : Fragment() {
                     mainActivity.replaceFragment(MainActivity.TODO_ADD_SEARCH_FRAGMENT,true,null)
                 }
             }
-            chipTodoAddDone.run {
+            buttonTodoAddComplete.run {
                 setOnClickListener {
                     mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                 }

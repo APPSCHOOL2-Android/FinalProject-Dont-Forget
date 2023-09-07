@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,26 +38,60 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_category"
+            <androidx.cardview.widget.CardView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/menu_category"
-                android:textSize="@dimen/font_size_medium" />
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/padding_size_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_category"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_name"
+            <androidx.cardview.widget.CardView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="개인"
-                android:textSize="@dimen/font_size_medium" />
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/padding_size_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_todoAdd_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="개인"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
 
@@ -66,13 +101,29 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_date"
+            <androidx.cardview.widget.CardView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/todo_date"
-                android:textSize="@dimen/font_size_medium" />
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/padding_size_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_date"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Space
                 android:layout_width="wrap_content"
@@ -80,6 +131,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/textView_todo_add_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,13 +149,29 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_alert"
+            <androidx.cardview.widget.CardView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/todo_notification"
-                android:textSize="@dimen/font_size_medium" />
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/padding_size_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_notification"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Space
                 android:layout_width="wrap_content"
@@ -111,6 +179,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/textView_todo_add_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,13 +196,29 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_location"
+            <androidx.cardview.widget.CardView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/todo_location"
-                android:textSize="@dimen/font_size_medium" />
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/padding_size_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_location"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Space
                 android:layout_width="wrap_content"
@@ -141,6 +226,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/textView_todo_add_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,13 +248,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todo_add_done"
+            <Button
+                android:id="@+id/button_todoAdd_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/button_write"
-                android:textSize="@dimen/font_size_medium" />
+                android:text="작성하기"
+                android:fontFamily="@font/scdream_bold"
+                android:textSize="@dimen/font_size_big"
+                style="@style/Widget.Material3.Button.OutlinedButton">
+
+            </Button>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

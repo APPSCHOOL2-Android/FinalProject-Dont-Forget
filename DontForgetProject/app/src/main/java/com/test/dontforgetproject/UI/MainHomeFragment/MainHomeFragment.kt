@@ -64,6 +64,9 @@ class MainHomeFragment : Fragment() {
             recyclerViewMainHomeFragmentMemoSearch.run {
                 adapter = MemoSearchViewAdapter()
             }
+            buttonMainHomeFragment.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT,true,null)
+            }
         }
 
 

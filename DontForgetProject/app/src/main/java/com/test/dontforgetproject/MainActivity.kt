@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-
+        replaceFragment(LOGIN_FRAGMENT,false,null)
     }
     companion object{
         // 화면 분기
@@ -56,12 +56,7 @@ class MainActivity : AppCompatActivity() {
         val JOIN_FRAGMENT = "JoinFragment"
         val LOGIN_FIND_PW_FRAGMENT = "LoginFindPwFragment"
         val LOGIN_FRAGMENT = "LoginFragment"
-        val MAIN_ALERT_FRAGMENT = "MainAlertFragment"
-        val MAIN_CATEGORY_FRAGMENT = "MainCategoryFragment"
         val MAIN_FRAGMENT = "MainFragment"
-        val MAIN_FRIENDS_FRAGMENT = "MainFriendsFragment"
-        val MAIN_HOME_FRAGMENT = "MainHomeFragment"
-        val MAIN_MY_PAGE_FRAGMENT = "MainMyPageFragment"
         val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
@@ -93,12 +88,7 @@ class MainActivity : AppCompatActivity() {
             JOIN_FRAGMENT -> JoinFragment()
             LOGIN_FIND_PW_FRAGMENT -> LoginFindPwFragment()
             LOGIN_FRAGMENT -> LoginFragment()
-            MAIN_ALERT_FRAGMENT -> MainAlertFragment()
-            MAIN_CATEGORY_FRAGMENT -> MainCategoryFragment()
             MAIN_FRAGMENT -> MainFragment()
-            MAIN_FRIENDS_FRAGMENT -> MainFriendsFragment()
-            MAIN_HOME_FRAGMENT -> MainHomeFragment()
-            MAIN_MY_PAGE_FRAGMENT -> MainMyPageFragment()
             MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
