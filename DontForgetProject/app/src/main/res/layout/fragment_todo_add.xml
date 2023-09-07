@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.TodoAddFragment.TodoAddFragment" >
+    tools:context=".UI.TodoAddFragment.TodoAddFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_todo_add"
@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/padding_size_normal">
 
@@ -28,7 +28,8 @@
             android:ems="10"
             android:fontFamily="@font/scdream_regular"
             android:hint="추가할 할일을 입력해주세요."
-            android:inputType="text" />
+            android:inputType="text|textMultiLine"
+            android:scrollHorizontally="true" />
 
         <LinearLayout
             android:id="@+id/linearlayout_todo_add_category"

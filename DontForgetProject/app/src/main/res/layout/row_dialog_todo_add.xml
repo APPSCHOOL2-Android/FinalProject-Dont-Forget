@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_vertical_small3"
         android:checkMarkTint="@color/colorPrimary"
-        android:fontFamily="@font/scdream_regular"
+        android:fontFamily="@font/scdream_bold"
         android:text="textview_bottom_name"
         android:textSize="@dimen/font_size_big" />
 </LinearLayout>
