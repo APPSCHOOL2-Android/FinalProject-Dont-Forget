@@ -12,5 +12,5 @@
         android:id="@+id/container_main"
         android:name="com.test.dontforgetproject.UI.MainFragment.MainFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>
