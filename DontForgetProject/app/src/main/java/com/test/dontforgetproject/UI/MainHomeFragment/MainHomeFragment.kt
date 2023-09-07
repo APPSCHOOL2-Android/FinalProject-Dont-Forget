@@ -69,7 +69,7 @@ class MainHomeFragment : Fragment() {
 
         inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val textViewCategoryName = binding.textViewItemCategoryTab
+            val textViewCategoryName = binding.textViewRowCategoryTab
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
@@ -94,8 +94,8 @@ class MainHomeFragment : Fragment() {
 
         inner class TodoViewHolder(private val binding: RowTodoBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val checkBoxTodo = binding.checkBoxItemTodo
-            val textViewTodoMaker = binding.textViewItemTodoMaker
+            val checkBoxTodo = binding.checkBoxRowTodo
+            val textViewTodoMaker = binding.textViewRowTodoMaker
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
