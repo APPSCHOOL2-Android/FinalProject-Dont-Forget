@@ -5,6 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/black</item>
+        <item name="colorPrimaryDark">@color/accentSemiDark</item>
+        <item name="colorError">@color/accentRed</item>
     </style>
     <style name="Theme.DontForgetProject.Toolbar" parent="ThemeOverlay.Material3.Toolbar.Surface">
         <item name="colorPrimary">@color/black</item>

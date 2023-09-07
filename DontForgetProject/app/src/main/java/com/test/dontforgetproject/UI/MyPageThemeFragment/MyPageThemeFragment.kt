@@ -1,60 +1,85 @@
 package com.test.dontforgetproject.UI.MyPageThemeFragment
 
+
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Util.ThemeUtil
+import com.test.dontforgetproject.Util.ThemeUtil.DARK_MODE
+import com.test.dontforgetproject.Util.ThemeUtil.DEFAULT_MODE
+import com.test.dontforgetproject.Util.ThemeUtil.LIGHT_MODE
+import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
+import com.test.dontforgetproject.databinding.FragmentMyPageThemeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyPageThemeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyPageThemeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var fragmentMyPageThemeBinding: FragmentMyPageThemeBinding
+    lateinit var mainActivity: MainActivity
+    lateinit var myApplication: MyApplication
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_page_theme, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyPageThemeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyPageThemeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        fragmentMyPageThemeBinding = FragmentMyPageThemeBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
+        myApplication = MyApplication()
+        var whatsTheme = ""
+        fragmentMyPageThemeBinding.run {
+            toolbarMyPageTheme.run {
+                setTitle(getString(R.string.myPage_theme))
+                setNavigationIcon(R.drawable.ic_arrow_back_24px)
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.MY_PAGE_THEME_FRAGMENT)
                 }
             }
+
+            when(MyApplication.selectedTheme){
+                DEFAULT_MODE -> {
+                    radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_system)
+                }
+                LIGHT_MODE ->{
+                    radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_white)
+                }
+                DARK_MODE->{
+                    radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_dark)
+                }
+            }
+
+            radioGroupMyPageTheme.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.radioButton_myPageTheme_white -> {
+                        whatsTheme = LIGHT_MODE
+                    }
+                    R.id.radioButton_myPageTheme_dark -> {
+                        whatsTheme = DARK_MODE
+                    }
+                    R.id.radioButton_myPageTheme_system -> {
+                        whatsTheme = DEFAULT_MODE
+                    }
+                }
+            }
+            buttonMyPageThemeComplete.setOnClickListener {
+                val sharedPreferences =  requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                editor.remove("theme")
+                editor.putString("theme",whatsTheme)
+                editor.apply()
+                // MyApplication에서 selectedTheme 업데이트
+                MyApplication.selectedTheme = whatsTheme
+
+                // 테마 적용
+                applyTheme(whatsTheme)
+
+            }
+        }
+        return fragmentMyPageThemeBinding.root
     }
+
 }

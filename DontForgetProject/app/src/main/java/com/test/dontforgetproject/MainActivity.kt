@@ -15,12 +15,14 @@ import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOption
 import com.test.dontforgetproject.UI.CategoryOptionPublicOwnerFragment.CategoryOptionPublicOwnerFragment
 import com.test.dontforgetproject.UI.FriendsDetailFragment.FriendsDetailFragment
 import com.test.dontforgetproject.UI.JoinFragment.JoinFragment
+import com.test.dontforgetproject.UI.LoginFindPwFragment.LoginFindPwFragment
 import com.test.dontforgetproject.UI.LoginFragment.LoginFragment
 import com.test.dontforgetproject.UI.MainAlertFragment.MainAlertFragment
 import com.test.dontforgetproject.UI.MainCategoryFragment.MainCategoryFragment
 import com.test.dontforgetproject.UI.MainFragment.MainFragment
 import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsFragment
 import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
+import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.UI.MyPageModifyFragment.MyPageModifyFragment
 import com.test.dontforgetproject.UI.MyPageThemeFragment.MyPageThemeFragment
 import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
@@ -40,9 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        activityMainBinding.run{
-            replaceFragment(MAIN_FRIENDS_FRAGMENT,false,null)
-        }
+
     }
     companion object{
         // 화면 분기
@@ -52,12 +52,14 @@ class MainActivity : AppCompatActivity() {
         val CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT = "CategoryOptionPublicOwnerFragment"
         val FRIENDS_DETAIL_FRAGMENT = "FriendsDetailFragment"
         val JOIN_FRAGMENT = "JoinFragment"
+        val LOGIN_FIND_PW_FRAGMENT = "LoginFindPwFragment"
         val LOGIN_FRAGMENT = "LoginFragment"
         val MAIN_ALERT_FRAGMENT = "MainAlertFragment"
         val MAIN_CATEGORY_FRAGMENT = "MainCategoryFragment"
         val MAIN_FRAGMENT = "MainFragment"
         val MAIN_FRIENDS_FRAGMENT = "MainFriendsFragment"
         val MAIN_HOME_FRAGMENT = "MainHomeFragment"
+        val MAIN_MY_PAGE_FRAGMENT = "MainMyPageFragment"
         val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
@@ -86,12 +88,14 @@ class MainActivity : AppCompatActivity() {
             CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT -> CategoryOptionPublicOwnerFragment()
             FRIENDS_DETAIL_FRAGMENT -> FriendsDetailFragment()
             JOIN_FRAGMENT -> JoinFragment()
+            LOGIN_FIND_PW_FRAGMENT -> LoginFindPwFragment()
             LOGIN_FRAGMENT -> LoginFragment()
             MAIN_ALERT_FRAGMENT -> MainAlertFragment()
             MAIN_CATEGORY_FRAGMENT -> MainCategoryFragment()
             MAIN_FRAGMENT -> MainFragment()
             MAIN_FRIENDS_FRAGMENT -> MainFriendsFragment()
             MAIN_HOME_FRAGMENT -> MainHomeFragment()
+            MAIN_MY_PAGE_FRAGMENT -> MainMyPageFragment()
             MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
