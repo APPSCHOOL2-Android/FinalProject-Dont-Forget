@@ -1,60 +1,94 @@
 package com.test.dontforgetproject.UI.MainCategoryFragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.databinding.FragmentMainCategoryBinding
+import com.test.dontforgetproject.databinding.RowMainCategoryBinding
+import java.text.DecimalFormat
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MainCategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MainCategoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var mainCategoryBinding: FragmentMainCategoryBinding
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_category, container, false)
-    }
+        mainCategoryBinding = FragmentMainCategoryBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainCategoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MainCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        mainCategoryBinding.run {
+            toolbarMainCategory.run {
+                title = getString(R.string.category)
+                inflateMenu(R.menu.menu_main_category)
+                setOnMenuItemClickListener {
+                    val itemList = arrayOf("개인", "공용")
+                    var checkedItem = ""
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
+                    builder.setTitle("카테고리 종류 선택")
+                    // builder.setSingleChoiceItems()
+                    builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+
+                    }
+                    builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+
+                    }
+                    builder.show()
+
+                    true
                 }
             }
+            recyclerViewMainCategory.run {
+                adapter = MainCategoryRecyclerViewAdpater()
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
+            }
+        }
+
+        return mainCategoryBinding.root
+    }
+
+    inner class MainCategoryRecyclerViewAdpater : RecyclerView.Adapter<MainCategoryRecyclerViewAdpater.MainCategoryViewHolder>() {
+        inner class MainCategoryViewHolder(rowMainCategoryBinding: RowMainCategoryBinding) :
+            RecyclerView.ViewHolder(rowMainCategoryBinding.root) {
+
+            var categoryName: TextView
+
+            init {
+                categoryName = rowMainCategoryBinding.textViewRowMainCategoryCategoryName
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainCategoryViewHolder {
+            val rowMainCategoryBinding = RowMainCategoryBinding.inflate(layoutInflater)
+            val mainCategoryViewHolder = MainCategoryViewHolder(rowMainCategoryBinding)
+
+            rowMainCategoryBinding.root.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            return mainCategoryViewHolder
+        }
+
+        override fun getItemCount(): Int {
+            return 3
+        }
+
+        override fun onBindViewHolder(holder: MainCategoryViewHolder, position: Int) {
+            holder.categoryName.text = "카테고리"
+        }
     }
 }

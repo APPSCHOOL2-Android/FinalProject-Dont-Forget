@@ -9,7 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
-import com.test.dontforgetproject.UI.CategoryAddFragment.CategoryAddFragment
+import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
+import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOptionPersonalFragment
 import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPublicOwnerFragment.CategoryOptionPublicOwnerFragment
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
     }
     companion object{
         // 화면 분기
-        val CATEGORY_ADD_FRAGMENT = "CategoryAddFragment"
+        val CATEGORY_ADD_PERSONAL_FRAGMENT = "CategoryAddPersonalFragment"
+        val CATEGORY_ADD_PUBLIC_FRAGMENT = "CategoryAddPublicFragment"
         val CATEGORY_OPTION_PERSONAL_FRAGMENT = "CategoryOptionPersonalFragment"
         val CATEGORY_OPTION_PUBLIC_FRAGMENT = "CategoryOptionPublicFragment"
         val CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT = "CategoryOptionPublicOwnerFragment"
@@ -82,7 +84,8 @@ class MainActivity : AppCompatActivity() {
 
         // 새로운 Fragment를 담을 변수
         newFragment = when(name){
-            CATEGORY_ADD_FRAGMENT -> CategoryAddFragment()
+            CATEGORY_ADD_PERSONAL_FRAGMENT -> CategoryAddPersonalFragment()
+            CATEGORY_ADD_PUBLIC_FRAGMENT -> CategoryAddPublicFragment()
             CATEGORY_OPTION_PERSONAL_FRAGMENT -> CategoryOptionPersonalFragment()
             CATEGORY_OPTION_PUBLIC_FRAGMENT -> CategoryOptionPublicFragment()
             CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT -> CategoryOptionPublicOwnerFragment()
