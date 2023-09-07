@@ -13,6 +13,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
 import com.test.dontforgetproject.databinding.RowCategoryTabBinding
+import com.test.dontforgetproject.databinding.RowMemoSearchBinding
 import com.test.dontforgetproject.databinding.RowTodoBinding
 
 class MainHomeFragment : Fragment() {
@@ -43,10 +44,12 @@ class MainHomeFragment : Fragment() {
                         }
                         scrollViewMainHomeFragment.visibility = View.GONE
                         constraintLayoutMainHomeFragment.visibility = View.VISIBLE
+                        //recyclerViewMainHomeFragmentMemoSearch.visibility = View.VISIBLE
                     } else {
                         textInputLayoutMainHomeFragment.endIconMode = TextInputLayout.END_ICON_NONE
                         scrollViewMainHomeFragment.visibility = View.VISIBLE
                         constraintLayoutMainHomeFragment.visibility = View.GONE
+                        //recyclerViewMainHomeFragmentMemoSearch.visibility = View.GONE
                     }
                 }
 
@@ -56,6 +59,10 @@ class MainHomeFragment : Fragment() {
 
             recyclerViewMainHomeFragmentTodo.run {
                 adapter = TodoRecyclerViewAdapter()
+            }
+
+            recyclerViewMainHomeFragmentMemoSearch.run {
+                adapter = MemoSearchViewAdapter()
             }
         }
 
@@ -111,6 +118,36 @@ class MainHomeFragment : Fragment() {
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
             holder.checkBoxTodo.text = "오전 8기 약먹기"
+            holder.textViewTodoMaker.text = "by 누구"
+        }
+    }
+
+    // 메모 검색
+    inner class MemoSearchViewAdapter :
+        RecyclerView.Adapter<MemoSearchViewAdapter.MemoSearchHolder>() {
+
+        inner class MemoSearchHolder(private val binding: RowMemoSearchBinding) :
+            RecyclerView.ViewHolder(binding.root) {
+            val textViewDate = binding.textViewRowMemoSearchDate
+            val textViewCategory = binding.textViewRowMemoSearchCategory
+            val checkboxTodo = binding.checkBoxItemTodo
+            val textViewTodoMaker = binding.textViewItemTodoMaker
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoSearchHolder =
+            MemoSearchHolder(
+                RowMemoSearchBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+        override fun getItemCount(): Int = 3
+
+        override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
+            holder.textViewDate.text = "23.09.05"
+            holder.textViewCategory.text = "6팀 최종프로젝트"
             holder.textViewTodoMaker.text = "by 누구"
         }
     }
