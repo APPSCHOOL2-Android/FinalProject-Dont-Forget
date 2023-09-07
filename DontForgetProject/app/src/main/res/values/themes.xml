@@ -5,12 +5,15 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimaryDark">@color/accentSemiGray</item>
+        <item name="colorError">@color/accentRed</item>
+
     </style>
 
     <style name="Theme.DontForgetProject.Toolbar" parent="ThemeOverlay.Material3.Toolbar.Surface">
         <item name="colorPrimary">@color/white</item>
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="Theme.KeepGardeningProject_customer" parent="Base.Theme.DontForgetProject" />
+
     <style name="Theme.DontForgetProject" parent="Base.Theme.DontForgetProject" />
 </resources>
