@@ -1,6 +1,9 @@
 package com.test.dontforgetproject
 
 import android.app.Application
+import android.preference.PreferenceManager
+import com.test.dontforgetproject.Util.ThemeUtil
+import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
 
 
 class MyApplication :Application(){
@@ -21,8 +24,17 @@ class MyApplication :Application(){
 //            userNickname = null
 //        )
 
+        // theme 설정
 
+    }
 
+    override fun onCreate() {
+        super.onCreate()
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themePref = sharedPreferences.getString("themePref", ThemeUtil.DEFAULT_MODE)
+
+        applyTheme(themePref ?: ThemeUtil.DEFAULT_MODE)
     }
 
 
