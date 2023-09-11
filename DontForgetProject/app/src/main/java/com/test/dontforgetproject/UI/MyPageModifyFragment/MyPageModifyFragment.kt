@@ -29,16 +29,16 @@ class MyPageModifyFragment : Fragment() {
             }
             var name = ""
             var introduce = ""
-            editTextTextMyPageModifyName.setText(name)
-            editTextTextMyPageModifyIntroduce.setText(introduce)
+            //editTextTextMyPageModifyName.setText(name)
+            //editTextTextMyPageModifyIntroduce.setText(introduce)
 
             // 사진 변경 클릭
             buttonMyPageModifyModifyPhoto.setOnClickListener {
 
             }
             buttonMyPageModifyModifyComplete.setOnClickListener {
-                var newName = editTextTextMyPageModifyName.text.toString()
-                var newIntroduce = editTextTextMyPageModifyIntroduce.text.toString()
+               // var newName = editTextTextMyPageModifyName.text.toString()
+                //var newIntroduce = editTextTextMyPageModifyIntroduce.text.toString()
 
                 mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
             }

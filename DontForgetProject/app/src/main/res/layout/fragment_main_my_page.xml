@@ -27,6 +27,9 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_vertical_small1"
             app:cardCornerRadius="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:outlineAmbientShadowColor="#00FFFFFF"
+            android:outlineSpotShadowColor="#00FFFFFF"
             app:contentPadding="@dimen/padding_size_normal">
 
             <LinearLayout
