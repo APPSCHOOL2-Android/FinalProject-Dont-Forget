@@ -6,15 +6,16 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.DontForgetProject.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small1"
         android:layout_marginBottom="@dimen/margin_vertical_small1"
-        app:cardBackgroundColor="#00FFFFFF"
-        app:contentPadding="16dp">
+        app:cardBackgroundColor="#00FFFFFF">
 
         <TextView
             android:id="@+id/textView_rowMainCategory_categoryName"
+            style="@style/Theme.DontForgetProject.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/scdream_regular"
