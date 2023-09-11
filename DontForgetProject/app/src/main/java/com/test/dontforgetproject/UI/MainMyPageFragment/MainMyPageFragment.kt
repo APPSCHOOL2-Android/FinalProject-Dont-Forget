@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
-import com.test.dontforgetproject.databinding.FragmentMainBinding
+import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
+import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 
 
@@ -32,10 +34,27 @@ class MainMyPageFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_THEME_FRAGMENT,true,null)
             }
             cardViewMainMyPageLogout.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                val dialogMypageLogoutBinding = DialogMypageLogoutBinding.inflate(layoutInflater)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setView(dialogMypageLogoutBinding.root)
+                builder.setPositiveButton("로그아웃") { dialog, which ->
+                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                }
+                builder.setNegativeButton("취소",null)
+
+                builder.show()
+
             }
             cardViewMainMyPageWithDraw.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                val dialogMypageWithdrawBinding = DialogMypageWithdrawBinding.inflate(layoutInflater)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+                builder.setView(dialogMypageWithdrawBinding.root)
+                builder.setNegativeButton("회원탈퇴") { dialog, which ->
+                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                }
+                builder.setPositiveButton("취소",null)
+                builder.show()
+
             }
         }
 
