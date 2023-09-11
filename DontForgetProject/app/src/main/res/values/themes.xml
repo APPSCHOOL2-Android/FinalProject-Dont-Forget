@@ -28,6 +28,15 @@
         <item name= "contentPadding">@dimen/padding_size_normal</item>
         <item name= "cardBackgroundColor">#00FFFFFF</item>
     </style>
+    <style name="Theme.DontForgetProject.CardView_noPadding">
+        <item name = "cardCornerRadius"> 10dp </item>
+        <item name= "cardBackgroundColor">#00FFFFFF</item>
+    </style>
+    <style name="Theme.DontForgetProject.CardView_Padding8">
+        <item name = "cardCornerRadius"> 10dp </item>
+        <item name= "contentPadding">@dimen/margin_vertical_small2</item>
+        <item name= "cardBackgroundColor">#00FFFFFF</item>
+    </style>
     <style name="Theme.DontForgetProject.Text">
         <item name="android:textColor">@color/black</item>
     </style>
@@ -51,5 +60,10 @@
         <item name="android:fontFamily">@font/scdream_regular</item>
         <item name="android:textSize">@dimen/font_size_medium</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--캘린더-->
+    <style name="Theme.DontForgetProject.Calendar" parent="Widget.Material3.MaterialCalendar">
+        <item name="background">@color/accentGray</item>
     </style>
 </resources>
