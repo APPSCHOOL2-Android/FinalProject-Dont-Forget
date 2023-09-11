@@ -33,8 +33,6 @@ class TodoDetailPersonalFragment : Fragment() {
 
         fragmentTodoDetailPersonalBinding.run {
 
-            buttonTodoDetailPersonalEditComplete.visibility = View.GONE
-
             toolbarTodoDetailPersonal.run{
                 title = "할일 상세"
 
@@ -54,13 +52,7 @@ class TodoDetailPersonalFragment : Fragment() {
             }
 
             buttonTodoDetailPersonalEdit.setOnClickListener {
-                linearLayoutTodoDetailPersonalEdit.visibility = View.GONE
-                buttonTodoDetailPersonalEditComplete.visibility = View.VISIBLE
-            }
 
-            buttonTodoDetailPersonalEditComplete.setOnClickListener {
-                linearLayoutTodoDetailPersonalEdit.visibility = View.VISIBLE
-                buttonTodoDetailPersonalEditComplete.visibility = View.GONE
             }
 
             buttonTodoDetailPersonalDelete.setOnClickListener {
