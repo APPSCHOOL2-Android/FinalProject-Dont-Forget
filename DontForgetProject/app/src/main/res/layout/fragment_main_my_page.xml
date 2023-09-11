@@ -107,8 +107,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_modify"
                     android:textSize="@dimen/font_size_big"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:fontFamily="@font/scdream_bold">
+                    style="@style/Theme.DontForgetProject.Text">
                 </TextView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -128,8 +127,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_theme"
                     android:textSize="@dimen/font_size_big"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:fontFamily="@font/scdream_bold">
+                    style="@style/Theme.DontForgetProject.Text">
 
 
                 </TextView>
@@ -151,8 +149,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_logout"
                     android:textSize="@dimen/font_size_big"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:fontFamily="@font/scdream_bold">
+                    style="@style/Theme.DontForgetProject.Text">
 
 
                 </TextView>
@@ -174,8 +171,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_withdraw"
                     android:textSize="@dimen/font_size_big"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:fontFamily="@font/scdream_bold">
+                    android:textColor="@color/accentRed">
 
 
                 </TextView>
