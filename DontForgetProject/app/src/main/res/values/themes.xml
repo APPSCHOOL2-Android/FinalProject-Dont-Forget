@@ -42,10 +42,17 @@
     </style>
     <style name="Theme.DontForgetProject" parent="Base.Theme.DontForgetProject" />
 
+    <!--바텀 네비게이션 item text-->
+    <style name="bottom_text">
+        <item name="android:fontFamily">@font/scdream_light</item>
+        <item name="android:textSize">@dimen/font_size_medium</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <!--탭 텍스트-->
     <style name="tab_text" parent="Widget.Design.TabLayout">
         <item name="android:fontFamily">@font/scdream_light</item>
-        <item name="android:textSize">@dimen/font_size_big</item>
+        <item name="android:textSize">@dimen/font_size_medium</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 

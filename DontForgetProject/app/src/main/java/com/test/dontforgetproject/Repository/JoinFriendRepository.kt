@@ -1,10 +1,48 @@
 package com.test.dontforgetproject.Repository
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.FirebaseDatabase
+import com.test.dontforgetproject.DAO.JoinFriend
+
 class JoinFriendRepository {
 
     companion object{
-        fun getJoinFriendInfoByReceiverIdx(){
-
+        // 친구추가 받는사람 code 이용하여 joinFriend 객체 생성하기
+        fun getJoinFriendIdx(callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("JoinFriendIdx")
+            databaseRef.get().addOnCompleteListener(callback1)
         }
+
+        fun setJoinFriendIdx(idx : Long, callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("JoinFriendIdx")
+            databaseRef.get().addOnCompleteListener {
+                it.result.ref.setValue(idx).addOnCompleteListener(callback1)
+            }
+        }
+
+        fun addJoinFriend(joinFriend: JoinFriend,callback1:(Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.push().setValue(joinFriend).addOnCompleteListener(callback1)
+        }
+
+        // 모든 친구추가중 receiver 가 현재 유저의 email 인 친구추가 목록 불러오기
+        // 나에게 걸린 친구추가를 불러오는것
+        fun getJoinFriendByUserEmail(userEmail : String, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener (callback1)
+        }
+
+        // 친구추가 or 거절시 해당 요청 삭제하기
+        fun deleteJoinFriend(joinFriendIdx : Long,callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            //Todo
+        }
+
     }
 }
