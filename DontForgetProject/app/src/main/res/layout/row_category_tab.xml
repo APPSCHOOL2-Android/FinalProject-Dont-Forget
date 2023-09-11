@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/padding_size_normal"
         android:background="@drawable/background_category_tab"
+        android:fontFamily="@font/scdream_regular"
         android:padding="@dimen/margin_vertical_small2"
         android:text="전체"
         android:textSize="@dimen/font_size_big"
