@@ -19,5 +19,7 @@
         android:id="@+id/recyclerView_mainAlert"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_size_normal" />
+        android:paddingTop="@dimen/padding_size_normal"
+        android:paddingStart="@dimen/padding_size_normal"
+        android:paddingEnd="@dimen/padding_size_normal" />
 </LinearLayout>
