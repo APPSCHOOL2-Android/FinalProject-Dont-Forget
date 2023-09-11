@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
@@ -51,7 +52,7 @@ class FriendsDetailFragment : Fragment() {
             buttonFriendsDetailDelete.setOnClickListener {
                 // 공유 카테고리가 있으면
                 var dialogFriendsDetailBinding = DialogFriendsDetailBinding.inflate(layoutInflater)
-                val builder = AlertDialog.Builder(mainActivity)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setView(dialogFriendsDetailBinding.root)
                 builder.setPositiveButton("확인",null)
                 builder.show()

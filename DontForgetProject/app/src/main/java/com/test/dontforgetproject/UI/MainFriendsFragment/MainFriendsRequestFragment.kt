@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.databinding.DialogMainFriendsRequestDenyBinding
 import com.test.dontforgetproject.databinding.FragmentMainFriendsRequestBinding
@@ -87,7 +88,7 @@ class MainFriendsRequestFragment : Fragment() {
             // 거절
             holder.buttonRowMainFriendsRequestDeny.setOnClickListener {
                 var dialogbinding = DialogMainFriendsRequestDenyBinding.inflate(layoutInflater)
-                val builder = AlertDialog.Builder(mainActivity)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setView(dialogbinding.root)
                 builder.setPositiveButton("거절"){ dialogInterface: DialogInterface, i: Int ->
                     true

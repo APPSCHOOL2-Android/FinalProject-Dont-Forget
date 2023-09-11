@@ -37,6 +37,7 @@
     <style name="tab_text" parent="Widget.Design.TabLayout">
         <item name="android:fontFamily">@font/scdream_light</item>
         <item name="android:textSize">@dimen/font_size_big</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <!--서치뷰 텍스트-->
