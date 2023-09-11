@@ -12,7 +12,7 @@
         android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_todo_add_bottom"
+        android:id="@+id/recyclerview_todoAdd_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

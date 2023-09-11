@@ -22,6 +22,8 @@ class MainCategoryFragment : Fragment() {
     lateinit var mainCategoryBinding: FragmentMainCategoryBinding
     lateinit var mainActivity: MainActivity
 
+    val categoryTempList = arrayOf("개인", "개인(내가 생성)", "개인(타인이 생성)")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,13 +37,32 @@ class MainCategoryFragment : Fragment() {
                 inflateMenu(R.menu.menu_main_category)
                 setOnMenuItemClickListener {
                     val itemList = arrayOf("개인", "공용")
-                    var checkedItem = ""
+                    var checkedItem = 0
                     val builder = MaterialAlertDialogBuilder(mainActivity)
                     builder.setTitle("카테고리 종류 선택")
-                    // builder.setSingleChoiceItems()
-                    builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
-
+                    builder.setSingleChoiceItems(itemList, checkedItem) { _, selectedItemIndex ->
+                        checkedItem = selectedItemIndex
                     }
+                    builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                        when (checkedItem) {
+                            0 -> {
+                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PERSONAL_FRAGMENT, true, null)
+                            }
+                            1 -> {
+                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT, true, null)
+                            }
+                        }
+                    }
+//                    builder.setItems(itemList) { dialog, which ->
+//                        when (which) {
+//                            0 -> {
+//                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PERSONAL_FRAGMENT, true, null)
+//                            }
+//                            1 -> {
+//                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT, true, null)
+//                            }
+//                        }
+//                    }
                     builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
 
                     }
@@ -53,7 +74,6 @@ class MainCategoryFragment : Fragment() {
             recyclerViewMainCategory.run {
                 adapter = MainCategoryRecyclerViewAdpater()
                 layoutManager = LinearLayoutManager(context)
-                addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
             }
         }
 
@@ -68,6 +88,20 @@ class MainCategoryFragment : Fragment() {
 
             init {
                 categoryName = rowMainCategoryBinding.textViewRowMainCategoryCategoryName
+
+                rowMainCategoryBinding.root.setOnClickListener {
+                    when (adapterPosition) {
+                        0 -> {
+                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT, true, null)
+                        }
+                        1 -> {
+                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT, true, null)
+                        }
+                        2 -> {
+                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT, true, null)
+                        }
+                    }
+                }
             }
         }
 
@@ -84,11 +118,11 @@ class MainCategoryFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 3
+            return categoryTempList.size
         }
 
         override fun onBindViewHolder(holder: MainCategoryViewHolder, position: Int) {
-            holder.categoryName.text = "카테고리"
+            holder.categoryName.text = categoryTempList[position]
         }
     }
 }

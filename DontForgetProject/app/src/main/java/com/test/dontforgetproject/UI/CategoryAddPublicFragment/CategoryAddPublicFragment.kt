@@ -34,22 +34,29 @@ class CategoryAddPublicFragment : Fragment() {
             toolbarCategoryAddPublic.run {
                 title = "카테고리 추가"
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT)
+                }
             }
+
             textViewCategoryAddPublicColorPicker.setOnClickListener {
-                // Kotlin Code
                 MaterialColorPickerDialog
                     .Builder(mainActivity)        					// Pass Activity Instance
-                    .setTitle("색상선택")           		// Default "Choose Color"
+                    .setTitle("색상")           		// Default "Choose Color"
                     .setColorShape(ColorShape.CIRCLE)   	// Default ColorShape.CIRCLE
                     .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
                     .setDefaultColor(R.color.category1) 		// Pass Default Color
                     .setColorRes(resources.getIntArray(R.array.colors))
                     .setColorListener { color, colorHex ->
-                        Log.i("ssss", color.toString())
                         textViewCategoryAddPublicColorPicker.backgroundTintList = ColorStateList.valueOf(color)
+                        textInputCategoryAddPublicName.boxStrokeColor = color
+                        editTextCategoryAddPublicName.setTextColor(color)
                     }
                     .showBottomSheet(childFragmentManager)
+            }
 
+            buttonCategoryAddPublicSubmit.setOnClickListener {
+                mainActivity.removeFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT)
             }
         }
 

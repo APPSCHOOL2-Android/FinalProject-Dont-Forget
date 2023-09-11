@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView_rowMainCategory_categoryName"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/scdream_regular"
-        android:paddingBottom="4dp"
-        android:text="카테고리명"
-        android:textSize="@dimen/font_size_medium" />
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginBottom="@dimen/margin_vertical_small1"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:contentPadding="16dp">
+
+        <TextView
+            android:id="@+id/textView_rowMainCategory_categoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scdream_regular"
+            android:text="카테고리명"
+            android:textSize="@dimen/font_size_medium" />
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

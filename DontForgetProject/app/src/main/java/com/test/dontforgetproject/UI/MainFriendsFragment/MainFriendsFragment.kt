@@ -44,6 +44,29 @@ class MainFriendsFragment : Fragment() {
             // 툴바
             toolbarMainFriends.run{
                 title = "친구목록"
+                inflateMenu(R.menu.menu_main_friends)
+
+                setOnMenuItemClickListener {
+                    when(it.itemId){
+                        // 친구추가
+                        R.id.item_menuMainFriend_add->{
+                            var dialogMainFriendsBinding = DialogMainFriendsBinding.inflate(layoutInflater)
+                            val builder = AlertDialog.Builder(mainActivity)
+
+                            builder.setView(dialogMainFriendsBinding.root)
+                            dialogMainFriendsBinding.editTextDialogMainFriends.requestFocus()
+
+                            builder.setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
+                                true
+                                Toast.makeText(mainActivity, "친구 추가가 완료 되었습니다!", Toast.LENGTH_SHORT).show()
+                            }
+
+                            builder.setNegativeButton("취소",null)
+                            builder.show()
+                        }
+                    }
+                    true
+                }
             }
 
             // 탭레이아웃
@@ -57,22 +80,6 @@ class MainFriendsFragment : Fragment() {
                 }
             tabLayoutMediator.attach()
 
-            // 친구추가
-            buttonMainFriendsAdd.setOnClickListener {
-                var dialogMainFriendsBinding = DialogMainFriendsBinding.inflate(layoutInflater)
-                val builder = AlertDialog.Builder(mainActivity)
-
-                builder.setView(dialogMainFriendsBinding.root)
-                dialogMainFriendsBinding.editTextDialogMainFriends.requestFocus()
-
-                builder.setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
-                    true
-                    Toast.makeText(mainActivity, "친구 추가가 완료 되었습니다!", Toast.LENGTH_SHORT).show()
-                }
-
-                builder.setNegativeButton("취소",null)
-                builder.show()
-            }
         }
 
         return binding.root

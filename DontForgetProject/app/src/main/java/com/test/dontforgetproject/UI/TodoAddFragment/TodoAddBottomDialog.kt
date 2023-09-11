@@ -58,8 +58,8 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
             var textOne:CheckedTextView
 
             init {
-                textOne = rowDialogTodoAddBinding.textViewToaddRowBottom
-                rowDialogTodoAddBinding.textViewToaddRowBottom.setOnClickListener {
+                textOne = rowDialogTodoAddBinding.textViewRowtodoAddBottom
+                rowDialogTodoAddBinding.textViewRowtodoAddBottom.setOnClickListener {
                     //다이어로그 종료시 사용자가 선택한 이름을 번들에 저장
                     var bundle = Bundle()
                     bundle.putString("name","${list.get(adapterPosition)}")
@@ -94,8 +94,6 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                holder.textOne.setCheckMarkDrawable(R.drawable.ic_check_24px)
                 holder.textOne.setTextColor(Color.parseColor("#7A97FF"))
                 holder.textOne.isChecked = true
-            }else{
-                holder.textOne.setTextColor(Color.parseColor("#FF000000"))
             }
         }
     }
