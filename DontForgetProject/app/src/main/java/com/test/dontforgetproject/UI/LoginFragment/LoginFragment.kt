@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentLoginBinding
@@ -30,11 +33,26 @@ class LoginFragment : Fragment() {
             }
             // 가입하기 텍스트
              textViewLoginJoin.setOnClickListener {
-                 mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,null)
+                 val bundle = Bundle()
+                 bundle.putInt("UserType", 1)
+                 mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
              }
             // 비밀번호 찾기 텍스트
             textviewLoginFindPassword.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.LOGIN_FIND_PW_FRAGMENT,true,null)
+            }
+            buttonLoginGoogleLogin.setOnClickListener{
+                val bundle = Bundle()
+                bundle.putInt("UserType", 0)
+                val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                    .requestEmail() // 이메일 권한 요청 (선택 사항)
+                    .build()
+
+                val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+                val signInIntent = googleSignInClient.signInIntent
+                startActivityForResult(signInIntent, 9001)
+                mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
             }
 
         }
