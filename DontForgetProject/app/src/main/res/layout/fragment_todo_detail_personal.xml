@@ -15,182 +15,215 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.DontForgetProject.Toolbar" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_todoDetailPersonal"
+    <LinearLayout
+        android:padding="@dimen/padding_size_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_small2"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        app:boxBackgroundMode="filled">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_todoDetailPersonal"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_todoDetailPersonal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:fontFamily="@font/scdream_regular"
-            android:hint="할일"
-            android:textSize="@dimen/font_size_medium" />
+            android:layout_marginTop="@dimen/margin_vertical_small2"
+            android:enabled="false"
+            app:boxBackgroundMode="filled">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_todoDetailPersonal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:fontFamily="@font/scdream_regular"
+                android:hint="할일"
+                android:textSize="@dimen/font_size_medium" />
 
-    <Button
-        android:id="@+id/button_todoDetailPersonal_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_small2"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:clickable="false"
-        android:fontFamily="@font/scdream_regular"
-        android:text="카테고리"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_medium" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout_todoDetailPersonal_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_big2"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:orientation="horizontal">
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_todoDetailPersonal_date"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:id="@+id/button_todoDetailPersonal_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/accentLightGray"
             android:clickable="false"
             android:fontFamily="@font/scdream_regular"
-            android:text="날짜"
+            android:text="카테고리"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_medium" />
-
-        <TextView
-            android:id="@+id/textView_todoDetailPersonal_date"
+        <Space
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/scdream_regular"
-            android:text="2023.09.05."
-            android:textAlignment="viewEnd"
-            android:textSize="@dimen/font_size_medium" />
-    </LinearLayout>
+            android:layout_height="@dimen/margin_vertical_big2">
 
-    <LinearLayout
-        android:id="@+id/linearLayout_todoDetailPersonal_alert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_small1"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:orientation="horizontal">
+        </Space>
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/margin_vertical_small2">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_date"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="2023.09.05."
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_alert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/margin_vertical_small2">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_notification"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="오전 3시"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="@dimen/margin_vertical_small2">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_location"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="서면역"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:id="@+id/linearLayout_todoDetailPersonal_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_todoDetailPersonal_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_bold"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:text="수정하기"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/font_size_big" />
+
+            <Button
+                android:id="@+id/button_todoDetailPersonal_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_vertical_small3"
+                android:layout_weight="1"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:fontFamily="@font/scdream_bold"
+                android:text="삭제하기"
+                android:textColor="@color/accentRed"
+                android:textSize="@dimen/font_size_big" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/button_todoDetailPersonal_alert"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:id="@+id/button_todoDetailPersonal_editComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/accentLightGray"
-            android:clickable="false"
-            android:fontFamily="@font/scdream_regular"
-            android:text="알림"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_size_medium" />
-
-        <TextView
-            android:id="@+id/textView_todoDetailPersonal_alert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/scdream_regular"
-            android:text="오전 3시"
-            android:textAlignment="viewEnd"
-            android:textSize="@dimen/font_size_medium" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout_todoDetailPersonal_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_small1"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_todoDetailPersonal_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/accentLightGray"
-            android:clickable="false"
-            android:fontFamily="@font/scdream_regular"
-            android:text="위치"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_size_medium" />
-
-        <TextView
-            android:id="@+id/textView_todoDetailPersonal_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/scdream_regular"
-            android:text="서면역"
-            android:textAlignment="viewEnd"
-            android:textSize="@dimen/font_size_medium" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout_todoDetailPersonal_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_big2"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_todoDetailPersonal_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/accentLightGray"
+            android:layout_gravity="right"
             android:fontFamily="@font/scdream_bold"
-            android:text="수정하기"
+            android:text="수정완료"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/font_size_big"
-            app:cornerRadius="10dp" />
-
-        <Button
-            android:id="@+id/button_todoDetailPersonal_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_vertical_small3"
-            android:layout_weight="1"
-            android:backgroundTint="@color/accentLightGray"
-            android:fontFamily="@font/scdream_bold"
-            android:text="삭제하기"
-            android:textColor="@color/accentRed"
-            android:textSize="@dimen/font_size_big"
-            app:cornerRadius="10dp" />
+            android:textSize="@dimen/font_size_big" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_todoDetailPersonal_editComplete"
-        android:layout_width="187dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginLeft="@dimen/padding_size_normal"
-        android:layout_marginTop="@dimen/margin_vertical_big2"
-        android:layout_marginRight="@dimen/padding_size_normal"
-        android:backgroundTint="@color/accentLightGray"
-        android:fontFamily="@font/scdream_bold"
-        android:text="수정완료"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/font_size_big"
-        app:cornerRadius="10dp" />
 
 
 </LinearLayout>
