@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.databinding.DialogCategoryPublicDeleteBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicOwnerBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
@@ -84,8 +85,9 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
 
             buttonCategoryOptionPublicOwnerDelete.setOnClickListener {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("카테고리 삭제")
-                builder.setMessage("카테고리를 삭제하시겠습니까?\n참여인원의 캘린더에서도 삭제됩니다.")
+                val dialogCategoryPublicDeleteBinding = DialogCategoryPublicDeleteBinding.inflate(layoutInflater)
+
+                builder.setView(dialogCategoryPublicDeleteBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                     mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
                 }
