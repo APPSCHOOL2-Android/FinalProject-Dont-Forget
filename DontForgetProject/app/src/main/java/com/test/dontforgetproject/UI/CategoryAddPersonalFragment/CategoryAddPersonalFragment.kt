@@ -27,7 +27,7 @@ class CategoryAddPersonalFragment : Fragment() {
 
         categoryAddPersonalBinding.run {
             toolbarCategoryAddPersonal.run {
-                title = "카테고리 추가"
+                title = "개인 카테고리 추가"
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.CATEGORY_ADD_PERSONAL_FRAGMENT)

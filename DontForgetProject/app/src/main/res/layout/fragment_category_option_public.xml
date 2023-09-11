@@ -34,7 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
+                android:enabled="false"
                 android:fontFamily="@font/scdream_regular"
+                android:inputType="text"
                 android:textSize="@dimen/font_size_medium" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,6 +48,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -72,6 +75,7 @@
 
             <TextView
                 android:id="@+id/textView2"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -81,6 +85,7 @@
 
             <TextView
                 android:id="@+id/textView_categoryOptionPublic_ownerName"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -98,6 +103,7 @@
 
             <TextView
                 android:id="@+id/textView4"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

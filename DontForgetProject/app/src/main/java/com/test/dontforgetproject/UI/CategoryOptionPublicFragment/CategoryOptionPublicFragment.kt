@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.databinding.DialogCategoryPublicExitBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
@@ -44,9 +45,10 @@ class CategoryOptionPublicFragment : Fragment() {
 
             buttonCategoryOptionPublicExit.setOnClickListener {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("카테고리 나가기")
-                builder.setMessage("카테고리에서 나가시겠습니까?\n메모도 같이 삭제됩니다.")
-                builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
+                val dialogCategoryPublicExitBinding = DialogCategoryPublicExitBinding.inflate(layoutInflater)
+
+                builder.setView(dialogCategoryPublicExitBinding.root)
+                builder.setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
                     mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT)
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->

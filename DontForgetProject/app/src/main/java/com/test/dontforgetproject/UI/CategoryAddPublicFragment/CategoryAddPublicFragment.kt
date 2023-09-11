@@ -32,7 +32,7 @@ class CategoryAddPublicFragment : Fragment() {
 
         categoryAddPublicBinding.run {
             toolbarCategoryAddPublic.run {
-                title = "카테고리 추가"
+                title = "공용 카테고리 추가"
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT)

@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.databinding.DialogCategoryAddBinding
 import com.test.dontforgetproject.databinding.FragmentMainCategoryBinding
 import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 import java.text.DecimalFormat
@@ -36,19 +37,18 @@ class MainCategoryFragment : Fragment() {
                 title = getString(R.string.category)
                 inflateMenu(R.menu.menu_main_category)
                 setOnMenuItemClickListener {
-                    val itemList = arrayOf("개인", "공용")
-                    var checkedItem = 0
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setTitle("카테고리 종류 선택")
-                    builder.setSingleChoiceItems(itemList, checkedItem) { _, selectedItemIndex ->
-                        checkedItem = selectedItemIndex
-                    }
+                    val dialogCategoryAddBinding = DialogCategoryAddBinding.inflate(layoutInflater)
+
+                    builder.setView(dialogCategoryAddBinding.root)
+
                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                        val checkedItem = dialogCategoryAddBinding.radioGroupCategoryType.checkedRadioButtonId
                         when (checkedItem) {
-                            0 -> {
+                            R.id.radioButtonPersonal -> {
                                 mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PERSONAL_FRAGMENT, true, null)
                             }
-                            1 -> {
+                            R.id.radioButtonPublic -> {
                                 mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT, true, null)
                             }
                         }
