@@ -64,7 +64,7 @@
                 android:id="@+id/calendarView_mainHomeFragment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/accentSemiGray"
+                style="@style/Theme.DontForgetProject.Calendar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
