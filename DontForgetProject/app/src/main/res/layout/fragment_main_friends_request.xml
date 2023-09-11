@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/padding_size_normal"
+    android:paddingTop="@dimen/padding_size_normal"
+    android:paddingStart="@dimen/padding_size_normal"
+    android:paddingEnd="@dimen/padding_size_normal"
+    android:transitionGroup="true"
     tools:context=".UI.MainFriendsFragment.MainFriendsRequestFragment" >
 
     <androidx.recyclerview.widget.RecyclerView

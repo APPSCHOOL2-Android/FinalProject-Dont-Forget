@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_size_normal"
+    android:paddingTop="@dimen/padding_size_normal"
+    android:paddingStart="@dimen/padding_size_normal"
+    android:paddingEnd="@dimen/padding_size_normal"
+    android:transitionGroup="true"
     tools:context=".UI.MainHomeFragment.MainHomeFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -105,6 +108,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView_mainHome_Fragment_categoryName"
                 app:layout_constraintVertical_bias="0.0"
+                android:paddingBottom="50dp"
                 tools:listitem="@layout/row_todo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -133,6 +137,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
             tools:listitem="@layout/row_memo_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

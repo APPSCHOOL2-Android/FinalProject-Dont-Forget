@@ -17,7 +17,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_mainAlert"
-        android:padding="@dimen/padding_size_normal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/padding_size_normal" />
