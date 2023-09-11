@@ -31,7 +31,7 @@ class MainFriendsListFragment : Fragment() {
 
             // 검색창
             searchViewMainFriendsList.run{
-                queryHint = "친구 검색"
+//                queryHint = "친구 검색"
             }
             
             // 친구 목록

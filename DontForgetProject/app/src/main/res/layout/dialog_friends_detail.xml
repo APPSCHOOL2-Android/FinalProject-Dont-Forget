@@ -12,7 +12,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/scdream_bold"
         android:text="친구 삭제"
-        android:textColor="@color/black"
+        style="@style/Theme.DontForgetProject.Text"
         android:textSize="@dimen/font_size_big" />
 
     <TextView
@@ -22,6 +22,6 @@
         android:layout_marginTop="@dimen/padding_size_normal"
         android:fontFamily="@font/scdream_regular"
         android:text="공유 하고 있는 카테고리가 있으면 삭제할 수 없습니다."
-        android:textColor="@color/black"
+        style="@style/Theme.DontForgetProject.Text"
         android:textSize="@dimen/font_size_medium" />
 </LinearLayout>

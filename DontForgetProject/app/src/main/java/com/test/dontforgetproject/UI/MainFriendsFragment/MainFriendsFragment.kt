@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.dontforgetproject.MainActivity
@@ -51,7 +52,7 @@ class MainFriendsFragment : Fragment() {
                         // 친구추가
                         R.id.item_menuMainFriend_add->{
                             var dialogMainFriendsBinding = DialogMainFriendsBinding.inflate(layoutInflater)
-                            val builder = AlertDialog.Builder(mainActivity)
+                            val builder = MaterialAlertDialogBuilder(mainActivity)
 
                             builder.setView(dialogMainFriendsBinding.root)
                             dialogMainFriendsBinding.editTextDialogMainFriends.requestFocus()

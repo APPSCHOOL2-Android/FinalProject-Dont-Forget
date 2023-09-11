@@ -7,10 +7,12 @@
     android:layout_height="wrap_content"
     android:paddingBottom="0dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.DontForgetProject.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_vertical_small1"
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginBottom="@dimen/margin_vertical_small1"
         app:cardCornerRadius="10dp"
         app:contentPadding="@dimen/padding_size_normal">
 
@@ -26,7 +28,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
                 android:text="사람이름"
-                android:textColor="@color/black"
+                style="@style/Theme.DontForgetProject.Text"
                 android:textSize="@dimen/font_size_medium" />
 
             <TextView
@@ -54,6 +56,6 @@
                 android:textColor="@color/accentRed"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

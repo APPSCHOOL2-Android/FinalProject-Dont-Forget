@@ -25,7 +25,8 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Theme.DontForgetProject.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_vertical_small1"
@@ -47,41 +48,41 @@
 
                 <TextView
                     android:id="@+id/textView_friendsDetail_name"
+                    style="@style/Theme.DontForgetProject.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/scdream_light"
                     android:text="친구이름"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/font_size_medium" />
 
                 <TextView
                     android:id="@+id/textView_friendsDetail_code"
+                    style="@style/Theme.DontForgetProject.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/scdream_light"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_medium"
-                    android:text="999999" />
+                    android:text="999999"
+                    android:textSize="@dimen/font_size_medium" />
 
                 <TextView
                     android:id="@+id/textView_friendsDetail_email"
+                    style="@style/Theme.DontForgetProject.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/scdream_light"
                     android:text="000@gmail.com"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/font_size_medium" />
 
                 <TextView
                     android:id="@+id/textView_friendsDetail_introduce"
+                    style="@style/Theme.DontForgetProject.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/scdream_light"
                     android:text="자기소개"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/font_size_medium" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/textView5"
@@ -121,7 +122,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_size_normal"
-            android:backgroundTint="@color/white"
             android:fontFamily="@font/scdream_bold"
             android:text="친구 삭제"
             android:textColor="@color/accentRed"
