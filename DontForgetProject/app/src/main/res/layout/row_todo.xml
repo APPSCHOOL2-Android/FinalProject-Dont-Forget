@@ -7,9 +7,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
+        style="@style/Theme.DontForgetProject.CardView_Padding8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Theme.DontForgetProject.CardView_Padding8"
         android:layout_marginBottom="@dimen/margin_vertical_small2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,11 +21,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/scdream_regular"
+                android:textSize="@dimen/font_size_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_rowTodo"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="center|left"
                 android:text="오전 8기 약먹기"
                 android:textSize="@dimen/font_size_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/checkBox_rowTodo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
@@ -38,8 +50,8 @@
                 android:visibility="visible"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/checkBox_rowTodo"
-                app:layout_constraintEnd_toEndOf="@id/checkBox_rowTodo">
+                app:layout_constraintBottom_toBottomOf="@id/textView_rowTodo"
+                app:layout_constraintEnd_toEndOf="@id/textView_rowTodo">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -58,6 +70,7 @@
 
                     <TextView
                         android:id="@+id/textView_rowTodo_location"
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -73,6 +86,7 @@
 
             <TextView
                 android:id="@+id/textView_rowTodo_maker"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small1"
@@ -80,8 +94,8 @@
                 android:fontFamily="@font/scdream_regular"
                 android:text="by 누구"
                 android:textSize="@dimen/font_size_small"
-                app:layout_constraintEnd_toEndOf="@id/checkBox_rowTodo"
-                app:layout_constraintTop_toTopOf="@id/checkBox_rowTodo" />
+                app:layout_constraintEnd_toEndOf="@id/textView_rowTodo"
+                app:layout_constraintTop_toTopOf="@id/textView_rowTodo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

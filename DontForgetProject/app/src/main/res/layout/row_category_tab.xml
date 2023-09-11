@@ -14,6 +14,7 @@
             android:id="@+id/textView_rowCategoryTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/tab_text"
             android:fontFamily="@font/scdream_regular"
             android:text="전체"
             android:textSize="@dimen/font_size_big" />

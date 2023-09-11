@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/textView_rowMemoSearch_date"
+        style="@style/Theme.DontForgetProject.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small2"
@@ -18,6 +19,7 @@
 
     <TextView
         android:id="@+id/textView_rowMemoSearch_category"
+        style="@style/Theme.DontForgetProject.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_vertical_small2"
@@ -43,16 +45,14 @@
             android:layout_height="wrap_content">
 
             <CheckBox
-                android:id="@+id/checkBox_itemTodo"
+                android:id="@+id/checkBox_rowMemoSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/scdream_regular"
-                android:text="3시 강사님과 미팅"
                 android:textSize="@dimen/font_size_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_rowMemoSearch_category" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
@@ -64,8 +64,8 @@
                 android:visibility="visible"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/checkBox_itemTodo"
-                app:layout_constraintEnd_toEndOf="@+id/checkBox_itemTodo">
+                app:layout_constraintBottom_toBottomOf="@id/textView_rowMemoSearch"
+                app:layout_constraintEnd_toEndOf="@id/textView_rowMemoSearch">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                     android:paddingEnd="8dp">
 
                     <ImageView
-                        android:id="@+id/imageView_rowTodo"
+                        android:id="@+id/imageView_rowMemoSearch"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,7 +83,8 @@
                         app:srcCompat="@drawable/ic_location_on_24px" />
 
                     <TextView
-                        android:id="@+id/textView_rowTodo_location"
+                        android:id="@+id/textView_rowMemoSearch_location"
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -92,13 +93,14 @@
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/imageView_rowTodo"
+                        app:layout_constraintStart_toEndOf="@id/imageView_rowMemoSearch"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/textView_itemTodo_maker"
+                android:id="@+id/textView_rowMemoSearch_maker"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small1"
@@ -106,8 +108,24 @@
                 android:fontFamily="@font/scdream_regular"
                 android:text="by 누구"
                 android:textSize="@dimen/font_size_medium"
-                app:layout_constraintEnd_toEndOf="@+id/checkBox_itemTodo"
-                app:layout_constraintTop_toTopOf="@id/checkBox_itemTodo" />
+                app:layout_constraintEnd_toEndOf="@id/textView_rowMemoSearch"
+                app:layout_constraintTop_toTopOf="@id/textView_rowMemoSearch" />
+
+            <TextView
+                android:id="@+id/textView_rowMemoSearch"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="center|left"
+                android:text="3시 강사님과 미팅"
+                android:textSize="@dimen/font_size_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/checkBox_rowMemoSearch"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
