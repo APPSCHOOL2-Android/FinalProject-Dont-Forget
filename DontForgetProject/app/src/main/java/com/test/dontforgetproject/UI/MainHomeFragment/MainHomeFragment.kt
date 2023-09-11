@@ -36,8 +36,12 @@ class MainHomeFragment : Fragment() {
                             endIconMode = TextInputLayout.END_ICON_CUSTOM
                             setEndIconDrawable(R.drawable.ic_close_24px)
                             setEndIconOnClickListener {
-                                val inputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                inputMethodManager.hideSoftInputFromWindow(textInputEditTextMainHomeFragment.windowToken, 0)
+                                val inputMethodManager =
+                                    mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                inputMethodManager.hideSoftInputFromWindow(
+                                    textInputEditTextMainHomeFragment.windowToken,
+                                    0
+                                )
                                 textInputEditTextMainHomeFragment.text = null
                                 textInputEditTextMainHomeFragment.clearFocus()
                             }
@@ -65,7 +69,7 @@ class MainHomeFragment : Fragment() {
                 adapter = MemoSearchViewAdapter()
             }
             buttonMainHomeFragment.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT,true,null)
+                mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT, true, null)
             }
         }
 
@@ -105,7 +109,27 @@ class MainHomeFragment : Fragment() {
         inner class TodoViewHolder(private val binding: RowTodoBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val checkBoxTodo = binding.checkBoxRowTodo
+            val textViewTodo = binding.textViewRowTodo
             val textViewTodoMaker = binding.textViewRowTodoMaker
+
+            init {
+                checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+
+                    } else {
+
+                    }
+                }
+
+                textViewTodo.setOnClickListener {
+                    // 개인, 공유(내가만듬), 공유(내가 안만듬) 분기 필요
+                    mainActivity.replaceFragment(
+                        MainActivity.TODO_DETAIL_PERSONAL_FRAGMENT,
+                        true,
+                        null
+                    )
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
@@ -120,7 +144,7 @@ class MainHomeFragment : Fragment() {
         override fun getItemCount(): Int = 4
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-            holder.checkBoxTodo.text = "오전 8기 약먹기"
+            holder.textViewTodo.text = "오전 8기 약먹기"
             holder.textViewTodoMaker.text = "by 누구"
         }
     }
@@ -133,8 +157,28 @@ class MainHomeFragment : Fragment() {
             RecyclerView.ViewHolder(binding.root) {
             val textViewDate = binding.textViewRowMemoSearchDate
             val textViewCategory = binding.textViewRowMemoSearchCategory
-            val checkboxTodo = binding.checkBoxItemTodo
-            val textViewTodoMaker = binding.textViewItemTodoMaker
+            val checkBoxRowMemoSearch = binding.checkBoxRowMemoSearch
+            val textViewRowMemoSearchMaker = binding.textViewRowMemoSearchMaker
+            val textViewRowMemoSearch = binding.textViewRowMemoSearch
+
+            init {
+                checkBoxRowMemoSearch.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+
+                    } else {
+
+                    }
+                }
+
+                textViewRowMemoSearch.setOnClickListener {
+                    // 개인, 공유(내가만듬), 공유(내가 안만듬) 분기 필요
+                    mainActivity.replaceFragment(
+                        MainActivity.TODO_DETAIL_PERSONAL_FRAGMENT,
+                        true,
+                        null
+                    )
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoSearchHolder =
@@ -151,7 +195,8 @@ class MainHomeFragment : Fragment() {
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
             holder.textViewDate.text = "23.09.05"
             holder.textViewCategory.text = "6팀 최종프로젝트"
-            holder.textViewTodoMaker.text = "by 누구"
+            holder.textViewRowMemoSearchMaker.text = "by 누구"
+            holder.textViewRowMemoSearch.text = "3시 강사님과 미팅"
         }
     }
 }
