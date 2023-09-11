@@ -173,9 +173,17 @@ class MainHomeFragment : Fragment() {
             init {
                 checkBoxRowMemoSearch.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
-
+                        textViewRowMemoSearch.paintFlags =
+                            textViewRowMemoSearch.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        textViewRowMemoSearch.setTextColor(resources.getColor(R.color.accentGray))
                     } else {
-
+                        textViewRowMemoSearch.paintFlags =
+                            textViewRowMemoSearch.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                        if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                            textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.white))
+                        } else {
+                            textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.black))
+                        }
                     }
                 }
 
