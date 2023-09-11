@@ -20,8 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_todoDetailPersonal"
+            style="@style/Theme.DontForgetProject.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_vertical_small2"
@@ -35,15 +37,16 @@
                 android:background="#FFFFFF"
                 android:fontFamily="@font/scdream_regular"
                 android:hint="할일"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_big" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:layout_marginTop="@dimen/margin_vertical_small3"
             android:id="@+id/button_todoDetailPersonal_category"
+            style="@style/Theme.DontForgetProject.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
             android:clickable="false"
             android:fontFamily="@font/scdream_regular"
             android:text="카테고리"
@@ -74,6 +77,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -87,13 +91,14 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPersonal_date"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
-                android:text="2023.09.05."
-                android:layout_gravity="center"
                 android:gravity="end"
+                android:text="2023.09.05."
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
@@ -116,6 +121,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -128,13 +134,14 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPersonal_alert"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
-                android:text="오전 3시"
-                android:layout_gravity="center"
                 android:gravity="end"
+                android:text="오전 3시"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
@@ -158,6 +165,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -170,13 +178,14 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPersonal_location"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
-                android:text="서면역"
-                android:layout_gravity="center"
                 android:gravity="end"
+                android:text="서면역"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
@@ -189,13 +198,11 @@
 
             <Button
                 android:id="@+id/button_todoDetailPersonal_edit"
+                style="@style/Theme.DontForgetProject.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/scdream_bold"
-                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:text="수정하기"
-                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/font_size_big" />
 
             <Button
@@ -204,24 +211,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_vertical_small3"
                 android:layout_weight="1"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:fontFamily="@font/scdream_bold"
+                style="@style/Theme.DontForgetProject.Button"
+                android:fontFamily="@font/scdream_regular"
                 android:text="삭제하기"
                 android:textColor="@color/accentRed"
                 android:textSize="@dimen/font_size_big" />
         </LinearLayout>
 
-        <Button
-            android:layout_marginTop="@dimen/margin_vertical_small3"
-            android:id="@+id/button_todoDetailPersonal_editComplete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:fontFamily="@font/scdream_bold"
-            android:text="수정완료"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/font_size_big" />
     </LinearLayout>
 
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:transitionGroup="true"
     tools:context=".UI.TodoDetailPublicFragment.TodoDetailPublicFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -18,8 +19,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_size_normal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/padding_size_normal">
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_todoDetailPublic"
             android:layout_width="match_parent"
@@ -29,29 +31,33 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditText_todoDetailPublic"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
                 android:enabled="false"
                 android:fontFamily="@font/scdream_regular"
                 android:hint="할일"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_big" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:layout_marginTop="@dimen/margin_vertical_small2"
             android:id="@+id/button_todoDetailPublic_category"
+            style="@style/Theme.DontForgetProject.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small2"
             android:clickable="false"
             android:fontFamily="@font/scdream_regular"
             android:text="카테고리"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_medium" />
+
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_vertical_big2"/>
+            android:layout_height="@dimen/margin_vertical_big2" />
+
         <LinearLayout
             android:id="@+id/linearLayout_todoDetailPublic_date"
             android:layout_width="match_parent"
@@ -72,6 +78,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -84,6 +91,7 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_date"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -114,6 +122,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -126,6 +135,7 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_alert"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -155,6 +165,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -167,6 +178,7 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_location"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -196,6 +208,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
@@ -208,6 +221,7 @@
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_made"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
