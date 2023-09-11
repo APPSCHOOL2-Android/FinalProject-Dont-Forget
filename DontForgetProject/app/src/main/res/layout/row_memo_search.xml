@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -47,12 +48,55 @@
         android:id="@+id/textView_itemTodo_maker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/margin_vertical_small1"
+        android:layout_marginEnd="@dimen/margin_vertical_small2"
         android:fontFamily="@font/scdream_regular"
         android:text="by 누구"
         android:textSize="@dimen/font_size_medium"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBox_itemTodo"
         app:layout_constraintEnd_toEndOf="@+id/checkBox_itemTodo"
-        app:layout_constraintTop_toBottomOf="@+id/textView_rowMemoSearch_category" />
+        app:layout_constraintTop_toTopOf="@id/checkBox_itemTodo" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_vertical_small2"
+        android:layout_marginBottom="@dimen/margin_vertical_small1"
+        android:backgroundTint="@color/accentLightGray"
+        android:visibility="visible"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox_itemTodo"
+        app:layout_constraintEnd_toEndOf="@+id/checkBox_itemTodo">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:id="@+id/imageView_rowTodo"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_location_on_24px" />
+
+            <TextView
+                android:id="@+id/textView_rowTodo_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/scdream_regular"
+                android:text="이마트"
+                android:textSize="@dimen/font_size_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageView_rowTodo"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
