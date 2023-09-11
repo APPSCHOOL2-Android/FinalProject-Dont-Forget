@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:transitionGroup="true"
     tools:context=".UI.MyPageThemeFragment.MyPageThemeFragment">
 
 
@@ -56,14 +57,14 @@
         </RadioGroup>
 
         <Button
+            android:layout_marginTop="@dimen/margin_vertical_small2"
             android:layout_gravity="end"
             android:id="@+id/button_myPageTheme_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="변경완료"
-            android:fontFamily="@font/scdream_regular"
-            android:textSize="@dimen/font_size_medium"
-            style="@style/Widget.Material3.Button.OutlinedButton"/>
+            android:textSize="@dimen/font_size_big"
+            style="@style/Theme.DontForgetProject.Button"/>
 
 
     </LinearLayout>

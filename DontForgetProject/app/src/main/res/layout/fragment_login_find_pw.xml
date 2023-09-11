@@ -51,11 +51,10 @@
                 <Button
                     android:id="@+id/button_loginFindPw"
                     android:text="재설정 링크 보내기"
-                    android:fontFamily="@font/scdream_bold"
                     android:textSize="@dimen/font_size_big"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.OutlinedButton">
+                    style="@style/Theme.DontForgetProject.Button">
 
                 </Button>
             </LinearLayout>

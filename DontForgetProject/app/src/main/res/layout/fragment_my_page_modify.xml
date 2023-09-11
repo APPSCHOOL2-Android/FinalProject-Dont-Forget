@@ -26,20 +26,20 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/imageView_myPageModify_profile"
                 android:layout_marginTop="@dimen/margin_vertical_small1"
                 android:layout_gravity="center"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/ic_person_24px"/>
+                android:src="@drawable/ic_person_24px" />
             <Button
                 android:id="@+id/button_myPageModify_modifyPhoto"
                 android:textSize="@dimen/font_size_medium"
-                android:fontFamily="@font/scdream_regular"
                 android:layout_marginTop="@dimen/margin_vertical_small1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Theme.DontForgetProject.Button"
                 android:text="@string/myPage_modify_addPhoto">
             </Button>
             <Space
@@ -79,12 +79,11 @@
 
                 <Button
                     android:id="@+id/button_myPageModify_modifyComplete"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Theme.DontForgetProject.Button"
                     android:layout_marginTop="@dimen/margin_vertical_small3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:fontFamily="@font/scdream_bold"
                     android:text="@string/button_modify_complete"
                     android:textSize="@dimen/font_size_big">
 

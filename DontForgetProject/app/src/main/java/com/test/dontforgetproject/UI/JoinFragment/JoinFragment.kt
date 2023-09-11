@@ -46,7 +46,7 @@ class JoinFragment : Fragment() {
             buttonJoin.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,false,null)
             }
-            buttonProductSellerRegisterAddImage.setOnClickListener {
+            buttonJoinPhoto.setOnClickListener {
 
             }
         }
