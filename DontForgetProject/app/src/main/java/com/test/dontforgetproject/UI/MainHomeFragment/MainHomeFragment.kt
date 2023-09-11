@@ -1,6 +1,7 @@
 package com.test.dontforgetproject.UI.MainHomeFragment
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
 import com.test.dontforgetproject.databinding.RowCategoryTabBinding
 import com.test.dontforgetproject.databinding.RowMemoSearchBinding
@@ -48,12 +51,10 @@ class MainHomeFragment : Fragment() {
                         }
                         scrollViewMainHomeFragment.visibility = View.GONE
                         constraintLayoutMainHomeFragment.visibility = View.VISIBLE
-                        //recyclerViewMainHomeFragmentMemoSearch.visibility = View.VISIBLE
                     } else {
                         textInputLayoutMainHomeFragment.endIconMode = TextInputLayout.END_ICON_NONE
                         scrollViewMainHomeFragment.visibility = View.VISIBLE
                         constraintLayoutMainHomeFragment.visibility = View.GONE
-                        //recyclerViewMainHomeFragmentMemoSearch.visibility = View.GONE
                     }
                 }
 
@@ -115,9 +116,17 @@ class MainHomeFragment : Fragment() {
             init {
                 checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
-
+                        textViewTodo.paintFlags =
+                            textViewTodo.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        textViewTodo.setTextColor(resources.getColor(R.color.accentGray))
                     } else {
-
+                        textViewTodo.paintFlags =
+                            textViewTodo.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                        if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                            textViewTodo.setTextColor(resources.getColor(android.R.color.white))
+                        } else {
+                            textViewTodo.setTextColor(resources.getColor(android.R.color.black))
+                        }
                     }
                 }
 
