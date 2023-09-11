@@ -107,6 +107,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_modify"
                     android:textSize="@dimen/font_size_big"
+                    android:fontFamily="@font/scdream_regular"
                     style="@style/Theme.DontForgetProject.Text">
                 </TextView>
             </LinearLayout>
@@ -127,6 +128,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_theme"
                     android:textSize="@dimen/font_size_big"
+                    android:fontFamily="@font/scdream_regular"
                     style="@style/Theme.DontForgetProject.Text">
 
 
@@ -149,6 +151,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_logout"
                     android:textSize="@dimen/font_size_big"
+                    android:fontFamily="@font/scdream_regular"
                     style="@style/Theme.DontForgetProject.Text">
 
 
@@ -171,6 +174,7 @@
                     android:gravity="left"
                     android:text="@string/myPage_withdraw"
                     android:textSize="@dimen/font_size_big"
+                    android:fontFamily="@font/scdream_regular"
                     android:textColor="@color/accentRed">
 
 
