@@ -22,16 +22,19 @@
         android:padding="@dimen/padding_size_normal">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_categoryOptionPersonal_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="이름"
-            app:boxBackgroundColor="@color/white"
+            android:transitionGroup="true"
+            app:boxBackgroundColor="#00FFFFFF"
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_categoryOptionPersonal_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
                 android:textSize="@dimen/font_size_medium" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,10 +73,10 @@
 
             <Button
                 android:id="@+id/button_categoryOptionPersonal_modify"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#F5F5F5"
                 android:fontFamily="@font/scdream_bold"
                 android:text="@string/button_modify"
                 android:textColor="@color/colorPrimary"
@@ -85,10 +88,10 @@
 
             <Button
                 android:id="@+id/button_categoryOptionPersonal_delete"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#F5F5F5"
                 android:fontFamily="@font/scdream_bold"
                 android:text="@string/button_delete"
                 android:textColor="@color/accentRed"

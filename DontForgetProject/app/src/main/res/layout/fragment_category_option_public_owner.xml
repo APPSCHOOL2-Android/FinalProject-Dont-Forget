@@ -22,16 +22,19 @@
         android:padding="@dimen/padding_size_normal">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_categoryOptionPublicOwner_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="이름"
-            app:boxBackgroundColor="@color/white"
+            android:transitionGroup="true"
+            app:boxBackgroundColor="#00FFFFFF"
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_categoryOptionPublicOwner_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
                 android:textSize="@dimen/font_size_medium" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,9 +108,9 @@
 
             <Button
                 android:id="@+id/button_categoryOptionPublicOwner_add"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#F4F4F4"
                 android:fontFamily="@font/scdream_regular"
                 android:text="@string/button_addPeople"
                 android:textColor="@color/black"
@@ -118,15 +121,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_vertical_small2"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="#00FFFFFF"
             app:cardCornerRadius="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_categoryOptionPublicOwner"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:background="@color/white"
-                android:backgroundTint="@color/white" />
+                android:transitionGroup="true" />
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -138,10 +140,10 @@
 
             <Button
                 android:id="@+id/button_categoryOptionPublicOwner_modify"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#F5F5F5"
                 android:fontFamily="@font/scdream_bold"
                 android:text="@string/button_modify"
                 android:textColor="@color/colorPrimary"
@@ -153,10 +155,10 @@
 
             <Button
                 android:id="@+id/button_categoryOptionPublicOwner_delete"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#F5F5F5"
                 android:fontFamily="@font/scdream_bold"
                 android:text="@string/button_delete"
                 android:textColor="@color/accentRed"
