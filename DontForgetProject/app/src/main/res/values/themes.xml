@@ -23,6 +23,12 @@
         <item name="android:fontFamily">@font/scdream_regular</item>
     </style>
 
+    <style name="Theme.DontForgetProject.CardView">
+        <item name = "cardCornerRadius"> 10dp </item>
+        <item name= "contentPadding">@dimen/padding_size_normal</item>
+        <item name= "cardBackgroundColor">#00FFFFFF</item>
+    </style>
+
     <style name="Theme.DontForgetProject" parent="Base.Theme.DontForgetProject" />
 
     <!--탭 텍스트-->
