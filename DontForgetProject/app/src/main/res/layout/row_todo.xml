@@ -7,9 +7,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
+        style="@style/Theme.DontForgetProject.CardView_Padding8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Theme.DontForgetProject.CardView_Padding8"
         android:layout_marginBottom="@dimen/margin_vertical_small2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +28,7 @@
 
             <TextView
                 android:id="@+id/textView_rowTodo"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:fontFamily="@font/scdream_regular"
@@ -69,6 +70,7 @@
 
                     <TextView
                         android:id="@+id/textView_rowTodo_location"
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -84,6 +86,7 @@
 
             <TextView
                 android:id="@+id/textView_rowTodo_maker"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small1"

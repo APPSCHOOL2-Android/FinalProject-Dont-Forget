@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/textView_rowMemoSearch_date"
+        style="@style/Theme.DontForgetProject.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small2"
@@ -18,6 +19,7 @@
 
     <TextView
         android:id="@+id/textView_rowMemoSearch_category"
+        style="@style/Theme.DontForgetProject.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_vertical_small2"
@@ -82,6 +84,7 @@
 
                     <TextView
                         android:id="@+id/textView_rowMemoSearch_location"
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -97,6 +100,7 @@
 
             <TextView
                 android:id="@+id/textView_rowMemoSearch_maker"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small1"
@@ -109,6 +113,7 @@
 
             <TextView
                 android:id="@+id/textView_rowMemoSearch"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:fontFamily="@font/scdream_regular"

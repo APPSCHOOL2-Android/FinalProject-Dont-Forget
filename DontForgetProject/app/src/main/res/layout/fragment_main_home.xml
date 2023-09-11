@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/padding_size_normal"
     android:paddingStart="@dimen/padding_size_normal"
+    android:paddingTop="@dimen/padding_size_normal"
     android:paddingEnd="@dimen/padding_size_normal"
     android:transitionGroup="true"
     tools:context=".UI.MainHomeFragment.MainHomeFragment">
@@ -28,6 +28,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditText_mainHomeFragment"
+            style="@style/Theme.DontForgetProject.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
@@ -65,9 +66,9 @@
 
             <CalendarView
                 android:id="@+id/calendarView_mainHomeFragment"
+                style="@style/Theme.DontForgetProject.Calendar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Theme.DontForgetProject.Calendar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -86,6 +87,7 @@
 
             <TextView
                 android:id="@+id/textView_mainHome_Fragment_categoryName"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_big1"
@@ -101,6 +103,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:paddingBottom="50dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +111,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView_mainHome_Fragment_categoryName"
                 app:layout_constraintVertical_bias="0.0"
-                android:paddingBottom="50dp"
                 tools:listitem="@layout/row_todo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
