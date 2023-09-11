@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.Util.FirebaseUtil
@@ -41,11 +42,13 @@ class JoinFragment : Fragment() {
             var firebaseUtil = FirebaseUtil(firebaseAuth)
             var checkBoolean = false
             var userType = arguments?.getInt("UserType")
-            if(userType == 0){
+            // 구글 로그인일 경우
+            if(userType == MyApplication.GOOGLE_LOGIN){
                 textInputLayoutJoinEmail.visibility = View.GONE
                 textInputLayoutJoinPassword.visibility = View.GONE
                 textInputLayoutJoinPasswordCheck.visibility = View.GONE
             }
+            // 입력 유효성 검사
             textInputLayoutJoinEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
                     checkBoolean = checkValidation(textInputLayoutJoinEmail,"이메일")
@@ -72,7 +75,7 @@ class JoinFragment : Fragment() {
                 }
             }
 
-
+            // 회원가입 버튼 클릭
             buttonJoin.setOnClickListener {
                 val email = textInputLayoutJoinEmail.editText?.text.toString()
                 val password = textInputLayoutJoinPassword.editText?.text.toString()
@@ -80,30 +83,24 @@ class JoinFragment : Fragment() {
                 val userIntroduce = textInputLayoutJoinIntroduce.editText?.text.toString()
                 val userName = textInputLayoutJoinName.editText?.text.toString()
                 val userImage = "None"
-                if (checkBoolean && userType == 1) {
+                if (checkBoolean && userType == MyApplication.EMAIL_LOGIN) {
                     if (password == passwordCheck) {
                         firebaseUtil.createAccount(email, password) { firebaseCheck ->
                             var currentUser = firebaseAuth.currentUser
                             var userId = currentUser?.uid
                             if (firebaseCheck == "성공") {
-
-                                Log.e("firebase","${userId}")
                                 if (userId != null) {
                                     makeUser(userName,email,userImage,userIntroduce,userId)
                                 }
                             }
+                            // 이미 등록된 이메일일 경우
                             else if(firebaseCheck == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."){
-
                                 if (currentUser != null) {
-                                    Log.e("등록된 이메일","${currentUser.providerId}")
-                                    Log.e("등록된 이메일","${GoogleAuthProvider.PROVIDER_ID}")
                                     if(currentUser.providerId == GoogleAuthProvider.PROVIDER_ID){
-
                                         Toast.makeText(requireContext(),"구글로 이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
                                     }else{
                                         Toast.makeText(requireContext(),"이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
                                     }
-
                                 }
                             }
                             else Toast.makeText(requireContext(), "이미 존재하는 계정입니다.", Toast.LENGTH_SHORT).show()
@@ -112,11 +109,18 @@ class JoinFragment : Fragment() {
                     } else {
                         Toast.makeText(requireContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_SHORT).show()
                     }
-                }else if(userType == 0){
+                }else if(checkBoolean && userType == MyApplication.GOOGLE_LOGIN){
                     var userId = firebaseAuth.currentUser?.uid
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
                     }
+                }
+                else if(!checkBoolean){
+                    if(email.isEmpty()) textInputLayoutJoinEmail.requestFocus()
+                    else if(password.isEmpty()) textInputLayoutJoinPassword.requestFocus()
+                    else if(passwordCheck.isEmpty()) textInputLayoutJoinPasswordCheck.requestFocus()
+                    else if(userName.isEmpty()) textInputLayoutJoinName.requestFocus()
+                    else if(userIntroduce.isEmpty()) textInputLayoutJoinIntroduce.requestFocus()
                 }
             }
             buttonJoinPhoto.setOnClickListener {
@@ -126,6 +130,8 @@ class JoinFragment : Fragment() {
         return fragmentJoinBinding.root
     }
 
+
+    // 유효성 검사 함수
     fun checkValidation(textInputLayout: TextInputLayout, type:String):Boolean{
         val check = textInputLayout.editText?.text.toString()
         val checkBoolean = check.isEmpty()
@@ -162,6 +168,7 @@ class JoinFragment : Fragment() {
         }
         return false
     }
+    // firebase Realtime에 추가
     fun makeUser(userName:String,userEmail:String,userImage:String,userIntroduce:String,userId:String){
         UserRepository.getUserInfo {
             var userindex = (it.result.value as? Long) ?: 0L
