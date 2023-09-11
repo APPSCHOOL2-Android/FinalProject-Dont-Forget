@@ -25,17 +25,22 @@
             android:padding="@dimen/padding_size_normal"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_productSellerRegister_addImage"
-                style="@style/Widget.Material3.Button.IconButton"
+            <ImageView
+                android:id="@+id/imageView_join_profile"
+                android:layout_marginTop="@dimen/margin_vertical_small1"
+                android:layout_gravity="center"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:src="@drawable/ic_person_24px" />
+            <Button
+                android:id="@+id/button_join_Photo"
+                android:textSize="@dimen/font_size_medium"
+                android:layout_marginTop="@dimen/margin_vertical_small1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/accentGray"
-                app:cornerRadius="80dp"
-                app:icon="@drawable/ic_person_24px"
-                app:iconGravity="textEnd"
-                app:iconSize="50dp" />
+                style="@style/Theme.DontForgetProject.Button"
+                android:text="사진 추가"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout_join_email"
                 android:layout_marginTop="@dimen/margin_vertical_small2"
@@ -137,9 +142,8 @@
                 android:id="@+id/button_join"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_bold"
                 android:textSize="@dimen/font_size_big"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Theme.DontForgetProject.Button"
                 android:text="회원가입하기" />
         </LinearLayout>
 

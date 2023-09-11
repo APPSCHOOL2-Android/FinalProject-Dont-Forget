@@ -94,8 +94,7 @@
                 android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream_bold"
-                android:textSize="@dimen/font_size_medium"
+                android:textSize="@dimen/font_size_big"
                 style="@style/Theme.DontForgetProject.Button"
                 android:text="로그인" />
             <Space
