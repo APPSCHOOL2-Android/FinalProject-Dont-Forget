@@ -28,7 +28,8 @@
             android:hint="이름"
             android:transitionGroup="true"
             app:boxBackgroundColor="#00FFFFFF"
-            app:boxBackgroundMode="filled">
+            app:boxBackgroundMode="filled"
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_categoryAddPersonal_name"
@@ -36,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
+                android:inputType="text"
                 android:textSize="@dimen/font_size_medium" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,6 +49,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -78,13 +81,12 @@
 
             <Button
                 android:id="@+id/button_categoryAddPersonal_submit"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Theme.DontForgetProject.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_bold"
                 android:text="@string/button_toMake"
-                android:textColor="@color/black"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
     </LinearLayout>
