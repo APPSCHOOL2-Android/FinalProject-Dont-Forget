@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/margin_vertical_small2">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView_rowFriendsDetail_category"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_shadow"
-        android:elevation="10dp"
-        android:fontFamily="@font/scdream_regular"
-        android:paddingStart="@dimen/padding_size_normal"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:text="카테고리"
-        android:textColor="@color/accentRed"
-        android:textSize="@dimen/font_size_medium" />
+        android:layout_margin="@dimen/margin_vertical_small1"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="@dimen/padding_size_normal">
+        <TextView
+            android:id="@+id/textView_rowFriendsDetail_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scdream_regular"
+            android:text="카테고리"
+            android:textColor="@color/accentRed"
+            android:textSize="@dimen/font_size_medium" />
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
