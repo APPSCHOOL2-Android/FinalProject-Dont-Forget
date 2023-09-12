@@ -22,6 +22,8 @@
         app:itemActiveIndicatorStyle="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
         android:background="@color/transparent"
         android:backgroundTint="@color/transparent"
+        app:itemTextAppearanceActive="@style/bottom_text"
+        app:itemTextAppearanceInactive="@style/bottom_text"
         app:itemIconTint="@drawable/selector_bottom_navigation_color"
         app:itemBackground="@android:color/transparent"
         app:itemTextColor="@drawable/selector_bottom_navigation_color"
