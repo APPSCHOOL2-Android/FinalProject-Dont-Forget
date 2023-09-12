@@ -15,6 +15,7 @@
     <color name = "accentLightGray">#F5F5F5</color>
     <color name = "accentDarkGray">#aaaaaa</color>
 
+    <color name="transparent">#00000000</color>
 
     <!--카테고리 색상-->
     <color name = "category1">#FACE34</color>
