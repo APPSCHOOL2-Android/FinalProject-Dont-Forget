@@ -97,7 +97,7 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
-        private var selectedPosition = RecyclerView.NO_POSITION
+        private var selectedCategoryPosition = 0
 
         inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
@@ -110,12 +110,12 @@ class MainHomeFragment : Fragment() {
                     val position = adapterPosition
 
                     // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
-                    if (selectedPosition != RecyclerView.NO_POSITION) {
-                        notifyItemChanged(selectedPosition)
+                    if (selectedCategoryPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedCategoryPosition)
                     }
 
                     // 클릭한 항목의 배경색을 변경하고 위치를 추적
-                    selectedPosition = position
+                    selectedCategoryPosition = position
                     notifyItemChanged(position)
                 }
             }
@@ -135,7 +135,7 @@ class MainHomeFragment : Fragment() {
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
             holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
 
-            val backgroundColor = if (position == selectedPosition) {
+            val backgroundColor = if (position == selectedCategoryPosition) {
                 ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
             } else {
                 ContextCompat.getColor(holder.itemView.context, R.color.transparent)
