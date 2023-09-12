@@ -15,7 +15,7 @@ import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
-import com.test.dontforgetproject.databinding.DialogCategoryPersonalDeleteBinding
+import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBinding
 import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 
@@ -59,10 +59,13 @@ class CategoryOptionPersonalFragment : Fragment() {
                 }
 
                 buttonCategoryOptionPersonalDelete.setOnClickListener {
-                    val dialogCategoryPersonalDeleteBinding = DialogCategoryPersonalDeleteBinding.inflate(layoutInflater)
+                    val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
 
-                    builder.setView(dialogCategoryPersonalDeleteBinding.root)
+                    dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
+                    dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리의 메모도 같이 삭제됩니다."
+
+                    builder.setView(dialogCategoryNormalBinding.root)
                     builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                         mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
                     }
