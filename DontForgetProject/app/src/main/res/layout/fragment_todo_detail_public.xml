@@ -26,7 +26,6 @@
             android:id="@+id/textInputLayout_todoDetailPublic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -35,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:enabled="false"
                 android:fontFamily="@font/scdream_regular"
                 android:hint="할일"
                 android:textSize="@dimen/font_size_big" />
