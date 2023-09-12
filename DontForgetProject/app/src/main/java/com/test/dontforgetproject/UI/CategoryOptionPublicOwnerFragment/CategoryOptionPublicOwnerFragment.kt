@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
@@ -19,7 +20,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
-import com.test.dontforgetproject.databinding.DialogCategoryPublicDeleteBinding
+import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicViewModel
+import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicOwnerBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
@@ -30,6 +32,8 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
     lateinit var categoryOptionPublicOwnerBinding: FragmentCategoryOptionPublicOwnerBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var categoryOptionPublicViewModel: CategoryOptionPublicViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +41,32 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
         categoryOptionPublicOwnerBinding =
             FragmentCategoryOptionPublicOwnerBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        categoryOptionPublicViewModel = ViewModelProvider(mainActivity)[CategoryOptionPublicViewModel::class.java]
+        categoryOptionPublicViewModel.run {
+            categoryName.observe(mainActivity) {
+                categoryOptionPublicOwnerBinding.editTextCategoryOptionPublicOwnerName.setText(it)
+            }
+
+            categoryColor.observe(mainActivity) {
+                categoryOptionPublicOwnerBinding.run {
+                    textInputCategoryOptionPublicOwnerName.run {
+                        boxStrokeColor = it
+                        hintTextColor = ColorStateList.valueOf(it)
+                    }
+
+                    editTextCategoryOptionPublicOwnerName.run {
+                        setTextColor(it)
+                    }
+
+                    textViewCategoryOptionPublicOwnerColorPicker.backgroundTintList = ColorStateList.valueOf(it)
+                }
+            }
+
+            categoryOwner.observe(mainActivity) {
+                categoryOptionPublicOwnerBinding.textViewCategoryOptionPublicOwnerOwnerName.text = it
+            }
+        }
 
         categoryOptionPublicOwnerBinding.run {
             toolbarCategoryOptionPublicOwner.run {
@@ -85,9 +115,12 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
 
             buttonCategoryOptionPublicOwnerDelete.setOnClickListener {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                val dialogCategoryPublicDeleteBinding = DialogCategoryPublicDeleteBinding.inflate(layoutInflater)
+                val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
 
-                builder.setView(dialogCategoryPublicDeleteBinding.root)
+                dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
+                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "참여인원의 캘린더에서도 삭제됩니다."
+
+                builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                     mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
                 }
@@ -96,6 +129,9 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 }
                 builder.show()
             }
+
+            val categoryIdx = arguments?.getLong("categoryIdx")!!
+            categoryOptionPublicViewModel.getCategoryInfo(categoryIdx)
         }
 
         return categoryOptionPublicOwnerBinding.root

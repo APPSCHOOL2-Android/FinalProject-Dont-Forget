@@ -94,20 +94,24 @@ class MainCategoryFragment : Fragment() {
                 rowMainCategoryBinding.root.setOnClickListener {
                     val categoryIsPublic = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryIsPublic!!
                     val categoryOwnerIdx = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryOwnerIdx!!
+                    val categoryIdx = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryIdx!!
+
+                    val bundle = Bundle()
+                    bundle.putLong("categoryIdx", categoryIdx)
 
                     // 개인 카테고리일 경우
                     if (categoryIsPublic == 0L) {
-                        mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT, true, null)
+                        mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT, true, bundle)
                     }
                     // 공용 카테고리일 경우
                     else {
                         // 내가 만든 카테고리일 경우
                         if (userIdx == categoryOwnerIdx) {
-                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT, true, null)
+                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT, true, bundle)
                         }
                         // 타인이 만든 카테고리일 경우
                         else {
-                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT, true, null)
+                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT, true, bundle)
                         }
                     }
                 }

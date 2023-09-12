@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
@@ -20,63 +22,90 @@ import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBind
 import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 
 class CategoryOptionPersonalFragment : Fragment() {
-    lateinit var categoryOptionPersonalBinding: FragmentCategoryOptionPersonalBinding
+    lateinit var fragmentCategoryOptionPersonalBinding: FragmentCategoryOptionPersonalBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var categoryOptionPersonalViewModel: CategoryOptionPersonalViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        categoryOptionPersonalBinding = FragmentCategoryOptionPersonalBinding.inflate(inflater)
+        fragmentCategoryOptionPersonalBinding = FragmentCategoryOptionPersonalBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        categoryOptionPersonalBinding.run {
+        categoryOptionPersonalViewModel = ViewModelProvider(mainActivity)[CategoryOptionPersonalViewModel::class.java]
+        categoryOptionPersonalViewModel.run {
+            categoryName.observe(mainActivity) {
+                fragmentCategoryOptionPersonalBinding.editTextCategoryOptionPersonalName.setText(it)
+            }
+
+            categoryColor.observe(mainActivity) {
+                fragmentCategoryOptionPersonalBinding.run {
+                    textInputCategoryOptionPersonalName.run {
+                        boxStrokeColor = it
+                        hintTextColor = ColorStateList.valueOf(it)
+                    }
+
+                    editTextCategoryOptionPersonalName.run {
+                        setTextColor(it)
+                    }
+
+                    textViewCategoryOptionPersonalColorPicker.backgroundTintList = ColorStateList.valueOf(it)
+                }
+            }
+        }
+
+        fragmentCategoryOptionPersonalBinding.run {
             toolbarCategoryOptionPersonal.run {
                 title = "카테고리 관리"
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
                 }
+            }
 
-                textViewCategoryOptionPersonalColorPicker.setOnClickListener {
-                    MaterialColorPickerDialog
-                        .Builder(mainActivity)        					// Pass Activity Instance
-                        .setTitle("색상")           		// Default "Choose Color"
-                        .setColorShape(ColorShape.CIRCLE)   	// Default ColorShape.CIRCLE
-                        .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
-                        .setDefaultColor(R.color.category1) 		// Pass Default Color
-                        .setColorRes(resources.getIntArray(R.array.colors))
-                        .setColorListener { color, colorHex ->
-                            textViewCategoryOptionPersonalColorPicker.backgroundTintList = ColorStateList.valueOf(color)
-                            textInputCategoryOptionPersonalName.boxStrokeColor = color
-                            editTextCategoryOptionPersonalName.setTextColor(color)
-                        }
-                        .showBottomSheet(childFragmentManager)
-                }
+            textViewCategoryOptionPersonalColorPicker.setOnClickListener {
+                MaterialColorPickerDialog
+                    .Builder(mainActivity)        					// Pass Activity Instance
+                    .setTitle("색상")           		// Default "Choose Color"
+                    .setColorShape(ColorShape.CIRCLE)   	// Default ColorShape.CIRCLE
+                    .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
+                    .setDefaultColor(R.color.category1) 		// Pass Default Color
+                    .setColorRes(resources.getIntArray(R.array.colors))
+                    .setColorListener { color, colorHex ->
+                        textViewCategoryOptionPersonalColorPicker.backgroundTintList = ColorStateList.valueOf(color)
+                        textInputCategoryOptionPersonalName.boxStrokeColor = color
+                        editTextCategoryOptionPersonalName.setTextColor(color)
+                    }
+                    .showBottomSheet(childFragmentManager)
+            }
 
-                buttonCategoryOptionPersonalModify.setOnClickListener {
+            buttonCategoryOptionPersonalModify.setOnClickListener {
+                mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
+            }
+
+            buttonCategoryOptionPersonalDelete.setOnClickListener {
+                val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
+                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리의 메모도 같이 삭제됩니다."
+
+                builder.setView(dialogCategoryNormalBinding.root)
+                builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                     mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
                 }
+                builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
 
-                buttonCategoryOptionPersonalDelete.setOnClickListener {
-                    val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
-                    val builder = MaterialAlertDialogBuilder(mainActivity)
-
-                    dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
-                    dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리의 메모도 같이 삭제됩니다."
-
-                    builder.setView(dialogCategoryNormalBinding.root)
-                    builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                        mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
-                    }
-                    builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
-
-                    }
-                    builder.show()
                 }
+                builder.show()
             }
+
+            val categoryIdx = arguments?.getLong("categoryIdx")!!
+            categoryOptionPersonalViewModel.getCategoryInfo(categoryIdx)
         }
 
-        return categoryOptionPersonalBinding.root
+        return fragmentCategoryOptionPersonalBinding.root
     }
 }
