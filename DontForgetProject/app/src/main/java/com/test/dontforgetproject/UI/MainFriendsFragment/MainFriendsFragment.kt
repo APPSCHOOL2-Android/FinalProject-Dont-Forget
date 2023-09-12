@@ -24,12 +24,13 @@ class MainFriendsFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     // 탭레이아웃
-    var tabName = arrayOf("친구목록", "친구 요청함")
+    var tabName = arrayOf("친구목록", "친구 요청함", "내가 보낸 요청")
     val fragmentList = mutableListOf<Fragment>()
 
     // 뷰페이저
     lateinit var mainFriendsListFragment: MainFriendsListFragment
     lateinit var mainFriendsRequestFragment : MainFriendsRequestFragment
+    lateinit var mainFriendsMyRequestFragment: MainFriendsMyRequestFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,7 @@ class MainFriendsFragment : Fragment() {
         mainActivity = activity as MainActivity
         mainFriendsListFragment = MainFriendsListFragment()
         mainFriendsRequestFragment = MainFriendsRequestFragment()
+        mainFriendsMyRequestFragment = MainFriendsMyRequestFragment()
 
         binding.run{
             // 툴바
@@ -73,6 +75,7 @@ class MainFriendsFragment : Fragment() {
             // 탭레이아웃
             fragmentList.add(mainFriendsListFragment)
             fragmentList.add(mainFriendsRequestFragment)
+            fragmentList.add(mainFriendsMyRequestFragment)
 
             viewPagerMainFriends.adapter = TabAdapterClass(mainActivity)
             val tabLayoutMediator =
@@ -97,7 +100,7 @@ class MainFriendsFragment : Fragment() {
     inner class TabAdapterClass(fragmentActivity: FragmentActivity) :
         FragmentStateAdapter(fragmentActivity) {
         override fun getItemCount(): Int {
-            return 2
+            return fragmentList.size
         }
 
         override fun createFragment(position: Int): Fragment {
