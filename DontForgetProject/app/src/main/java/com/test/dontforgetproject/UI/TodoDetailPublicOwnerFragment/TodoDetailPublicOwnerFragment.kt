@@ -31,8 +31,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
         fragmentTodoDetailPublicOwnerBinding.run {
 
-            buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
-
             toolbarTodoDetailPublicOwner.run {
                 title = "할일 상세"
 
@@ -51,12 +49,8 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 }
             }
 
-            buttonTodoDetailPublicOwnerEdit.setOnClickListener {
-                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.GONE
-                buttonTodoDetailPublicOwnerEditComplete.visibility = View.VISIBLE
-            }
 
-            buttonTodoDetailPublicOwnerEditComplete.setOnClickListener {
+            buttonTodoDetailPublicOwnerEdit.setOnClickListener {
 
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setTitle("경고")
@@ -66,9 +60,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
                 }
                 builder.show()
-
-                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.VISIBLE
-                buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
             }
 
             buttonTodoDetailPublicOwnerDelete.setOnClickListener {

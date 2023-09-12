@@ -33,7 +33,7 @@
                 style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/transparent"
                 android:fontFamily="@font/scdream_regular"
                 android:hint="할일"
                 android:textSize="@dimen/font_size_big" />
@@ -62,13 +62,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_vertical_small1"
-                app:cardCornerRadius="10dp"
-                app:contentPadding="@dimen/margin_vertical_small2">
+                style="@style/Theme.DontForgetProject.CardView">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -85,7 +84,7 @@
 
                     </TextView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_date"
@@ -106,13 +105,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_vertical_small1"
-                app:cardCornerRadius="10dp"
-                app:contentPadding="@dimen/margin_vertical_small2">
+                style="@style/Theme.DontForgetProject.CardView">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -129,7 +126,7 @@
 
                     </TextView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_alert"
@@ -150,12 +147,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_vertical_small1"
-                app:cardCornerRadius="10dp"
-                app:contentPadding="@dimen/margin_vertical_small2">
+                style="@style/Theme.DontForgetProject.CardView">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -172,7 +168,7 @@
 
                     </TextView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/textView_todoDetailPublic_location"
@@ -188,17 +184,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout_todoDetailPublic_made"
+            android:id="@+id/linearLayout_todoDetailPublic_madeby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_vertical_small1"
-                app:cardCornerRadius="10dp"
-                app:contentPadding="@dimen/margin_vertical_small2">
+                style="@style/Theme.DontForgetProject.CardView">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -210,15 +205,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
-                        android:text="@string/category_createBy"
+                        android:text="@string/todo_madeby"
                         android:textSize="@dimen/font_size_medium">
 
                     </TextView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/textView_todoDetailPublic_made"
+                android:id="@+id/textView_todoDetailPublic_madeby"
                 style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,8 +223,8 @@
                 android:gravity="end"
                 android:text="OOO"
                 android:textSize="@dimen/font_size_medium" />
-        </LinearLayout>
 
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
