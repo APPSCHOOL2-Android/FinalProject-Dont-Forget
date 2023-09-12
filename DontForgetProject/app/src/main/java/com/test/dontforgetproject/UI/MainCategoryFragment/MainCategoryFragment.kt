@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -20,19 +21,28 @@ import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 import java.text.DecimalFormat
 
 class MainCategoryFragment : Fragment() {
-    lateinit var mainCategoryBinding: FragmentMainCategoryBinding
+    lateinit var fragmentMainCategoryBinding: FragmentMainCategoryBinding
     lateinit var mainActivity: MainActivity
 
-    val categoryTempList = arrayOf("개인", "개인(내가 생성)", "개인(타인이 생성)")
+    lateinit var mainCategoryViewModel: MainCategoryViewModel
+
+    var userIdx = 1L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainCategoryBinding = FragmentMainCategoryBinding.inflate(inflater)
+        fragmentMainCategoryBinding = FragmentMainCategoryBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        mainCategoryBinding.run {
+        mainCategoryViewModel = ViewModelProvider(mainActivity)[MainCategoryViewModel::class.java]
+        mainCategoryViewModel.run {
+            categoryList.observe(mainActivity) {
+                fragmentMainCategoryBinding.recyclerViewMainCategory.adapter?.notifyDataSetChanged()
+            }
+        }
+
+        fragmentMainCategoryBinding.run {
             toolbarMainCategory.run {
                 title = getString(R.string.category)
                 inflateMenu(R.menu.menu_main_category)
@@ -53,16 +63,6 @@ class MainCategoryFragment : Fragment() {
                             }
                         }
                     }
-//                    builder.setItems(itemList) { dialog, which ->
-//                        when (which) {
-//                            0 -> {
-//                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PERSONAL_FRAGMENT, true, null)
-//                            }
-//                            1 -> {
-//                                mainActivity.replaceFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT, true, null)
-//                            }
-//                        }
-//                    }
                     builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
 
                     }
@@ -75,9 +75,11 @@ class MainCategoryFragment : Fragment() {
                 adapter = MainCategoryRecyclerViewAdpater()
                 layoutManager = LinearLayoutManager(context)
             }
+
+            mainCategoryViewModel.getMyCategory(userIdx)
         }
 
-        return mainCategoryBinding.root
+        return fragmentMainCategoryBinding.root
     }
 
     inner class MainCategoryRecyclerViewAdpater : RecyclerView.Adapter<MainCategoryRecyclerViewAdpater.MainCategoryViewHolder>() {
@@ -90,14 +92,21 @@ class MainCategoryFragment : Fragment() {
                 categoryName = rowMainCategoryBinding.textViewRowMainCategoryCategoryName
 
                 rowMainCategoryBinding.root.setOnClickListener {
-                    when (adapterPosition) {
-                        0 -> {
-                            mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT, true, null)
-                        }
-                        1 -> {
+                    val categoryIsPublic = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryIsPublic!!
+                    val categoryOwnerIdx = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryOwnerIdx!!
+
+                    // 개인 카테고리일 경우
+                    if (categoryIsPublic == 0L) {
+                        mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT, true, null)
+                    }
+                    // 공용 카테고리일 경우
+                    else {
+                        // 내가 만든 카테고리일 경우
+                        if (userIdx == categoryOwnerIdx) {
                             mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT, true, null)
                         }
-                        2 -> {
+                        // 타인이 만든 카테고리일 경우
+                        else {
                             mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT, true, null)
                         }
                     }
@@ -118,11 +127,12 @@ class MainCategoryFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return categoryTempList.size
+            return mainCategoryViewModel.categoryList.value?.size!!
         }
 
         override fun onBindViewHolder(holder: MainCategoryViewHolder, position: Int) {
-            holder.categoryName.text = categoryTempList[position]
+            holder.categoryName.text = mainCategoryViewModel.categoryList.value?.get(position)?.categoryName!!
+            holder.categoryName.setTextColor(mainCategoryViewModel.categoryList.value?.get(position)?.categoryColor?.toInt()!!)
         }
     }
 }
