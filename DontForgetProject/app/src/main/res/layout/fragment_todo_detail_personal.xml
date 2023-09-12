@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_vertical_small2"
-            android:enabled="false"
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
