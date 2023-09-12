@@ -1,16 +1,24 @@
 package com.test.dontforgetproject.UI.CategoryAddPublicFragment
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
@@ -20,8 +28,11 @@ import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.CategoryRepository
+import com.test.dontforgetproject.databinding.DialogCategoryAddPeopleBinding
 import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryAddPublicBinding
+import com.test.dontforgetproject.databinding.RowDialogCategoryAddPeopleBinding
+import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 
 class CategoryAddPublicFragment : Fragment() {
     lateinit var categoryAddPublicBinding: FragmentCategoryAddPublicBinding
@@ -70,6 +81,50 @@ class CategoryAddPublicFragment : Fragment() {
                         editTextCategoryAddPublicName.setTextColor(color)
                     }
                     .showBottomSheet(childFragmentManager)
+            }
+
+            buttonCategoryAddPublicAdd.setOnClickListener {
+                val dialogCategoryAddPeopleBinding = DialogCategoryAddPeopleBinding.inflate(layoutInflater)
+                val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                dialogCategoryAddPeopleBinding.run {
+                    val friendsList = arrayListOf<String>("이주형","임성욱", "피유진", "신승헌", "이채연", "정채윤", "홍길동", "김민수")
+
+                    val cAdapter = CategoryAddRecyclerViewAdpater(friendsList, mainActivity)
+
+                    editTextDialogCategoryAddPeople.addTextChangedListener(object: TextWatcher {
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+                        }
+
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
+                            cAdapter.filter.filter(s)
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {
+                        }
+
+                    })
+
+                    recyclerViewDialogCategoryAddPeople.run {
+                        adapter = cAdapter
+                        layoutManager = LinearLayoutManager(context)
+                    }
+                }
+
+                builder.setView(dialogCategoryAddPeopleBinding.root)
+                builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                }
+                builder.show()
             }
 
             buttonCategoryAddPublicSubmit.setOnClickListener {
@@ -130,4 +185,65 @@ class CategoryAddPublicFragment : Fragment() {
         return categoryAddPublicBinding.root
     }
 
+    inner class CategoryAddRecyclerViewAdpater(var friendsList: ArrayList<String>, var context: Context) : RecyclerView.Adapter<CategoryAddRecyclerViewAdpater.CategoryAddViewHolder>(), Filterable {
+        var filteredList: ArrayList<String> = friendsList
+
+        inner class CategoryAddViewHolder(rowDialogCategoryAddPeopleBinding: RowDialogCategoryAddPeopleBinding) :
+            RecyclerView.ViewHolder(rowDialogCategoryAddPeopleBinding.root) {
+                var friendName: TextView
+
+                init {
+                    friendName = rowDialogCategoryAddPeopleBinding.textViewRowDialogCategoryAddPeopleName
+                }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAddViewHolder {
+            val rowDialogCategoryAddPeopleBinding = RowDialogCategoryAddPeopleBinding.inflate(layoutInflater)
+            val categoryAddViewHolder = CategoryAddViewHolder(rowDialogCategoryAddPeopleBinding)
+
+            rowDialogCategoryAddPeopleBinding.root.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            return categoryAddViewHolder
+        }
+
+        override fun getItemCount(): Int {
+            return filteredList.size
+        }
+
+        override fun onBindViewHolder(holder: CategoryAddViewHolder, position: Int) {
+            holder.friendName.text = filteredList.get(position)
+        }
+
+        override fun getFilter(): Filter {
+            return object : Filter() {
+                override fun performFiltering(constraint: CharSequence): FilterResults {
+                    val charString = constraint.toString()
+                    filteredList = if (charString.isEmpty()) {
+                        ArrayList(friendsList)
+                    } else {
+                        val filteredList = ArrayList<String>()
+                        if (friendsList != null) {
+                            for (name in friendsList) {
+                                if(name.lowercase().contains(charString.lowercase())) {
+                                    filteredList.add(name);
+                                }
+                            }
+                        }
+                        filteredList
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = filteredList
+                    return filterResults
+                }
+
+                override fun publishResults(constraint: CharSequence, results: FilterResults) {
+                    filteredList  = results.values as ArrayList<String>
+                    notifyDataSetChanged()
+                }
+            }
+        }
+    }
 }
