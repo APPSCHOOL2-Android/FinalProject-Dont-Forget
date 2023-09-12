@@ -7,6 +7,11 @@ data class UserClass(
     var userImage: String,
     var userIntroduce: String,
     var userId: String,
-    var userFriendIdxList: ArrayList<Long>?,
-    var userFriendNameList: ArrayList<String>?
+    var userFriendList: ArrayList<Friend>
+)
+
+data class Friend(
+    val friendIdx : Long,
+    val friendName : String,
+    val friendEmail : String
 )

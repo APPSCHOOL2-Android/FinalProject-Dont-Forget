@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
+import java.util.ArrayList
 
 
 class MyApplication :Application(){
@@ -27,8 +29,7 @@ class MyApplication :Application(){
             userImage = "None",
             userIntroduce = "",
             userId = "",
-            userFriendIdxList = null,
-            userFriendNameList = null
+            userFriendList = ArrayList<Friend>()
         )
         var userType = 0
 

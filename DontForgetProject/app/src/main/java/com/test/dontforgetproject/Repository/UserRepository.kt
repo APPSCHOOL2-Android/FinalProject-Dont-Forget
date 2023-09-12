@@ -64,8 +64,8 @@ class UserRepository {
                     data.ref.child("userEmail").setValue(userInfo.userEmail)
                     data.ref.child("userImage").setValue(userInfo.userImage)
                     data.ref.child("userIntroduce").setValue(userInfo.userIntroduce)
-                    data.ref.child("userFriendIdxList").setValue(userInfo.userFriendIdxList)
-                    data.ref.child("userFriendNameList").setValue(userInfo.userFriendNameList)
+                    data.ref.child("userFriendList").setValue(userInfo.userFriendList)
+
                 }
             }
         }

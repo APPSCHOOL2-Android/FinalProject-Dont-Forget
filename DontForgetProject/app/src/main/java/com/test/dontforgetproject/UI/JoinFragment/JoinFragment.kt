@@ -1,7 +1,6 @@
 package com.test.dontforgetproject.UI.JoinFragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -173,7 +173,9 @@ class JoinFragment : Fragment() {
         UserRepository.getUserInfo {
             var userindex = (it.result.value as? Long) ?: 0L
             userindex++
-            val userInfo = UserClass(userindex,userName,userEmail,userImage,userIntroduce,userId,null,null)
+            var friendList = ArrayList<Friend>()
+            friendList.add(Friend(userindex,userName,userEmail))
+            val userInfo = UserClass(userindex,userName,userEmail,userImage,userIntroduce,userId,friendList)
             UserRepository.setUserInfo(userInfo){
                 UserRepository.setUserIdx(userindex){
                     Snackbar.make(fragmentJoinBinding.root, "저장되었습니다", Snackbar.LENGTH_SHORT).show()
