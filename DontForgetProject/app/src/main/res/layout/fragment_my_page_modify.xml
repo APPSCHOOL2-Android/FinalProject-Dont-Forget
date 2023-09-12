@@ -48,12 +48,14 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_myPageModify_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="이름"
                 app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditText_myPageModify_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
@@ -63,6 +65,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_myPageModify_introduce"
                 android:layout_marginTop="@dimen/margin_vertical_small3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,6 +73,7 @@
                 app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditText_myPageModify_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
