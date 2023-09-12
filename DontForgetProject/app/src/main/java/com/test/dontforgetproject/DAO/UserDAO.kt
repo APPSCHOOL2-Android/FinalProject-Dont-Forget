@@ -6,7 +6,6 @@ data class UserClass(
     var userEmail: String,
     var userImage: String,
     var userIntroduce: String,
-    var userCode: String,
     var userId: String,
     var userFriendIdxList: ArrayList<Long>?,
     var userFriendNameList: ArrayList<String>?

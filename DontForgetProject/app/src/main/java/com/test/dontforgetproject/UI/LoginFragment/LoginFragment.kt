@@ -1,11 +1,17 @@
 package com.test.dontforgetproject.UI.LoginFragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentLoginBinding
 import com.test.dontforgetproject.databinding.FragmentMainBinding
@@ -30,11 +36,28 @@ class LoginFragment : Fragment() {
             }
             // 가입하기 텍스트
              textViewLoginJoin.setOnClickListener {
-                 mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,null)
+                 val bundle = Bundle()
+                 bundle.putInt("UserType", MyApplication.EMAIL_LOGIN)
+                 mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
              }
             // 비밀번호 찾기 텍스트
             textviewLoginFindPassword.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.LOGIN_FIND_PW_FRAGMENT,true,null)
+            }
+            buttonLoginGoogleLogin.setOnClickListener{
+                val bundle = Bundle()
+                bundle.putInt("UserType", MyApplication.GOOGLE_LOGIN)
+                val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+                val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+                val signInIntent = googleSignInClient.signInIntent
+                startActivityForResult(signInIntent, 9001)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    //실행할 코드
+                }, 1000)
+                mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
             }
 
         }
