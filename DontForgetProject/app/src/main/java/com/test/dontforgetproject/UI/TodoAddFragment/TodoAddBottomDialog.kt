@@ -29,6 +29,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
     )
 
 
+
     var name:String = ""
 
     override fun onCreateView(
@@ -39,8 +40,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         mainActivity = activity as MainActivity
         dialogTodoAddBinding = DialogTodoAddBinding.inflate(layoutInflater)
 
-        name = arguments?.getString("category","개인")!!
-
+//        name = arguments?.getString("category","카데고리 없음")!!
 
         dialogTodoAddBinding.run {
 
@@ -90,7 +90,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         override fun onBindViewHolder(holder: allviewholder, position: Int) {
             holder.textOne.text = list.get(position)
             //bundle에서 가져온 데이터가 리사이클러뷰 데이터와 일치시 체크마크 표시 및 색상 표시
-            if(holder.textOne.text== name){
+            if(holder.textOne.text == name){
                holder.textOne.setCheckMarkDrawable(R.drawable.ic_check_24px)
                 holder.textOne.setTextColor(Color.parseColor("#7A97FF"))
                 holder.textOne.isChecked = true
