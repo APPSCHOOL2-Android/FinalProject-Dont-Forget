@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.LoginFragment
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
@@ -25,12 +26,15 @@ import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.FragmentLoginBinding
 import com.test.dontforgetproject.databinding.FragmentMainBinding
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
     lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
     lateinit var firebaseAuth:FirebaseAuth
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +77,6 @@ class LoginFragment : Fragment() {
                     checkLogin(email,password)
                 }else if ( email.isEmpty()) textInputLayoutLoginEmail.requestFocus()
                 else if( password.isEmpty()) textInputLayoutLoginPassword.requestFocus()
-                //mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT,false,null)
             }
             // 가입하기 텍스트
              textViewLoginJoin.setOnClickListener {
@@ -85,7 +88,7 @@ class LoginFragment : Fragment() {
             textviewLoginFindPassword.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.LOGIN_FIND_PW_FRAGMENT,true,null)
             }
-            buttonLoginGoogleLogin.setOnClickListener{
+            buttonLoginGoogleLogin.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putInt("UserType", MyApplication.GOOGLE_LOGIN)
                 val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -100,7 +103,13 @@ class LoginFragment : Fragment() {
                 }, 1000)
 
                 mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
+
             }
+
+
+
+
+
 
         }
 
@@ -141,6 +150,11 @@ class LoginFragment : Fragment() {
                                         )
                                         MyApplication.loginedUserInfo = userInfo
                                         MyApplication.isLogined = true
+                                        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                                        val editor = sharedPreferences.edit()
+                                        editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
+                                        editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
+                                        editor.apply()
                                         Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
                                         mainActivity.removeFragment(MainActivity.LOGIN_FRAGMENT)
                                         mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT,false,null)

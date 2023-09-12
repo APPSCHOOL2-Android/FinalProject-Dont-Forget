@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.JoinFragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -91,6 +92,11 @@ class JoinFragment : Fragment() {
                             if (firebaseCheck == "성공") {
                                 if (userId != null) {
                                     makeUser(userName,email,userImage,userIntroduce,userId)
+                                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                                    val editor = sharedPreferences.edit()
+                                    editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
+                                    editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
+                                    editor.apply()
                                 }
                             }
                             // 이미 등록된 이메일일 경우
@@ -113,6 +119,11 @@ class JoinFragment : Fragment() {
                     var userId = firebaseAuth.currentUser?.uid
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
+                        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
+                        editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
+                        editor.apply()
                     }
                 }
                 else if(!checkBoolean){
@@ -122,6 +133,9 @@ class JoinFragment : Fragment() {
                     else if(userName.isEmpty()) textInputLayoutJoinName.requestFocus()
                     else if(userIntroduce.isEmpty()) textInputLayoutJoinIntroduce.requestFocus()
                 }
+
+
+
             }
             buttonJoinPhoto.setOnClickListener {
 

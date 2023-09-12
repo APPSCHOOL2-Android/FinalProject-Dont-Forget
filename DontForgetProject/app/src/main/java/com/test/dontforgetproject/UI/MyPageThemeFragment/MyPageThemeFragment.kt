@@ -67,8 +67,7 @@ class MyPageThemeFragment : Fragment() {
             }
             buttonMyPageThemeComplete.setOnClickListener {
                 val sharedPreferences =  requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                val editor : SharedPreferences.Editor = sharedPreferences.edit()
-                editor.remove("theme")
+                val editor = sharedPreferences.edit()
                 editor.putString("theme",whatsTheme)
                 editor.apply()
                 // MyApplication에서 selectedTheme 업데이트

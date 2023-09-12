@@ -3,12 +3,20 @@ package com.test.dontforgetproject
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
+import com.test.dontforgetproject.DAO.Friend
+import com.test.dontforgetproject.DAO.UserClass
+import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
 import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOptionPersonalFragment
@@ -31,6 +39,7 @@ import com.test.dontforgetproject.UI.TodoAddSearchFragment.TodoAddSearchFragment
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicFragment.TodoDetailPublicFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment.TodoDetailPublicOwnerFragment
+import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
 
@@ -43,7 +52,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        replaceFragment(LOGIN_FRAGMENT,false,null)
+        // 테마 설정 적용
+        val sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        MyApplication.selectedTheme = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE).toString()
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        val loginedUser = sharedPreferences.getString("isLoggedUser",null)
+        if (isLoggedIn) {
+            if (loginedUser != null) {
+                UserRepository.getUserInfoById(loginedUser){
+                    // 가져온 데이터가 없을때
+                    if (it.isSuccessful) {
+                        if(it.result.exists()){
+                            for(c1 in it.result.children){
+                                var userInfo = UserClass(
+                                    c1.child("userIdx").value as Long,
+                                    c1.child("userName").value as String,
+                                    c1.child("userEmail").value as String,
+                                    c1.child("userImage").value as String,
+                                    c1.child("userIntroduce").value as String,
+                                    c1.child("userId").value as String,
+                                    c1.child("userFriendList").value as ArrayList<Friend>
+                                )
+                                MyApplication.loginedUserInfo = userInfo
+                                replaceFragment(MAIN_FRAGMENT,false,null)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            replaceFragment(LOGIN_FRAGMENT,true,null)
+        }
+
     }
     companion object{
         // 화면 분기
