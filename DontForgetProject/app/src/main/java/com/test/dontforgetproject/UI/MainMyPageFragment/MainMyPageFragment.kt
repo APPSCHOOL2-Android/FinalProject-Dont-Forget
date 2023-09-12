@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.MainMyPageFragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -42,6 +43,11 @@ class MainMyPageFragment : Fragment() {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setView(dialogMypageLogoutBinding.root)
                 builder.setPositiveButton("로그아웃") { dialog, which ->
+                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.remove("isLoggedIn")
+                    editor.remove("isLoggedUser")
+                    editor.apply()
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
                 }
                 builder.setNegativeButton("취소",null)
