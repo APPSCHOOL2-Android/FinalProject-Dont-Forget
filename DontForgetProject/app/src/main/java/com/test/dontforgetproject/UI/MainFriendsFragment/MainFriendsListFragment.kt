@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentMainFriendsListBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsListBinding
@@ -18,6 +19,10 @@ class MainFriendsListFragment : Fragment() {
 
     lateinit var binding : FragmentMainFriendsListBinding
     lateinit var mainActivity : MainActivity
+
+    // 친구목록 리스트
+    var UFIL = MyApplication.loginedUserInfo.userFriendIdxList
+    var UFNL = MyApplication.loginedUserInfo.userFriendNameList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,11 +82,11 @@ class MainFriendsListFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-           return 3
+           return UFIL?.size ?: 0
         }
 
         override fun onBindViewHolder(holder: ViewHolderFL, position: Int) {
-            holder.textViewRowMainFriendsName.text = "사람이름"
+            holder.textViewRowMainFriendsName.text = UFNL?.get(position) ?: "사람이름"
         }
     }
 }

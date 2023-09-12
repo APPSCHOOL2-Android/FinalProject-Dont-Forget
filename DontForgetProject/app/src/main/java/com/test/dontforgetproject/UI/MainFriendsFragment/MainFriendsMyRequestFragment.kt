@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.FragmentMainFriendsMyRequestBinding
@@ -17,6 +18,8 @@ import com.test.dontforgetproject.databinding.RowMainFriendsMyRequestBinding
 class MainFriendsMyRequestFragment : Fragment() {
     lateinit var binding : FragmentMainFriendsMyRequestBinding
     lateinit var mainActivity: MainActivity
+
+    var myRequestList = mutableListOf<JoinFriend>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

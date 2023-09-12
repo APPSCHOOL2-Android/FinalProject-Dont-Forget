@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.databinding.DialogMainFriendsRequestDenyBinding
 import com.test.dontforgetproject.databinding.FragmentMainFriendsRequestBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsRequestBinding
@@ -21,6 +24,9 @@ class MainFriendsRequestFragment : Fragment() {
     lateinit var binding : FragmentMainFriendsRequestBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var viewModel : MainFriendsViewModel
+
+    var requestList = mutableListOf<JoinFriend>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +35,15 @@ class MainFriendsRequestFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMainFriendsRequestBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(mainActivity)[MainFriendsViewModel::class.java]
+        viewModel.run{
+            joinFriendList.observe(mainActivity){
+                requestList = it
+                binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+            }
+        }
+        viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
 
         binding.run{
             // 리싸이클러
@@ -73,12 +88,12 @@ class MainFriendsRequestFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return requestList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderFR, position: Int) {
             // 친구이름
-            holder.textViewRowMainFriendsRequestName.text = "사람이름"
+            holder.textViewRowMainFriendsRequestName.text = requestList[position].joinFriendSenderName
 
             // 수락
             holder.buttonRowMainFriendsRequestAccept.setOnClickListener {

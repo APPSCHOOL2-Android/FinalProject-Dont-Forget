@@ -34,7 +34,13 @@ class JoinFriendRepository {
         fun getJoinFriendByUserEmail(userEmail : String, callback1: (Task<DataSnapshot>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("joinFriendInfo")
-            databaseRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener (callback1)
+            databaseRef.orderByChild("joinFriendReceiverEmail").equalTo(userEmail).get().addOnCompleteListener (callback1)
+        }
+
+        fun getJoinFriendByUserIdx(userIdx : Long, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.orderByChild("joinFriendSenderIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener (callback1)
         }
 
         // 친구추가 or 거절시 해당 요청 삭제하기
