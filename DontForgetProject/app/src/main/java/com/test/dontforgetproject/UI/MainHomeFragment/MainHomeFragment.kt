@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -96,9 +97,28 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
+        private var selectedPosition = RecyclerView.NO_POSITION
+
         inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewCategoryName = binding.textViewRowCategoryTab
+            val cardViewRowCategoryTab = binding.cardViewRowCategoryTab
+
+            init {
+                binding.root.setOnClickListener {
+                    Log.d("asdasdasd", textViewCategoryName.text.toString())
+                    val position = adapterPosition
+
+                    // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
+                    if (selectedPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedPosition)
+                    }
+
+                    // 클릭한 항목의 배경색을 변경하고 위치를 추적
+                    selectedPosition = position
+                    notifyItemChanged(position)
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
@@ -114,6 +134,13 @@ class MainHomeFragment : Fragment() {
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
             holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
+
+            val backgroundColor = if (position == selectedPosition) {
+                ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+            } else {
+                ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+            }
+            holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
         }
     }
 
