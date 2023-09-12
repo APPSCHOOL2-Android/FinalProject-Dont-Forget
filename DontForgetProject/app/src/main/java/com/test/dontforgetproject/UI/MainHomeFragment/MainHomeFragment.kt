@@ -3,11 +3,13 @@ package com.test.dontforgetproject.UI.MainHomeFragment
 import android.content.Context
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
@@ -23,6 +25,7 @@ class MainHomeFragment : Fragment() {
 
     lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
+    lateinit var mainHomeViewModel: MainHomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,13 @@ class MainHomeFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         binding = FragmentMainHomeBinding.inflate(inflater, container, false)
+
+        mainHomeViewModel = ViewModelProvider(this)[MainHomeViewModel::class.java]
+        mainHomeViewModel.run {
+            categories.observe(mainActivity){
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+            }
+        }
 
         binding.run {
             textInputEditTextMainHomeFragment.onFocusChangeListener =
@@ -69,9 +79,13 @@ class MainHomeFragment : Fragment() {
             recyclerViewMainHomeFragmentMemoSearch.run {
                 adapter = MemoSearchViewAdapter()
             }
+
             buttonMainHomeFragment.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT, true, null)
             }
+
+            // 임시로 1번 인덱스 넣음
+            mainHomeViewModel.getCategories(1L)
         }
 
 
@@ -96,10 +110,10 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = 10
+        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
-            holder.textViewCategoryName.text = "전체"
+            holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
         }
     }
 
