@@ -53,16 +53,7 @@
                     style="@style/Theme.DontForgetProject.Text"
                     android:fontFamily="@font/scdream_regular"
                     android:text="이름" />
-
-                <TextView
-                    android:id="@+id/textView_mainMyPage_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="@dimen/font_size_medium"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:fontFamily="@font/scdream_regular"
-                    android:text="코드" />
+                
 
                 <TextView
                     android:id="@+id/textView_mainMyPage_email"
