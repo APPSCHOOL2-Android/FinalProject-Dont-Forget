@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
 import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
@@ -27,6 +28,9 @@ class MainMyPageFragment : Fragment() {
             toolbarMainMyPage.run {
                 setTitle(getString(R.string.myPage))
             }
+            textViewMainMyPageEmail.text = MyApplication.loginedUserInfo.userEmail
+            textViewMainMyPageIntroduce.text = MyApplication.loginedUserInfo.userIntroduce
+            textViewMainMyPageName.text = MyApplication.loginedUserInfo.userName
             cardViewMainMyPageModify.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT,true,null)
             }

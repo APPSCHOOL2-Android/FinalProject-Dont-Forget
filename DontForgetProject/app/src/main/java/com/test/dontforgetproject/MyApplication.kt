@@ -33,7 +33,6 @@ class MyApplication :Application(){
             userId = "",
             userFriendList = ArrayList<Friend>()
         )
-        var userType = 0
 
         // 테마설정
         var selectedTheme: String = ThemeUtil.DEFAULT_MODE
