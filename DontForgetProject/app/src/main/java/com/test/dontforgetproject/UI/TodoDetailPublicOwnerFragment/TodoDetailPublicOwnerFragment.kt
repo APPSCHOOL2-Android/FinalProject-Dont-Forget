@@ -11,15 +11,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
 
 class TodoDetailPublicOwnerFragment : Fragment() {
 
     lateinit var fragmentTodoDetailPublicOwnerBinding: FragmentTodoDetailPublicOwnerBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+
+    var todoIdx = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +37,27 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
         fragmentTodoDetailPublicOwnerBinding = FragmentTodoDetailPublicOwnerBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
+        todoDetailPersonalViewModel.run {
+
+            todoContent.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textInputEditTextTodoDetailPublicOwner.setText(it.toString())
+            }
+            todoCategoryName.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.buttonTodoDetailPublicOwnerCategory.text = it.toString()
+            }
+            todoDate.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerDate.text = it.toString()
+            }
+            todoAlertTime.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = it.toString()
+            }
+            todoLocationName.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString()
+            }
+        }
+        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
 
         fragmentTodoDetailPublicOwnerBinding.run {
 
