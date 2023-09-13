@@ -111,10 +111,6 @@ class LoginFragment : Fragment() {
             }
 
 
-
-
-
-
         }
 
         return fragmentLoginBinding.root
@@ -143,6 +139,16 @@ class LoginFragment : Fragment() {
                                 }
                                 else{
                                     for(c1 in it.result.children){
+                                        var newFriendList = mutableListOf<Friend>()
+                                        var newHashMap = c1.child("userFriendList").value as ArrayList<HashMap<String,Any>>
+                                        for( i in newHashMap){
+                                            var idx = i["friendIdx"] as Long
+                                            var name = i["friendName"] as String
+                                            var email = i["friendEmail"] as String
+
+                                            var friend = Friend(idx, name, email)
+                                            newFriendList.add(friend)
+                                        }
                                         var userInfo = UserClass(
                                             c1.child("userIdx").value as Long,
                                             c1.child("userName").value as String,
@@ -150,7 +156,7 @@ class LoginFragment : Fragment() {
                                             c1.child("userImage").value as String,
                                             c1.child("userIntroduce").value as String,
                                             c1.child("userId").value as String,
-                                            c1.child("userFriendList").value as ArrayList<Friend>
+                                            newFriendList as ArrayList<Friend>
                                         )
                                         MyApplication.loginedUserInfo = userInfo
                                         MyApplication.isLogined = true
