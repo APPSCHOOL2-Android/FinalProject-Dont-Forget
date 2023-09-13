@@ -8,6 +8,7 @@
     <string name="todo_category">카테고리</string>
     <string name="todo_notification">알림</string>
     <string name="todo_location">위치</string>
+    <string name="todo_madeby">만든 사람</string>
     <string name="todo_add">할일 추가</string>
 
     <!--카테고리-->

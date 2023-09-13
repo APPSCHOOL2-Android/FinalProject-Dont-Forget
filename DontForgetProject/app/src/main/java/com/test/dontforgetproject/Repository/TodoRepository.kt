@@ -40,6 +40,7 @@ class TodoRepository {
                     a1.ref.child("todoContent").setValue(todoDataClass.todoContent)
                     a1.ref.child("todoDate").setValue(todoDataClass.todoDate)
                     a1.ref.child("todoAlertTime").setValue(todoDataClass.todoAlertTime)
+                    a1.ref.child("todoLocationName").setValue(todoDataClass.todoLocationName)
                     a1.ref.child("todoLocationLatitude").setValue(todoDataClass.todoLocationLatitude)
                     a1.ref.child("todoLocationLongitude").setValue(todoDataClass.todoLocationLongitude).addOnCompleteListener(callback1)
                 }

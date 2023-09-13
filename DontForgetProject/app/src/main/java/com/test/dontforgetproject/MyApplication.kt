@@ -34,6 +34,10 @@ class MyApplication :Application(){
             userFriendList = ArrayList<Friend>()
         )
 
+        // 선택한 친구 인덱스, 친구이름
+        var chosedFriendIdx = 0
+        var chosedFriendName = ""
+
         // 테마설정
         var selectedTheme: String = ThemeUtil.DEFAULT_MODE
 

@@ -23,19 +23,23 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="filled">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_todoAdd"
+                style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_vertical_big3"
-                android:ems="10"
+                android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
                 android:hint="추가할 할일을 입력해주세요."
                 android:inputType="text|textMultiLine"
-                android:scrollHorizontally="true" />
+                android:scrollHorizontally="true"
+                android:textSize="@dimen/font_size_big" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:id="@+id/linearlayout_todoAdd_category"
@@ -74,10 +78,14 @@
 
             <com.google.android.material.card.MaterialCardView
 
+                android:id="@+id/cardview_todoAdd_category"
+                style="@style/Theme.DontForgetProject.CardView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_vertical_small1"
-                style="@style/Theme.DontForgetProject.CardView">
+                android:nestedScrollingEnabled="false"
+                android:transitionGroup="false"
+                app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -86,11 +94,11 @@
 
                     <TextView
                         android:id="@+id/textView_todoAdd_category"
+                        style="@style/Theme.DontForgetProject.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
-                        android:text="개인"
-                        style="@style/Theme.DontForgetProject.Text"
+                        android:text="카데고리 없음"
                         android:textSize="@dimen/font_size_medium">
 
                     </TextView>

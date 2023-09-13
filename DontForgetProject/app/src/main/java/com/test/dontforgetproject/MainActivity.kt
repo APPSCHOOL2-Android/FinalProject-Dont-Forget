@@ -17,6 +17,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.MainActivity.Companion.LOGIN_FRAGMENT
 import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
 import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOptionPersonalFragment
@@ -47,6 +48,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     var newFragment:Fragment? = null
     var oldFragment:Fragment? = null
+
+    //변경된 카데고리 색상,이름
+    var categoryname = ""
+    var categoryColor = ""
+    var categoryFontColor = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

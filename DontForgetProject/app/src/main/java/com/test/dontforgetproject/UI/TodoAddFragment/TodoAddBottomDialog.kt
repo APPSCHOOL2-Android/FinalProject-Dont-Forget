@@ -1,49 +1,50 @@
 package com.test.dontforgetproject.UI.TodoAddFragment
 
 import android.graphics.Color
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.DialogTodoAddBinding
 import com.test.dontforgetproject.databinding.RowDialogTodoAddBinding
 
+
 class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
     lateinit var dialogTodoAddBinding: DialogTodoAddBinding
     lateinit var mainActivity: MainActivity
-
-    // 가짜 데이터
-    var list = listOf<String>(
-        "개인","6조 프로젝트","프로젝트1","프로젝트2"
-    )
-
+    lateinit var viewModel: TodoAddFragmentViewModel
 
     var name:String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         mainActivity = activity as MainActivity
         dialogTodoAddBinding = DialogTodoAddBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
 
         name = arguments?.getString("category","개인")!!
 
-
         dialogTodoAddBinding.run {
-
+            viewModel.getData()
+            viewModel.run {
+                categoryInfo.observe(mainActivity){
+                    dialogTodoAddBinding.recyclerviewTodoAddBottom.adapter?.notifyDataSetChanged()
+                }
+            }
             recyclerviewTodoAddBottom.run {
                 adapter = allrecyclerviewAdapter()
                 layoutManager = LinearLayoutManager(context)
@@ -60,18 +61,22 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
             init {
                 textOne = rowDialogTodoAddBinding.textViewRowtodoAddBottom
                 rowDialogTodoAddBinding.textViewRowtodoAddBottom.setOnClickListener {
-                    //다이어로그 종료시 사용자가 선택한 이름을 번들에 저장
-                    var bundle = Bundle()
-                    bundle.putString("name","${list.get(adapterPosition)}")
-                    Log.d("Lim names2","${list.get(adapterPosition)}")
-                    Toast.makeText(mainActivity,"선택한 카테고리는 ${list.get(adapterPosition)}입니다",Toast.LENGTH_SHORT).show()
-                    dismiss()
+                    //다이어로그 종료시 사용자가 선택한 이름을 메인액티비티에 저장
+                    var names = viewModel.categoryInfo.value?.get(adapterPosition)?.name.toString()
+                    var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.backgroundColor.toString()
+                    var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.fontColor.toString()
+                    mainActivity.categoryname = names
+                    mainActivity.categoryColor = categoryColors
+                    mainActivity.categoryFontColor = fontcolors
+                    saveAction()
+                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.name}입니다",Toast.LENGTH_SHORT).show()
+
                 }
             }
 
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): allviewholder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): allrecyclerviewAdapter.allviewholder {
             val rowPostListBinding = RowDialogTodoAddBinding.inflate(layoutInflater)
             val allViewHolder = allviewholder(rowPostListBinding)
 
@@ -84,18 +89,31 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         }
 
         override fun getItemCount(): Int {
-           return list.size
+           return viewModel.categoryInfo.value?.size!!
         }
 
         override fun onBindViewHolder(holder: allviewholder, position: Int) {
-            holder.textOne.text = list.get(position)
+            holder.textOne.text = viewModel.categoryInfo.value!!.get(position).name
             //bundle에서 가져온 데이터가 리사이클러뷰 데이터와 일치시 체크마크 표시 및 색상 표시
-            if(holder.textOne.text== name){
+
+            if(holder.textOne.text == name){
                holder.textOne.setCheckMarkDrawable(R.drawable.ic_check_24px)
                 holder.textOne.setTextColor(Color.parseColor("#7A97FF"))
                 holder.textOne.isChecked = true
             }
         }
     }
+
+    fun saveAction(){
+        viewModel.name.value = mainActivity.categoryname.toString()
+        viewModel.fontColor.value = mainActivity.categoryFontColor.toLong()
+        viewModel.categoryColor.value = mainActivity.categoryColor.toLong()
+        dismiss()
+    }
+
+
+
+
+
 
 }
