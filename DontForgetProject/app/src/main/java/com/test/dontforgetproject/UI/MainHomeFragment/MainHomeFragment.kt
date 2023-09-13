@@ -89,8 +89,7 @@ class MainHomeFragment : Fragment() {
                 Log.d("선택한 날짜", "${year}년 ${month + 1}월 ${dayOfMonth}일")
             }
 
-            // 임시로 1번 인덱스 넣음
-            mainHomeViewModel.getCategoryAll(1L)
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
         }
 
 
