@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.DialogCategoryAddBinding
 import com.test.dontforgetproject.databinding.FragmentMainCategoryBinding
@@ -26,7 +27,7 @@ class MainCategoryFragment : Fragment() {
 
     lateinit var mainCategoryViewModel: MainCategoryViewModel
 
-    var userIdx = 1L
+    var userIdx = MyApplication.loginedUserInfo.userIdx
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
