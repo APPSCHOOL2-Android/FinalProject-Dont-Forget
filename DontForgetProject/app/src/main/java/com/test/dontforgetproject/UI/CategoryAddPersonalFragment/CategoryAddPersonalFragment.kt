@@ -16,6 +16,7 @@ import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
@@ -25,6 +26,8 @@ import com.test.dontforgetproject.databinding.FragmentCategoryAddPersonalBinding
 class CategoryAddPersonalFragment : Fragment() {
     lateinit var categoryAddPersonalBinding: FragmentCategoryAddPersonalBinding
     lateinit var mainActivity: MainActivity
+
+    val userInfo = MyApplication.loginedUserInfo
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,9 +81,9 @@ class CategoryAddPersonalFragment : Fragment() {
                     categoryFontColor = Color.WHITE
                 }
                 val categoryJoinUserIdxList = ArrayList<Long>()
-                categoryJoinUserIdxList.add(1)
+                categoryJoinUserIdxList.add(userInfo.userIdx)
                 val categoryJoinUserNameList = ArrayList<String>()
-                categoryJoinUserNameList.add("testA")
+                categoryJoinUserNameList.add(userInfo.userName)
 
                 if (categoryName.isEmpty()) {
                     val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
@@ -110,8 +113,8 @@ class CategoryAddPersonalFragment : Fragment() {
                         categoryJoinUserIdxList,
                         categoryJoinUserNameList,
                         0,
-                        1,
-                        "testA"
+                        userInfo.userIdx,
+                        userInfo.userName
                     )
 
                     // 카테고리 객체 저장
