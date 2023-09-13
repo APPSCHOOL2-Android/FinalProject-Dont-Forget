@@ -112,11 +112,6 @@ class JoinFragment : Fragment() {
                             if (firebaseCheck == "성공") {
                                 if (userId != null) {
                                     makeUser(userName,email,userImage,userIntroduce,userId)
-                                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                                    val editor = sharedPreferences.edit()
-                                    editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
-                                    editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
-                                    editor.apply()
                                 }
                             }
                             // 이미 등록된 이메일일 경우
@@ -139,11 +134,6 @@ class JoinFragment : Fragment() {
                     var userId = firebaseAuth.currentUser?.uid
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
-                        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
-                        editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
-                        editor.apply()
                     }
                 }
                 else if(!checkBoolean){
@@ -228,8 +218,6 @@ class JoinFragment : Fragment() {
                 UserRepository.setUserIdx(userindex){
                     if(uploadUri!=null){
                         UserRepository.setUploadProfile(userImage,uploadUri!!){
-                            if(it.isSuccessful) Toast.makeText(requireContext(),"성공적",Toast.LENGTH_SHORT).show()
-                            else Toast.makeText(requireContext(),"왜지",Toast.LENGTH_SHORT).show()
                         }
                     }
                     Snackbar.make(fragmentJoinBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
