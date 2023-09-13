@@ -34,15 +34,19 @@ import com.test.dontforgetproject.databinding.FragmentJoinBinding
 class JoinFragment : Fragment() {
     lateinit var fragmentJoinBinding: FragmentJoinBinding
     lateinit var mainActivity: MainActivity
-    lateinit var firebaseAuth : FirebaseAuth
+    private lateinit var firebaseAuth : FirebaseAuth
+    lateinit var albumLauncher: ActivityResultLauncher<Intent>
     // 업로드할 이미지의 Uri
     var uploadUri: Uri? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentJoinBinding = FragmentJoinBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        // 앨범 설정
+        albumLauncher = albumSetting(fragmentJoinBinding.imageViewJoinProfile)
         fragmentJoinBinding.run {
             toolbarJoin.run {
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
@@ -95,7 +99,11 @@ class JoinFragment : Fragment() {
                 val passwordCheck = textInputLayoutJoinPasswordCheck.editText?.text.toString()
                 val userIntroduce = textInputLayoutJoinIntroduce.editText?.text.toString()
                 val userName = textInputLayoutJoinName.editText?.text.toString()
-                val userImage = "None"
+                val userImage = if (uploadUri == null) {
+                    "None"
+                } else {
+                    "image/img_${System.currentTimeMillis()}.jpg"
+                }
                 if (checkBoolean && userType == MyApplication.EMAIL_LOGIN) {
                     if (password == passwordCheck) {
                         firebaseUtil.createAccount(email, password) { firebaseCheck ->
@@ -149,8 +157,17 @@ class JoinFragment : Fragment() {
 
 
             }
+            // 사진 추가 버튼
             buttonJoinPhoto.setOnClickListener {
-
+                // 앨범에서 사진을 선택할 수 있는 Activity를 실행한다.
+                val newIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                // 실행할 액티비티의 마임타입 설정(이미지로 설정해준다)
+                newIntent.setType("image/*")
+                // 선택할 파일의 타입을 지정(안드로이드  OS가 이미지에 대한 사전 작업을 할 수 있도록)
+                val mimeType = arrayOf("image/*")
+                newIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeType)
+                // 액티비티를 실행한다.
+                albumLauncher.launch(newIntent)
             }
         }
         return fragmentJoinBinding.root
@@ -205,9 +222,16 @@ class JoinFragment : Fragment() {
             userindex++
             var friendList = ArrayList<Friend>()
             friendList.add(Friend(userindex,userName,userEmail))
+
             val userInfo = UserClass(userindex,userName,userEmail,userImage,userIntroduce,userId,friendList)
             UserRepository.setUserInfo(userInfo){
                 UserRepository.setUserIdx(userindex){
+                    if(uploadUri!=null){
+                        UserRepository.setUploadProfile(userImage,uploadUri!!){
+                            if(it.isSuccessful) Toast.makeText(requireContext(),"성공적",Toast.LENGTH_SHORT).show()
+                            else Toast.makeText(requireContext(),"왜지",Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     Snackbar.make(fragmentJoinBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
                     mainActivity.removeFragment(MainActivity.JOIN_FRAGMENT)
                 }
