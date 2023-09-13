@@ -6,6 +6,8 @@ data class TodoClass(
     var todoIsChecked: Long,
     var todoCategoryIdx: Long,
     var todoCategoryName: String,
+    var todoFontColor:Long,
+    var todoBackgroundColor:Long,
     var todoDate: String,
     var todoAlertTime: String,
     var todoLocationName: String,
@@ -15,10 +17,4 @@ data class TodoClass(
     var todoOwnerName: String
 )
 
-
-data class TodoInfo(
-    var name:String,
-    var fontColor:Long,
-    var backgroundColor:Long
-)
 

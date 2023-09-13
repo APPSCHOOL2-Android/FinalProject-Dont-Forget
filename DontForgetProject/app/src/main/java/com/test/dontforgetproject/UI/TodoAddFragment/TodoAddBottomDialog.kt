@@ -62,14 +62,14 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                 textOne = rowDialogTodoAddBinding.textViewRowtodoAddBottom
                 rowDialogTodoAddBinding.textViewRowtodoAddBottom.setOnClickListener {
                     //다이어로그 종료시 사용자가 선택한 이름을 메인액티비티에 저장
-                    var names = viewModel.categoryInfo.value?.get(adapterPosition)?.name.toString()
-                    var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.backgroundColor.toString()
-                    var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.fontColor.toString()
+                    var names = viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName.toString()
+                    var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoBackgroundColor.toString()
+                    var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoFontColor.toString()
                     mainActivity.categoryname = names
                     mainActivity.categoryColor = categoryColors
                     mainActivity.categoryFontColor = fontcolors
                     saveAction()
-                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.name}입니다",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName}입니다",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -93,7 +93,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         }
 
         override fun onBindViewHolder(holder: allviewholder, position: Int) {
-            holder.textOne.text = viewModel.categoryInfo.value!!.get(position).name
+            holder.textOne.text = viewModel.categoryInfo.value!!.get(position).todoCategoryName
             //bundle에서 가져온 데이터가 리사이클러뷰 데이터와 일치시 체크마크 표시 및 색상 표시
 
             if(holder.textOne.text == name){
