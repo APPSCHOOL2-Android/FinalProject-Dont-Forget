@@ -1,6 +1,7 @@
 package com.test.dontforgetproject.UI.MainHomeFragment
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -139,7 +140,7 @@ class MainHomeFragment : Fragment() {
             holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
 
             val backgroundColor = if (position == selectedCategoryPosition) {
-                ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+                mainHomeViewModel.categories.value?.get(position)?.categoryColor!!.toInt()
             } else {
                 ContextCompat.getColor(holder.itemView.context, R.color.transparent)
             }
