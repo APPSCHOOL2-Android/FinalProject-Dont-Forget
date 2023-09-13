@@ -8,8 +8,10 @@ data class TodoClass(
     var todoCategoryName: String,
     var todoDate: String,
     var todoAlertTime: String,
+    var todoLocationName: String,
     var todoLocationLatitude: String,
     var todoLocationLongitude: String,
     var todoOwnerIdx: Long,
     var todoOwnerName: String
 )
+
