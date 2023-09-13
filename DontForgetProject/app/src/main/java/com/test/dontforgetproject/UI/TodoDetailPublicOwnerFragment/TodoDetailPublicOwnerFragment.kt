@@ -82,12 +82,37 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
             buttonTodoDetailPublicOwnerEdit.setOnClickListener {
 
+                var content = textInputEditTextTodoDetailPublicOwner.text.toString()
+                var date = textViewTodoDetailPublicOwnerDate.text.toString()
+                var time = textViewTodoDetailPublicOwnerAlert.text.toString()
+                var locationName = textViewTodoDetailPublicOwnerLocation.text.toString()
+                var locationLatitude = ""
+                var locationLongitude = ""
+
+                val todoDataClass = TodoClass(
+                    todoIdx,
+                    content,
+                    todoDetailPersonalViewModel.todoIsChecked.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryName.toString(),
+                    date,
+                    time,
+                    locationName,
+                    locationLatitude,
+                    locationLongitude,
+                    todoDetailPersonalViewModel.todoOwnerIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoOwnerName.value!!.toString()
+                )
+
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setTitle("경고")
                 builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("수정"){ dialogInterface: DialogInterface, i: Int ->
-
+                    TodoRepository.modifyTodo(todoDataClass) {
+                        Snackbar.make(fragmentTodoDetailPublicOwnerBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT)
+                        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+                    }
                 }
                 builder.show()
             }

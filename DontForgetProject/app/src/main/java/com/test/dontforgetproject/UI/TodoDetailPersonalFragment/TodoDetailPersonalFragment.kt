@@ -81,7 +81,35 @@ class TodoDetailPersonalFragment : Fragment() {
             }
 
             buttonTodoDetailPersonalEdit.setOnClickListener {
+                var content = textInputEditTextTodoDetailPersonal.text.toString()
+                var date = textViewTodoDetailPersonalDate.text.toString()
+                var time = textViewTodoDetailPersonalAlert.text.toString()
+                var locationName = textViewTodoDetailPersonalLocation.text.toString()
+                var locationLatitude = ""
+                var locationLongitude = ""
 
+                val todoDataClass = TodoClass(
+                    todoIdx,
+                    content,
+                    todoDetailPersonalViewModel.todoIsChecked.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryName.toString(),
+                    date,
+                    time,
+                    locationName,
+                    locationLatitude,
+                    locationLongitude,
+                    todoDetailPersonalViewModel.todoOwnerIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoOwnerName.value!!.toString()
+                )
+
+                // 할일 정보 저장
+                TodoRepository.modifyTodo(todoDataClass) {
+
+                }
+
+                Snackbar.make(fragmentTodoDetailPersonalBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT)
+                todoDetailPersonalViewModel.getTodoInfo(todoIdx)
             }
 
             buttonTodoDetailPersonalDelete.setOnClickListener {
