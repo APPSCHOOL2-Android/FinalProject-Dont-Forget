@@ -8,23 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.JoinFriend
+import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
+import com.test.dontforgetproject.Repository.JoinFriendRepository
+import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogMainFriendsRequestDenyBinding
 import com.test.dontforgetproject.databinding.FragmentMainFriendsRequestBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsRequestBinding
 
 class MainFriendsRequestFragment : Fragment() {
-    lateinit var binding : FragmentMainFriendsRequestBinding
+    lateinit var binding: FragmentMainFriendsRequestBinding
     lateinit var mainActivity: MainActivity
 
-    lateinit var viewModel : MainFriendsViewModel
+    lateinit var viewModel: MainFriendsViewModel
 
     var requestList = mutableListOf<JoinFriend>()
 
@@ -37,17 +40,17 @@ class MainFriendsRequestFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         viewModel = ViewModelProvider(mainActivity)[MainFriendsViewModel::class.java]
-        viewModel.run{
-            joinFriendList.observe(mainActivity){
+        viewModel.run {
+            joinFriendList.observe(mainActivity) {
                 requestList = it
                 binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
             }
         }
         viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
 
-        binding.run{
+        binding.run {
             // 리싸이클러
-            recyclerMainFriendsRequest.run{
+            recyclerMainFriendsRequest.run {
                 adapter = RecyclerAdapterFR()
                 layoutManager = LinearLayoutManager(mainActivity)
             }
@@ -59,18 +62,23 @@ class MainFriendsRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
     }
 
-    inner class RecyclerAdapterFR : RecyclerView.Adapter<RecyclerAdapterFR.ViewHolderFR>(){
-        inner class ViewHolderFR(rowMainFriendsRequestBinding: RowMainFriendsRequestBinding) : RecyclerView.ViewHolder(rowMainFriendsRequestBinding.root){
-            val textViewRowMainFriendsRequestName : TextView
-            val buttonRowMainFriendsRequestAccept : TextView
-            val buttonRowMainFriendsRequestDeny : TextView
+    inner class RecyclerAdapterFR : RecyclerView.Adapter<RecyclerAdapterFR.ViewHolderFR>() {
+        inner class ViewHolderFR(rowMainFriendsRequestBinding: RowMainFriendsRequestBinding) :
+            RecyclerView.ViewHolder(rowMainFriendsRequestBinding.root) {
+            val textViewRowMainFriendsRequestName: TextView
+            val buttonRowMainFriendsRequestAccept: TextView
+            val buttonRowMainFriendsRequestDeny: TextView
 
-            init{
-                textViewRowMainFriendsRequestName = rowMainFriendsRequestBinding.textViewRowMainFriendsRequestName
-                buttonRowMainFriendsRequestAccept = rowMainFriendsRequestBinding.buttonRowMainFriendsRequestAccept
-                buttonRowMainFriendsRequestDeny = rowMainFriendsRequestBinding.buttonRowMainFriendsRequestDeny
+            init {
+                textViewRowMainFriendsRequestName =
+                    rowMainFriendsRequestBinding.textViewRowMainFriendsRequestName
+                buttonRowMainFriendsRequestAccept =
+                    rowMainFriendsRequestBinding.buttonRowMainFriendsRequestAccept
+                buttonRowMainFriendsRequestDeny =
+                    rowMainFriendsRequestBinding.buttonRowMainFriendsRequestDeny
             }
         }
 
@@ -93,23 +101,102 @@ class MainFriendsRequestFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolderFR, position: Int) {
             // 친구이름
-            holder.textViewRowMainFriendsRequestName.text = requestList[position].joinFriendSenderName
+            holder.textViewRowMainFriendsRequestName.text =
+                requestList[position].joinFriendSenderName
 
             // 수락
             holder.buttonRowMainFriendsRequestAccept.setOnClickListener {
-                Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT).show()
-            }
+                // 수락시, 삭제시 해당 joinFriend 객체 Firebase 에서 삭제
+                var deleteIdx = requestList[position].joinFriendIdx
+                JoinFriendRepository.deleteJoinFriend(deleteIdx){
+                    requestList.removeAt(position)
+                    binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
 
-            // 거절
+                    // 내가 A 나에게 친구 요청 건사람이 B 일때 B->A 를 A 가 승낙할경우 A->B 도 같이 삭제
+
+
+                    Toast.makeText(mainActivity, "친구추가 완료", Toast.LENGTH_SHORT).show()
+                }
+
+                // 수락시 내 친구리스트, 친구의 친구리스트에 각자의 userIdx, userName, userEmail 추가
+                // 내 친구 리스트
+                var newFriendIdx = requestList[position].joinFriendSenderIdx
+                var newFriendName = requestList[position].joinFriendSenderName
+                var newFriendEmail: String
+
+                var myUserIdx = MyApplication.loginedUserInfo.userIdx
+                var myUserName = MyApplication.loginedUserInfo.userName
+                var myUserEmail = MyApplication.loginedUserInfo.userEmail
+
+                // 나의 친구리스트에 친구넣기
+                JoinFriendRepository.getUserInfoByIdx(newFriendIdx) {
+                    for (c1 in it.result.children) {
+                        var userEmail = c1.child("userEmail").value as String
+                        newFriendEmail = userEmail
+
+                        var newFriend = Friend(newFriendIdx, newFriendName, newFriendEmail)
+
+                        var updatedUserInfo = MyApplication.loginedUserInfo
+                        updatedUserInfo.userFriendList.add(newFriend)
+
+                        // 나의 로그인 유저정보 업데이트
+                        MyApplication.loginedUserInfo = updatedUserInfo
+
+                        UserRepository.modifyUserInfo(updatedUserInfo) {
+                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+
+                // 친구의 친구리스트에 나 넣기
+                JoinFriendRepository.getUserInfoByIdx(newFriendIdx) {
+                    for (c1 in it.result.children) {
+                        val userIdx = c1.child("userIdx").value as Long
+                        var userName = c1.child("userName").value as String
+                        var userEmail = c1.child("userEmail").value as String
+                        var userImage = c1.child("userImage").value as String
+                        var userIntroduce = c1.child("userIntroduce").value as String
+                        var userId = c1.child("userId").value as String
+                        var userFriendList = c1.child("userFriendList").value as ArrayList<Friend>
+
+                        var newFriend = Friend(myUserIdx, myUserName, myUserEmail)
+
+                        var userInfo = UserClass(
+                            userIdx,
+                            userName,
+                            userEmail,
+                            userImage,
+                            userIntroduce,
+                            userId,
+                            userFriendList
+                        )
+                        userInfo.userFriendList.add(newFriend)
+
+                        UserRepository.modifyUserInfo(userInfo) {
+                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+
+            }
+            // 삭제
             holder.buttonRowMainFriendsRequestDeny.setOnClickListener {
                 var dialogbinding = DialogMainFriendsRequestDenyBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setView(dialogbinding.root)
-                builder.setPositiveButton("거절"){ dialogInterface: DialogInterface, i: Int ->
+                builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                     true
-                    Toast.makeText(mainActivity, "친구 요청이 거절되었습니다", Toast.LENGTH_SHORT).show()
+                    // 수락시, 삭제시 해당 joinFriend 객체 Firebase 에서 삭제
+                    var deleteIdx = requestList[position].joinFriendIdx
+                    JoinFriendRepository.deleteJoinFriend(deleteIdx){
+                        requestList.removeAt(position)
+                        binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+                        Toast.makeText(mainActivity, "친구 요청을 삭제합니다", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                builder.setNegativeButton("취소",null)
+                builder.setNegativeButton("취소", null)
                 builder.show()
             }
         }

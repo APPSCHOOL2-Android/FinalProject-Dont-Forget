@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.UserInfo
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
@@ -48,38 +49,6 @@ class MainFriendsFragment : Fragment() {
         mainFriendsListFragment = MainFriendsListFragment()
         mainFriendsRequestFragment = MainFriendsRequestFragment()
         mainFriendsMyRequestFragment = MainFriendsMyRequestFragment()
-
-        /* 임시 작성 코드, 로그인 정보 임시 저장
-        * Todo 추후 해당 코드 삭제 */
-        //
-//        MyApplication.run{
-//            isLogined = true
-//            loginedUserInfo = UserClass(
-//                userIdx = 1,
-//                userName = "testA",
-//                userEmail = "aaa@gmail.com",
-//                userImage = "None",
-//                userIntroduce = "my name is A",
-//                userId = "bvwcS8yA8efBM0RGCS2M23fb24v1",
-//                userFriendIdxList = null,
-//                userFriendNameList = null
-//            )
-//        }
-
-        MyApplication.run{
-            isLogined = true
-            loginedUserInfo = UserClass(
-                userIdx = 2,
-                userName = "TestB",
-                userEmail = "bbb@gmail.com",
-                userImage = "None",
-                userIntroduce = "my name is B!",
-                userId = "CjUeRJDGMLM3zd9aIOXEtltSeZr1",
-                userFriendIdxList = null,
-                userFriendNameList = null
-            )
-        }
-        //
 
         binding.run {
             // 툴바
@@ -117,9 +86,13 @@ class MainFriendsFragment : Fragment() {
                                         joinFriendSenderName,
                                         joinFriendReceiverEmail
                                     )
-                                    JoinFriendRepository.addJoinFriend(joinFriend){
-                                        JoinFriendRepository.setJoinFriendIdx(joinFriendIdx){
-                                            Toast.makeText(mainActivity, "친구 추가가 완료 되었습니다!", Toast.LENGTH_SHORT).show()
+                                    JoinFriendRepository.addJoinFriend(joinFriend) {
+                                        JoinFriendRepository.setJoinFriendIdx(joinFriendIdx) {
+                                            Toast.makeText(
+                                                mainActivity,
+                                                "친구 추가가 완료 되었습니다!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 }

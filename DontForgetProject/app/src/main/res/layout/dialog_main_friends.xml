@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="친구의 고유코드를 입력해주세요"
+            android:hint="친구의 이메일을 입력해주세요"
             android:inputType="text"
             android:textSize="@dimen/font_size_big" />
     </LinearLayout>

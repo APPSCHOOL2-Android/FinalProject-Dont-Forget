@@ -1,8 +1,10 @@
 package com.test.dontforgetproject.UI.MainFriendsFragment
 
 import android.graphics.Paint.Join
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Repository.JoinFriendRepository
@@ -10,10 +12,12 @@ import com.test.dontforgetproject.Repository.JoinFriendRepository
 class MainFriendsViewModel : ViewModel() {
     var joinFriendList = MutableLiveData<MutableList<JoinFriend>>()
     var myRequestList = MutableLiveData<MutableList<JoinFriend>>()
+    var myFriendList = MutableLiveData<MutableList<Friend>>()
 
     init {
         joinFriendList.value = mutableListOf<JoinFriend>()
         myRequestList.value = mutableListOf<JoinFriend>()
+        myFriendList.value = mutableListOf<Friend>()
     }
 
     // 이메일로 내게온 친구요청 불러오기
@@ -65,6 +69,26 @@ class MainFriendsViewModel : ViewModel() {
 
             tempList.reverse()
             myRequestList.value = tempList
+        }
+    }
+
+    fun getMyFriendListByIdx(userIdx : Long){
+        JoinFriendRepository.getUserInfoByIdx(userIdx){
+            var newFriendList = mutableListOf<Friend>()
+            for(c1 in it.result.children){
+                var newFriendListHashMap = c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+
+                for(i in newFriendListHashMap){
+                    var idx = i["friendIdx"] as Long
+                    var name = i["friendName"] as String
+                    var email = i["friendEmail"] as String
+
+                    var friend = Friend(idx, name, email)
+                    newFriendList.add(friend)
+                }
+            }
+            newFriendList.reverse()
+            myFriendList.value = newFriendList
         }
     }
 }
