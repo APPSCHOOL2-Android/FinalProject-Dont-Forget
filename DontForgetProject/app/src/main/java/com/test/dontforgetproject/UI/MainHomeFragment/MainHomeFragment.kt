@@ -19,9 +19,9 @@ import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
-import com.test.dontforgetproject.databinding.RowCategoryTabBinding
-import com.test.dontforgetproject.databinding.RowMemoSearchBinding
-import com.test.dontforgetproject.databinding.RowTodoBinding
+import com.test.dontforgetproject.databinding.RowHomeCategoryTabBinding
+import com.test.dontforgetproject.databinding.RowHomeMemoSearchBinding
+import com.test.dontforgetproject.databinding.RowHomeTodoBinding
 
 class MainHomeFragment : Fragment() {
 
@@ -38,7 +38,7 @@ class MainHomeFragment : Fragment() {
 
         mainHomeViewModel = ViewModelProvider(this)[MainHomeViewModel::class.java]
         mainHomeViewModel.run {
-            categories.observe(mainActivity){
+            categories.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
             }
         }
@@ -103,7 +103,7 @@ class MainHomeFragment : Fragment() {
 
         private var selectedCategoryPosition = 0
 
-        inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
+        inner class CategoryTabViewHolder(private val binding: RowHomeCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewCategoryName = binding.textViewRowCategoryTab
             val cardViewRowCategoryTab = binding.cardViewRowCategoryTab
@@ -127,7 +127,7 @@ class MainHomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
             CategoryTabViewHolder(
-                RowCategoryTabBinding.inflate(
+                RowHomeCategoryTabBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -137,7 +137,8 @@ class MainHomeFragment : Fragment() {
         override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
-            holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
+            holder.textViewCategoryName.text =
+                mainHomeViewModel.categories.value?.get(position)?.categoryName
 
             val backgroundColor = if (position == selectedCategoryPosition) {
                 mainHomeViewModel.categories.value?.get(position)?.categoryColor!!.toInt()
@@ -152,7 +153,7 @@ class MainHomeFragment : Fragment() {
     inner class TodoRecyclerViewAdapter :
         RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
 
-        inner class TodoViewHolder(private val binding: RowTodoBinding) :
+        inner class TodoViewHolder(private val binding: RowHomeTodoBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val checkBoxTodo = binding.checkBoxRowTodo
             val textViewTodo = binding.textViewRowTodo
@@ -188,7 +189,7 @@ class MainHomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
             TodoViewHolder(
-                RowTodoBinding.inflate(
+                RowHomeTodoBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -207,7 +208,7 @@ class MainHomeFragment : Fragment() {
     inner class MemoSearchViewAdapter :
         RecyclerView.Adapter<MemoSearchViewAdapter.MemoSearchHolder>() {
 
-        inner class MemoSearchHolder(private val binding: RowMemoSearchBinding) :
+        inner class MemoSearchHolder(private val binding: RowHomeMemoSearchBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewDate = binding.textViewRowMemoSearchDate
             val textViewCategory = binding.textViewRowMemoSearchCategory
@@ -245,7 +246,7 @@ class MainHomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoSearchHolder =
             MemoSearchHolder(
-                RowMemoSearchBinding.inflate(
+                RowHomeMemoSearchBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
