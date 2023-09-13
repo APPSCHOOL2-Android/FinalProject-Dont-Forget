@@ -13,14 +13,18 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide.init
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,6 +50,7 @@ class TodoAddFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
 
         viewModel.run {
+            resetList()
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
             }
@@ -62,6 +67,7 @@ class TodoAddFragment : Fragment() {
             toolbarTodoAdd.run {
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
+                    viewModel.resetList()
                     mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                 }
                 setTitle("할일 추가")
@@ -84,11 +90,6 @@ class TodoAddFragment : Fragment() {
             }
             //날짜
             linearlayoutTodoAddDate.run {
-                //현재날짜 가져오기
-                var now = System.currentTimeMillis()
-                var dateformats = SimpleDateFormat("yyyy년 MM월 dd일")
-                var dateOne = dateformats.format(now)
-                textViewTodoAddDate.setText(dateOne)
 
                 setOnClickListener {
                     val materialDatePicker = MaterialDatePicker.Builder.datePicker()
@@ -193,31 +194,69 @@ class TodoAddFragment : Fragment() {
                         }
                         builder.show()
                     }
+                    if(textViewTodoAddDate.text == "날짜 없음"){
+                        val builder= AlertDialog.Builder(mainActivity)
+                        builder.setTitle("경고")
+                        builder.setMessage("날짜를 선택해주세요")
+                        builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
-                    Log.d("Lim todo","${editTextTodoAdd.text}")
-                    Log.d("Lim category name","${mainActivity.categoryname}")
-                    Log.d("Lim category color","${mainActivity.categoryColor}")
-                    Log.d("Lim category fontColor","${mainActivity.categoryFontColor}")
-                    Log.d("Lim date","${date}")
-                    Log.d("Lim time","${time}")
+                        }
+                        builder.setPositiveButton("확인"){dialogInterface: DialogInterface, i: Int ->
+
+                        }
+                        builder.show()
+                    }
+
+
+                    var newDate= date
+                    var newTime = time
 
                     TodoRepository.getTodoIdx {
                         var idx = it.result.value as Long
+                        idx++
                         var content = editTextTodoAdd.text.toString()
+                        var useridx = MyApplication.loginedUserInfo.userIdx
                         var name = mainActivity.categoryname
                         var backgroundColor = mainActivity.categoryColor
                         var fontColor = mainActivity.categoryFontColor
-                        var dates = date
-                        var time = time
+                        var dates = newDate
+                        var time = newTime
+                        if(time==""){
+                            time = "None"
+                        }
+                        CategoryRepository.getCategoryInfoByIdx(useridx){
 
+                            for(a1 in it.result.children){
+                                var names = a1.child("categoryName").value.toString()
+                                if(names == name){
+                                    var catgoryIdx = a1.child("categoryIdx").value as Long
+                                    var ownerIdx = a1.child("categoryOwnerIdx").value as Long
+                                    var ownerName = a1.child("categoryOwnerName").value.toString()
+                                    var newclass = TodoClass(idx,content,0,catgoryIdx,name,fontColor.toLong(),backgroundColor.toLong(),
+                                        dates,time,"None","None","None",ownerIdx,ownerName)
+
+                                    TodoRepository.setTodoAddInfo(newclass){
+                                        TodoRepository.setTodoIdx(idx){
+                                            Snackbar.make(todoAddBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
+                                            mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
                     }
 
-                    //mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                 }
             }
 
         }
         return  todoAddBinding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.resetList()
     }
 
 

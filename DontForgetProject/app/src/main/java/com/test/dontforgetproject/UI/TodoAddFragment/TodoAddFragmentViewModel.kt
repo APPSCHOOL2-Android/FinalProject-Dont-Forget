@@ -36,11 +36,18 @@ class TodoAddFragmentViewModel :ViewModel(){
                 var fontcolor = c1.child("categoryFontColor").value as Long
                 var owneridx = c1.child("categoryOwnerIdx").value as Long
                 var ownerName = c1.child("categoryOwnerName").value.toString()
-                var datas = TodoClass(idx,"None",0,idx,name,color,fontcolor,"None","None","None","None",
+                var datas = TodoClass(idx,"None",0,idx,name,fontcolor,color,"None","None","None","None",
                 "None",owneridx,ownerName)
+
                 templist.add(datas)
                 categoryInfo.value = templist
             }
         }
     }
+
+    fun resetList(){
+        categoryInfo.value = mutableListOf<TodoClass>()
+
+    }
+
 }
