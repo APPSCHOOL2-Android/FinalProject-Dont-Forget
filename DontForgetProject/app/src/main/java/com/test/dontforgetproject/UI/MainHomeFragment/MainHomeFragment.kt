@@ -3,11 +3,14 @@ package com.test.dontforgetproject.UI.MainHomeFragment
 import android.content.Context
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
@@ -23,6 +26,7 @@ class MainHomeFragment : Fragment() {
 
     lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
+    lateinit var mainHomeViewModel: MainHomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +34,13 @@ class MainHomeFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         binding = FragmentMainHomeBinding.inflate(inflater, container, false)
+
+        mainHomeViewModel = ViewModelProvider(this)[MainHomeViewModel::class.java]
+        mainHomeViewModel.run {
+            categories.observe(mainActivity){
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+            }
+        }
 
         binding.run {
             textInputEditTextMainHomeFragment.onFocusChangeListener =
@@ -69,9 +80,17 @@ class MainHomeFragment : Fragment() {
             recyclerViewMainHomeFragmentMemoSearch.run {
                 adapter = MemoSearchViewAdapter()
             }
+
             buttonMainHomeFragment.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT, true, null)
             }
+
+            calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                Log.d("선택한 날짜", "${year}년 ${month + 1}월 ${dayOfMonth}일")
+            }
+
+            // 임시로 1번 인덱스 넣음
+            mainHomeViewModel.getCategoryAll(1L)
         }
 
 
@@ -82,9 +101,28 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
+        private var selectedCategoryPosition = 0
+
         inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewCategoryName = binding.textViewRowCategoryTab
+            val cardViewRowCategoryTab = binding.cardViewRowCategoryTab
+
+            init {
+                binding.root.setOnClickListener {
+                    Log.d("asdasdasd", textViewCategoryName.text.toString())
+                    val position = adapterPosition
+
+                    // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
+                    if (selectedCategoryPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedCategoryPosition)
+                    }
+
+                    // 클릭한 항목의 배경색을 변경하고 위치를 추적
+                    selectedCategoryPosition = position
+                    notifyItemChanged(position)
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
@@ -96,10 +134,17 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = 10
+        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
-            holder.textViewCategoryName.text = "전체"
+            holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
+
+            val backgroundColor = if (position == selectedCategoryPosition) {
+                ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+            } else {
+                ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+            }
+            holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
         }
     }
 
