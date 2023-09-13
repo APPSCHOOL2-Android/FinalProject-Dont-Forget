@@ -42,6 +42,7 @@ class MainHomeFragment : Fragment() {
         mainHomeViewModel.run {
             categories.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
         }
 
@@ -77,7 +78,7 @@ class MainHomeFragment : Fragment() {
             }
 
             recyclerViewMainHomeFragmentTodo.run {
-                adapter = TodoRecyclerViewAdapter()
+                adapter = CategoryRecyclerViewAdapter()
             }
 
             recyclerViewMainHomeFragmentMemoSearch.run {
@@ -163,6 +164,39 @@ class MainHomeFragment : Fragment() {
                     }
                     holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
                 }
+            }
+        }
+    }
+
+    // 카테고리
+    inner class CategoryRecyclerViewAdapter :
+        RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>() {
+        inner class CategoryViewHolder(private val binding: RowHomeCategoryBinding) :
+            RecyclerView.ViewHolder(binding.root) {
+            val textViewCategory = binding.textViewRowHomeCategoryCategoryName
+            val recyclerViewRowHomeCategory = binding.recyclerViewRowHomeCategory
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder =
+            CategoryViewHolder(
+                RowHomeCategoryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
+
+        override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+            holder.textViewCategory.run {
+                text = mainHomeViewModel.categories.value?.get(position)?.categoryName
+                val color = mainHomeViewModel.categories.value?.get(position)?.categoryColor!!.toInt()
+                setTextColor(color)
+            }
+            holder.recyclerViewRowHomeCategory.run {
+                adapter = TodoRecyclerViewAdapter()
+                layoutManager = LinearLayoutManager(context)
             }
         }
     }
