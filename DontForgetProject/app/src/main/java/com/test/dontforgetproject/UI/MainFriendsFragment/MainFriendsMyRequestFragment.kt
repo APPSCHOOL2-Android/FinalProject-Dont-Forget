@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.databinding.FragmentMainFriendsMyRequestBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsListBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsMyRequestBinding
@@ -18,6 +22,9 @@ class MainFriendsMyRequestFragment : Fragment() {
     lateinit var binding : FragmentMainFriendsMyRequestBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var viewModel : MainFriendsViewModel
+    var MRL = mutableListOf<JoinFriend>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,6 +32,15 @@ class MainFriendsMyRequestFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMainFriendsMyRequestBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(mainActivity)[MainFriendsViewModel::class.java]
+        viewModel.run{
+            myRequestList.observe(mainActivity){
+                MRL = it
+                binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
+            }
+        }
+        viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
 
         binding.run{
             recyclerMainFriendsMyRequest.run{
@@ -39,6 +55,7 @@ class MainFriendsMyRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
     }
 
     inner class RecyclerAdapterMR:RecyclerView.Adapter<RecyclerAdapterMR.ViewHolderMR>(){
@@ -67,12 +84,20 @@ class MainFriendsMyRequestFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return MRL.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderMR, position: Int) {
-            holder.textViewRowMainFriendsMyRequestName.text = "사용자 이름"
-            holder.textViewRowMainFriendsMyRequestEmail.text = "000000@gmail.com"
+            // 상대방 이름
+            JoinFriendRepository.getNameByEmail(MRL[position].joinFriendReceiverEmail){
+                for(c1 in it.result.children){
+                    var userName = c1.child("userName").value as String
+                    holder.textViewRowMainFriendsMyRequestName.text = userName
+                }
+            }
+
+            // 상대방 이메일
+            holder.textViewRowMainFriendsMyRequestEmail.text = MRL[position].joinFriendReceiverEmail
         }
     }
 }

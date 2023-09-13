@@ -34,15 +34,38 @@ class JoinFriendRepository {
         fun getJoinFriendByUserEmail(userEmail : String, callback1: (Task<DataSnapshot>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("joinFriendInfo")
-            databaseRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener (callback1)
+            databaseRef.orderByChild("joinFriendReceiverEmail").equalTo(userEmail).get().addOnCompleteListener (callback1)
+        }
+
+        fun getJoinFriendByUserIdx(userIdx : Long, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.orderByChild("joinFriendSenderIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener (callback1)
+        }
+
+        // 이메일로 해당 친구 이름 가져오기
+        fun getNameByEmail(userEmail:String, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("userInfo")
+            databaseRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener(callback1)
+        }
+
+        // 인덱스로 해당친구 이메일 가져오기
+        fun getUserInfoByIdx(userIdx : Long, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("userInfo")
+            databaseRef.orderByChild("userIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener(callback1)
         }
 
         // 친구추가 or 거절시 해당 요청 삭제하기
         fun deleteJoinFriend(joinFriendIdx : Long,callback1: (Task<Void>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("joinFriendInfo")
-            //Todo
+            databaseRef.orderByChild("joinFriendIdx").equalTo(joinFriendIdx.toDouble()).get().addOnCompleteListener {
+                for(c1 in it.result.children){
+                    c1.ref.removeValue().addOnCompleteListener(callback1)
+                }
+            }
         }
-
     }
 }

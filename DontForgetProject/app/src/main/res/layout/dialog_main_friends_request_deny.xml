@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_size_normal"
         android:fontFamily="@font/scdream_regular"
-        android:text="홍길동 님의 요청을 거절하실 건가요?"
+        android:text="친구 요청을 삭제합니다."
         style="@style/Theme.DontForgetProject.Text"
         android:textSize="@dimen/font_size_medium" />
 </LinearLayout>
