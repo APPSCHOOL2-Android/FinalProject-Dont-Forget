@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.test.dontforgetproject.DAO.AlertClass
 
-class AlerRepository {
+class AlertRepository {
 
     companion object {
         // 알림 인덱스 가져오기

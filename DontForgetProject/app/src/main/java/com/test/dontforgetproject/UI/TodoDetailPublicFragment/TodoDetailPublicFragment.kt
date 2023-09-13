@@ -10,14 +10,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicBinding
 
 class TodoDetailPublicFragment : Fragment() {
 
     lateinit var fragmentTodoDetailPublicBinding: FragmentTodoDetailPublicBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+
+    var todoIdx = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +33,34 @@ class TodoDetailPublicFragment : Fragment() {
         fragmentTodoDetailPublicBinding = FragmentTodoDetailPublicBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
+        todoDetailPersonalViewModel.run {
+
+            todoContent.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.textInputEditTextTodoDetailPublic.setText(it.toString())
+            }
+            todoCategoryName.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.buttonTodoDetailPublicCategory.text = it.toString()
+            }
+            todoDate.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicDate.text = it.toString()
+            }
+            todoAlertTime.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = it.toString()
+            }
+            todoLocationName.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString()
+            }
+            todoOwnerName.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicMadeby.text = it.toString()
+            }
+        }
+        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+
         fragmentTodoDetailPublicBinding.run {
+
+            textInputEditTextTodoDetailPublic.isEnabled = false
+
             toolbarTodoDetailPublic.run{
                 title = "할일 상세"
 

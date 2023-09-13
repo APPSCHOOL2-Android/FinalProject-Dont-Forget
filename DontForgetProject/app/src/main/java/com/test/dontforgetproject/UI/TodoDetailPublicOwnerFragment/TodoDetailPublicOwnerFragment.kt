@@ -11,15 +11,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
 
 class TodoDetailPublicOwnerFragment : Fragment() {
 
     lateinit var fragmentTodoDetailPublicOwnerBinding: FragmentTodoDetailPublicOwnerBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+
+    var todoIdx = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +38,28 @@ class TodoDetailPublicOwnerFragment : Fragment() {
         fragmentTodoDetailPublicOwnerBinding = FragmentTodoDetailPublicOwnerBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        fragmentTodoDetailPublicOwnerBinding.run {
+        todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
+        todoDetailPersonalViewModel.run {
 
-            buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
+            todoContent.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textInputEditTextTodoDetailPublicOwner.setText(it.toString())
+            }
+            todoCategoryName.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.buttonTodoDetailPublicOwnerCategory.text = it.toString()
+            }
+            todoDate.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerDate.text = it.toString()
+            }
+            todoAlertTime.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = it.toString()
+            }
+            todoLocationName.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString()
+            }
+        }
+        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+
+        fragmentTodoDetailPublicOwnerBinding.run {
 
             toolbarTodoDetailPublicOwner.run {
                 title = "할일 상세"
@@ -51,24 +79,42 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 }
             }
 
-            buttonTodoDetailPublicOwnerEdit.setOnClickListener {
-                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.GONE
-                buttonTodoDetailPublicOwnerEditComplete.visibility = View.VISIBLE
-            }
 
-            buttonTodoDetailPublicOwnerEditComplete.setOnClickListener {
+            buttonTodoDetailPublicOwnerEdit.setOnClickListener {
+
+                var content = textInputEditTextTodoDetailPublicOwner.text.toString()
+                var date = textViewTodoDetailPublicOwnerDate.text.toString()
+                var time = textViewTodoDetailPublicOwnerAlert.text.toString()
+                var locationName = textViewTodoDetailPublicOwnerLocation.text.toString()
+                var locationLatitude = ""
+                var locationLongitude = ""
+
+                val todoDataClass = TodoClass(
+                    todoIdx,
+                    content,
+                    todoDetailPersonalViewModel.todoIsChecked.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoCategoryName.toString(),
+                    date,
+                    time,
+                    locationName,
+                    locationLatitude,
+                    locationLongitude,
+                    todoDetailPersonalViewModel.todoOwnerIdx.value!!.toLong(),
+                    todoDetailPersonalViewModel.todoOwnerName.value!!.toString()
+                )
 
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setTitle("경고")
                 builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("수정"){ dialogInterface: DialogInterface, i: Int ->
-
+                    TodoRepository.modifyTodo(todoDataClass) {
+                        Snackbar.make(fragmentTodoDetailPublicOwnerBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT)
+                        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+                    }
                 }
                 builder.show()
-
-                linearLayoutTodoDetailPublicOwnerEdit.visibility = View.VISIBLE
-                buttonTodoDetailPublicOwnerEditComplete.visibility = View.GONE
             }
 
             buttonTodoDetailPublicOwnerDelete.setOnClickListener {
@@ -77,6 +123,10 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
+                    TodoRepository.removeTodo(todoIdx) {
+
+                    }
+                    Snackbar.make(fragmentTodoDetailPublicOwnerBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT)
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
                 builder.show()
