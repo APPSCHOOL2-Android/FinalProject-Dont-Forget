@@ -64,6 +64,8 @@ class MainHomeViewModel : ViewModel() {
                 var todoIsChecked = c1.child("todoIsChecked").value as Long
                 var todoCategoryIdx = c1.child("todoCategoryIdx").value as Long
                 var todoCategoryName = c1.child("todoCategoryName").value as String
+                var todoFontColor = c1.child("todoFontColor").value as Long
+                var todoBackgroundColor = c1.child("todoBackgroundColor").value as Long
                 var todoDate = c1.child("todoDate").value as String
                 var todoAlertTime = c1.child("todoAlertTime").value as String
                 var todoLocationName = c1.child("todoLocationName").value as String
@@ -80,6 +82,8 @@ class MainHomeViewModel : ViewModel() {
                     todoIsChecked,
                     todoCategoryIdx,
                     todoCategoryName,
+                    todoFontColor,
+                    todoBackgroundColor,
                     todoDate,
                     todoAlertTime,
                     todoLocationName,
