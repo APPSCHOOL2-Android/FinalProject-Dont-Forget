@@ -1,12 +1,22 @@
 package com.test.dontforgetproject.UI.JoinFragment
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +35,8 @@ class JoinFragment : Fragment() {
     lateinit var fragmentJoinBinding: FragmentJoinBinding
     lateinit var mainActivity: MainActivity
     lateinit var firebaseAuth : FirebaseAuth
+    // 업로드할 이미지의 Uri
+    var uploadUri: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -151,7 +163,7 @@ class JoinFragment : Fragment() {
         val checkBoolean = check.isEmpty()
 
         if(checkBoolean){
-            textInputLayout.error = "${type}을 입력해주세요"
+            textInputLayout.error = "${type}을 입력해주세요."
         }else{
             if(type == "이메일"){
                 val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
@@ -165,9 +177,13 @@ class JoinFragment : Fragment() {
                 }
 
             }else if(type == "비밀번호" || type == "비밀번호 확인"){
+                val passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]*\$".toRegex()
                 if(check.length < 6){
-                    textInputLayout.error = "6자리이상 입력해주세요"
-                }else{
+                    textInputLayout.error = "6자리이상 입력해주세요."
+                }else if(!check.matches(passwordPattern)){
+                    textInputLayout.error = "영문자와 숫자가 포함된 비밀번호입니다."
+                }
+                else{
                     textInputLayout.error = null
                     textInputLayout.isErrorEnabled = false
                     return true
@@ -192,11 +208,50 @@ class JoinFragment : Fragment() {
             val userInfo = UserClass(userindex,userName,userEmail,userImage,userIntroduce,userId,friendList)
             UserRepository.setUserInfo(userInfo){
                 UserRepository.setUserIdx(userindex){
-                    Snackbar.make(fragmentJoinBinding.root, "저장되었습니다", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(fragmentJoinBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
                     mainActivity.removeFragment(MainActivity.JOIN_FRAGMENT)
                 }
             }
         }
+    }
+
+    // 앨범 설정
+    fun albumSetting(previewImageView: ImageView): ActivityResultLauncher<Intent> {
+        val albumContract = ActivityResultContracts.StartActivityForResult()
+        val albumLauncher = registerForActivityResult(albumContract) {
+            if (it?.resultCode == AppCompatActivity.RESULT_OK) {
+                // 선택한 이미지에 접근할 수 있는 Uri 객체를 추출한다.
+                if (it.data?.data != null) {
+                    uploadUri = it.data?.data
+
+                    // 안드로이드 10 (Q) 이상이라면...
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        // 이미지를 생성할 수 있는 디코더를 생성한다.
+                        val source = ImageDecoder.createSource(mainActivity.contentResolver, uploadUri!!)
+                        // Bitmap객체를 생성한다.
+                        val bitmap = ImageDecoder.decodeBitmap(source)
+
+                        previewImageView.setImageBitmap(bitmap)
+                    } else {
+                        // 컨텐츠 프로바이더를 통해 이미지 데이터 정보를 가져온다.
+                        val cursor = mainActivity.contentResolver.query(uploadUri!!, null, null, null, null)
+                        if (cursor != null) {
+                            cursor.moveToNext()
+
+                            // 이미지의 경로를 가져온다.
+                            val idx = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                            val source = cursor.getString(idx)
+
+                            // 이미지를 생성하여 보여준다.
+                            val bitmap = BitmapFactory.decodeFile(source)
+                            previewImageView.setImageBitmap(bitmap)
+                        }
+                    }
+                }
+            }
+        }
+
+        return albumLauncher
     }
 
 

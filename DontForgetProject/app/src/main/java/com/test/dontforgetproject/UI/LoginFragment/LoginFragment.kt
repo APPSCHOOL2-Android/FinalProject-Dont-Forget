@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
                     var emailCheck = textInputLayoutLoginEmail.editText?.text.toString()
                     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
                     if (emailCheck.isEmpty()) {
-                        textInputLayoutLoginEmail.error = "이메일을 입력해주세요"
+                        textInputLayoutLoginEmail.error = "이메일을 입력해주세요."
                     } else if (!emailCheck.matches(emailPattern.toRegex())) {
                         textInputLayoutLoginEmail.error = "이메일 형식이 잘못되었습니다."
                     } else {
@@ -60,9 +60,13 @@ class LoginFragment : Fragment() {
                 if(!hasFocus){
                     val pwCheck = textInputLayoutLoginPassword.editText?.text.toString()
                     val pwSize = pwCheck.length
+                    val passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]*\$".toRegex()
                     if(pwSize<6){
                         textInputLayoutLoginPassword.error = "비밀번호를 6자리 이상 입력해주세요."
-                    }else{
+                    }else if(!pwCheck.matches(passwordPattern)){
+                        textInputLayoutLoginPassword.error = "영문자와 숫자가 포함된 비밀번호입니다."
+                    }
+                    else{
                         textInputLayoutLoginPassword.error = null
                         textInputLayoutLoginPassword.isErrorEnabled = false
                     }
