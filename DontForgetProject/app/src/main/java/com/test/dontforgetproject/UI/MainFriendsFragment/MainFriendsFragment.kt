@@ -90,7 +90,7 @@ class MainFriendsFragment : Fragment() {
                                         JoinFriendRepository.setJoinFriendIdx(joinFriendIdx) {
                                             Toast.makeText(
                                                 mainActivity,
-                                                "친구 추가가 완료 되었습니다!",
+                                                "친구 요청이 완료 되었습니다!",
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         }
