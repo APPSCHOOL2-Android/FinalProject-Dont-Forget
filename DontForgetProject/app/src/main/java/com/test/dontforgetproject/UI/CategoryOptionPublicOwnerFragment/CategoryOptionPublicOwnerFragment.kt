@@ -416,4 +416,9 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
             holder.userName.text = categoryOptionPublicViewModel.joinUserNameList.value?.get(position)!!
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        categoryOptionPublicViewModel.reset()
+    }
 }

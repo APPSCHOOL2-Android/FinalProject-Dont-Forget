@@ -57,6 +57,10 @@ class CategoryOptionPublicFragment : Fragment() {
             categoryOwner.observe(mainActivity) {
                 categoryOptionPublicBinding.textViewCategoryOptionPublicOwnerName.text = it
             }
+
+            joinUserNameList.observe(mainActivity) {
+                categoryOptionPublicBinding.recyclerViewCategoryOptionPublic.adapter?.notifyDataSetChanged()
+            }
         }
 
         categoryOptionPublicBinding.run {
@@ -122,11 +126,16 @@ class CategoryOptionPublicFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 7
+            return categoryOptionPublicViewModel.joinUserNameList.value?.size!!
         }
 
         override fun onBindViewHolder(holder: CategoryOptionPublicViewHolder, position: Int) {
-            holder.userName.text = "이름"
+            holder.userName.text = categoryOptionPublicViewModel.joinUserNameList.value?.get(position)!!
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        categoryOptionPublicViewModel.reset()
     }
 }

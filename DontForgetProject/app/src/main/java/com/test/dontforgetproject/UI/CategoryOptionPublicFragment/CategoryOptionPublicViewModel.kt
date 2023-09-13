@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.CategoryOptionPublicFragment
 
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.Friend
@@ -21,6 +22,10 @@ class CategoryOptionPublicViewModel() : ViewModel() {
     }
 
     fun reset() {
+        categoryName.value = ""
+        categoryColor.value = Color.WHITE
+        categoryOwner.value = ""
+
         joinUserIdxList.value = mutableListOf<Long>()
         joinUserNameList.value = mutableListOf<String>()
         peopleList.value = mutableListOf<Friend>()
