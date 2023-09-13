@@ -77,5 +77,12 @@ class CategoryRepository {
                 }
             }
         }
+
+        //유저 idx로 카데고리 찾기
+        fun getCategoryInfoByIdx(idx:Long,callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("categoryInfo")
+            databaseRef.orderByChild("categoryOwnerIdx").equalTo(idx.toDouble()!!).get().addOnCompleteListener (callback1)
+        }
     }
 }
