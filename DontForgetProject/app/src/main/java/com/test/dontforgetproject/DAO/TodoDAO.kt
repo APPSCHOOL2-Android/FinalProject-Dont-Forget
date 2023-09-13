@@ -15,3 +15,10 @@ data class TodoClass(
     var todoOwnerName: String
 )
 
+
+data class TodoInfo(
+    var name:String,
+    var fontColor:Long,
+    var backgroundColor:Long
+)
+
