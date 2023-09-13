@@ -97,11 +97,8 @@ class UserRepository {
             val storage = FirebaseStorage.getInstance()
             val storageRef = storage.reference
 
-            // 이전 이미지의 Storage 경로
-            val previousImagePath = "image/${fileName}" // 이전 이미지의 경로를 지정해야 합니다.
-
             // 이전 이미지 삭제
-            val imageRef = storageRef.child(previousImagePath)
+            val imageRef = storageRef.child(fileName)
             imageRef.delete().addOnSuccessListener {
             }.addOnFailureListener {
             }
