@@ -27,7 +27,6 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
     var name:String = ""
 
-    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,14 +94,18 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
         override fun onBindViewHolder(holder: allviewholder, position: Int) {
             holder.textOne.text = viewModel.categoryInfo.value!!.get(position).todoCategoryName
-            //bundle에서 가져온 데이터가 리사이클러뷰 데이터와 일치시 체크마크 표시 및 색상 표시
 
             if(holder.textOne.text == name){
                holder.textOne.setCheckMarkDrawable(R.drawable.ic_check_24px)
                 holder.textOne.setTextColor(Color.parseColor("#7A97FF"))
                 holder.textOne.isChecked = true
             }
+
+            //리사이클러 데이터 누수방지
+            holder.setIsRecyclable(false)
         }
+
+
     }
 
     fun saveAction(){
@@ -111,10 +114,5 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         viewModel.categoryColor.value = mainActivity.categoryColor.toLong()
         dismiss()
     }
-
-
-
-
-
 
 }

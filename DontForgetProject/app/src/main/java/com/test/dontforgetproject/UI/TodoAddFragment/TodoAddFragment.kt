@@ -77,9 +77,7 @@ class TodoAddFragment : Fragment() {
             linearlayoutTodoAddCategory.run {
 
                 setOnClickListener {
-                    //매개변수를 전달하는 메서드 생성
-                    //todoAddbottom 생성자를 만들어서 이 fragment를 담아둠
-                    //호출
+
                     var bottomDialog = TodoAddBottomDialog()
                     var bundle = Bundle()
                     bundle.putString("category","${textViewTodoAddCategory.text}")
@@ -237,7 +235,7 @@ class TodoAddFragment : Fragment() {
 
                                     TodoRepository.setTodoAddInfo(newclass){
                                         TodoRepository.setTodoIdx(idx){
-                                            Snackbar.make(todoAddBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
+                                            Toast.makeText(mainActivity,"저장되었습니다",Toast.LENGTH_SHORT).show()
                                             mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                                         }
                                     }
@@ -258,9 +256,5 @@ class TodoAddFragment : Fragment() {
         super.onDestroy()
         viewModel.resetList()
     }
-
-
-
-
 
 }

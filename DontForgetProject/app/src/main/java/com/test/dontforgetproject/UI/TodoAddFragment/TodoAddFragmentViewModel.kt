@@ -21,6 +21,9 @@ class TodoAddFragmentViewModel :ViewModel(){
 
     init {
         categoryInfo.value = mutableListOf<TodoClass>()
+        name = MutableLiveData<String>()
+        categoryColor = MutableLiveData<Long>()
+        fontColor = MutableLiveData<Long>()
     }
 
     fun getData(){
@@ -45,9 +48,13 @@ class TodoAddFragmentViewModel :ViewModel(){
         }
     }
 
+
+    //초기화
     fun resetList(){
         categoryInfo.value = mutableListOf<TodoClass>()
-
+        name = MutableLiveData<String>()
+        categoryColor = MutableLiveData<Long>()
+        fontColor = MutableLiveData<Long>()
     }
 
 }

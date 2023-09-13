@@ -54,16 +54,16 @@ class TodoRepository {
             todoDataRef.orderByChild("todoIdx").equalTo(todoIdx.toDouble()).get().addOnCompleteListener(callback1)
         }
 
+        //할일 추가 인덱스 저장
         fun setTodoIdx(todoIdx: Long,callback1: (Task<Void>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("TodoIdx")
             databaseRef.get().addOnCompleteListener {
-                it.result.ref.setValue(todoIdx).addOnCompleteListener {
-                    callback1
-                }
+                it.result.ref.setValue(todoIdx).addOnCompleteListener(callback1)
             }
         }
 
+        //할일 추가 정보 저장
         fun setTodoAddInfo(todoClass: TodoClass,callback1: (Task<Void>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("todoInfo")
