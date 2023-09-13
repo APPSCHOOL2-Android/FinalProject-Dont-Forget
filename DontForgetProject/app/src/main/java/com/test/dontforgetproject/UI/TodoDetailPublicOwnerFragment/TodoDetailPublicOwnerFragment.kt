@@ -123,6 +123,10 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
+                    TodoRepository.removeTodo(todoIdx) {
+
+                    }
+                    Snackbar.make(fragmentTodoDetailPublicOwnerBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT)
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
                 builder.show()

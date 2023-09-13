@@ -118,6 +118,10 @@ class TodoDetailPersonalFragment : Fragment() {
                 builder.setMessage("삭제하시겠습니까?")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
+                    TodoRepository.removeTodo(todoIdx) {
+
+                    }
+                    Snackbar.make(fragmentTodoDetailPersonalBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT)
                     mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
                 }
                 builder.show()
