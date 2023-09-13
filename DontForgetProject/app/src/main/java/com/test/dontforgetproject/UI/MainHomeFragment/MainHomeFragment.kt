@@ -85,8 +85,12 @@ class MainHomeFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.TODO_ADD_FRAGMENT, true, null)
             }
 
+            calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                Log.d("선택한 날짜", "${year}년 ${month + 1}월 ${dayOfMonth}일")
+            }
+
             // 임시로 1번 인덱스 넣음
-            mainHomeViewModel.getCategories(1L)
+            mainHomeViewModel.getCategoryAll(1L)
         }
 
 
