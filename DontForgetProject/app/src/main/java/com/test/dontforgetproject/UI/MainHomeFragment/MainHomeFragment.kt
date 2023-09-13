@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
@@ -19,6 +20,7 @@ import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
+import com.test.dontforgetproject.databinding.RowHomeCategoryBinding
 import com.test.dontforgetproject.databinding.RowHomeCategoryTabBinding
 import com.test.dontforgetproject.databinding.RowHomeMemoSearchBinding
 import com.test.dontforgetproject.databinding.RowHomeTodoBinding
@@ -114,13 +116,12 @@ class MainHomeFragment : Fragment() {
                     val position = adapterPosition
 
                     // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
-                    if (selectedCategoryPosition != RecyclerView.NO_POSITION) {
-                        notifyItemChanged(selectedCategoryPosition)
-                    }
+                    val previousSelectedPosition = selectedCategoryPosition
+                    selectedCategoryPosition = position
 
                     // 클릭한 항목의 배경색을 변경하고 위치를 추적
-                    selectedCategoryPosition = position
                     notifyItemChanged(position)
+                    notifyItemChanged(previousSelectedPosition)
                 }
             }
         }
@@ -134,18 +135,35 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
+        override fun getItemCount(): Int {
+            // 첫 번째 항목에 고정된 값을 추가하려면 +1을 해줍니다.
+            return mainHomeViewModel.categories.value?.size!! + 1
+        }
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
-            holder.textViewCategoryName.text =
-                mainHomeViewModel.categories.value?.get(position)?.categoryName
-
-            val backgroundColor = if (position == selectedCategoryPosition) {
-                mainHomeViewModel.categories.value?.get(position)?.categoryColor!!.toInt()
+            // 첫 번째 항목에 고정된 값을 설정
+            if (position == 0) {
+                holder.textViewCategoryName.text = "전체"
+                val backgroundColor = if (position == selectedCategoryPosition) {
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+                } else {
+                    ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                }
+                holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
             } else {
-                ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                // 데이터가 존재하는 경우에만 데이터를 설정
+                mainHomeViewModel.categories.value?.let { categories ->
+                    val dataIndex = position - 1 // 첫 번째 항목을 제외한 위치
+                    holder.textViewCategoryName.text = categories[dataIndex].categoryName
+
+                    val backgroundColor = if (position == selectedCategoryPosition) {
+                        categories[dataIndex].categoryColor.toInt()
+                    } else {
+                        ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                    }
+                    holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
+                }
             }
-            holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
         }
     }
 
