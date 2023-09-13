@@ -10,14 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide.init
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -27,7 +30,9 @@ class TodoAddFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var todoAddBinding: FragmentTodoAddBinding
+
     lateinit var viewModel: TodoAddFragmentViewModel
+
     var date:String =""
     var time:String = ""
     var name :String = ""
@@ -38,9 +43,19 @@ class TodoAddFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         todoAddBinding = FragmentTodoAddBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
 
-//        viewModel.run {
-//        }
+        viewModel.run {
+            viewModel.name.observe(mainActivity){
+                todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
+            }
+            viewModel.categoryColor.observe(mainActivity){
+                todoAddBinding.cardviewTodoAddCategory.setCardBackgroundColor(it.toInt())
+            }
+            viewModel.fontColor.observe(mainActivity){
+                todoAddBinding.textViewTodoAddCategory.setTextColor(it.toInt())
+            }
+        }
         todoAddBinding.run {
 
             //툴바
@@ -60,6 +75,9 @@ class TodoAddFragment : Fragment() {
                     //todoAddbottom 생성자를 만들어서 이 fragment를 담아둠
                     //호출
                     var bottomDialog = TodoAddBottomDialog()
+                    var bundle = Bundle()
+                    bundle.putString("category","${textViewTodoAddCategory.text}")
+                    bottomDialog.arguments = bundle
                     bottomDialog.show(mainActivity.supportFragmentManager,"카테고리")
                 }
 
@@ -163,14 +181,36 @@ class TodoAddFragment : Fragment() {
                         }
                         builder.show()
                     }
+                    if(textViewTodoAddCategory.text == "카데고리 없음"){
+                        val builder= AlertDialog.Builder(mainActivity)
+                        builder.setTitle("경고")
+                        builder.setMessage("카데고리를 선택해주세요")
+                        builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
+                        }
+                        builder.setPositiveButton("확인"){dialogInterface: DialogInterface, i: Int ->
+
+                        }
+                        builder.show()
+                    }
 
                     Log.d("Lim todo","${editTextTodoAdd.text}")
+                    Log.d("Lim category name","${mainActivity.categoryname}")
+                    Log.d("Lim category color","${mainActivity.categoryColor}")
+                    Log.d("Lim category fontColor","${mainActivity.categoryFontColor}")
                     Log.d("Lim date","${date}")
                     Log.d("Lim time","${time}")
 
-                    //todoList 추가하기
-                    todoPlus()
+                    TodoRepository.getTodoIdx {
+                        var idx = it.result.value as Long
+                        var content = editTextTodoAdd.text.toString()
+                        var name = mainActivity.categoryname
+                        var backgroundColor = mainActivity.categoryColor
+                        var fontColor = mainActivity.categoryFontColor
+                        var dates = date
+                        var time = time
+
+                    }
 
                     //mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                 }
@@ -180,8 +220,8 @@ class TodoAddFragment : Fragment() {
         return  todoAddBinding.root
     }
 
-    fun todoPlus(){
 
-    }
+
+
 
 }
