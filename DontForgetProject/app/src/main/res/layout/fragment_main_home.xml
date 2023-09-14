@@ -83,35 +83,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/calendarView_mainHomeFragment"
-                tools:listitem="@layout/row_category_tab" />
-
-            <TextView
-                android:id="@+id/textView_mainHome_Fragment_categoryName"
-                style="@style/Theme.DontForgetProject.Text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical_big1"
-                android:fontFamily="@font/scdream_regular"
-                android:text="개인"
-                android:textSize="@dimen/font_size_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerView_mainHomeFragment_category" />
+                tools:listitem="@layout/row_home_category_tab" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_mainHomeFragment_todo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:layout_marginTop="@dimen/padding_size_normal"
                 android:paddingBottom="50dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView_mainHome_Fragment_categoryName"
-                app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/row_todo" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView_mainHomeFragment_category"
+                tools:listitem="@layout/row_home_category" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,7 +126,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            tools:listitem="@layout/row_memo_search" />
+            tools:listitem="@layout/row_home_memo_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

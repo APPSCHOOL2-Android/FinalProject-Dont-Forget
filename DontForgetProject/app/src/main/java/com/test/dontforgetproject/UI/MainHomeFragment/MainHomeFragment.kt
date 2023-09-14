@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.MainActivity
@@ -18,15 +19,22 @@ import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
-import com.test.dontforgetproject.databinding.RowCategoryTabBinding
-import com.test.dontforgetproject.databinding.RowMemoSearchBinding
-import com.test.dontforgetproject.databinding.RowTodoBinding
+import com.test.dontforgetproject.databinding.RowHomeCategoryBinding
+import com.test.dontforgetproject.databinding.RowHomeCategoryTabBinding
+import com.test.dontforgetproject.databinding.RowHomeMemoSearchBinding
+import com.test.dontforgetproject.databinding.RowHomeTodoBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainHomeFragment : Fragment() {
 
     lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
     lateinit var mainHomeViewModel: MainHomeViewModel
+
+    var selectedCategoryPosition = 0
+    lateinit var selectedDate: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +45,25 @@ class MainHomeFragment : Fragment() {
 
         mainHomeViewModel = ViewModelProvider(this)[MainHomeViewModel::class.java]
         mainHomeViewModel.run {
-            categories.observe(mainActivity){
+            categories.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
+            }
+
+            categories2.observe(mainActivity) {
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
+            }
+
+            todoList.observe(mainActivity) {
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
         }
+
+        selectedDate = getCurrentDate()
+        mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+        Log.d("asdasdasd", selectedDate)
 
         binding.run {
             textInputEditTextMainHomeFragment.onFocusChangeListener =
@@ -74,7 +97,7 @@ class MainHomeFragment : Fragment() {
             }
 
             recyclerViewMainHomeFragmentTodo.run {
-                adapter = TodoRecyclerViewAdapter()
+                adapter = CategoryRecyclerViewAdapter()
             }
 
             recyclerViewMainHomeFragmentMemoSearch.run {
@@ -86,11 +109,16 @@ class MainHomeFragment : Fragment() {
             }
 
             calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
-                Log.d("선택한 날짜", "${year}년 ${month + 1}월 ${dayOfMonth}일")
+                selectedCategoryPosition = 0
+                val formattedMonth = String.format("%02d", month + 1)
+                selectedDate = "${year}-${formattedMonth}-${dayOfMonth}"
+                Log.d("asdasdasd", selectedDate)
+
+                // 고른 날에 맞는 todo가져오기
+                mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
             }
 
-            // 임시로 1번 인덱스 넣음
-            mainHomeViewModel.getCategoryAll(1L)
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
         }
 
 
@@ -101,50 +129,117 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
-        private var selectedCategoryPosition = 0
+        //private var selectedCategoryPosition = 0
 
-        inner class CategoryTabViewHolder(private val binding: RowCategoryTabBinding) :
+        inner class CategoryTabViewHolder(private val binding: RowHomeCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewCategoryName = binding.textViewRowCategoryTab
             val cardViewRowCategoryTab = binding.cardViewRowCategoryTab
 
             init {
                 binding.root.setOnClickListener {
-                    Log.d("asdasdasd", textViewCategoryName.text.toString())
+                    Log.d("asdasdasd", "인덱스 : ${adapterPosition}")
+                    if (adapterPosition != 0) {
+                        // 전체가 아닌 카테고리
+                        Log.d(
+                            "asdasdasd",
+                            "인덱스 : ${mainHomeViewModel.categories.value?.get(adapterPosition - 1)?.categoryIdx}"
+                        )
+                        mainHomeViewModel.getCategoryByCategoryIdx(
+                            mainHomeViewModel.categories.value?.get(
+                                adapterPosition - 1
+                            )?.categoryIdx!!
+                        )
+
+                    } else {
+                        // 전체 카테고리
+                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                    }
                     val position = adapterPosition
 
                     // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
-                    if (selectedCategoryPosition != RecyclerView.NO_POSITION) {
-                        notifyItemChanged(selectedCategoryPosition)
-                    }
+                    val previousSelectedPosition = selectedCategoryPosition
+                    selectedCategoryPosition = position
 
                     // 클릭한 항목의 배경색을 변경하고 위치를 추적
-                    selectedCategoryPosition = position
                     notifyItemChanged(position)
+                    notifyItemChanged(previousSelectedPosition)
                 }
             }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTabViewHolder =
             CategoryTabViewHolder(
-                RowCategoryTabBinding.inflate(
+                RowHomeCategoryTabBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
+        override fun getItemCount(): Int {
+            // 첫 번째 항목에 고정된 값을 추가하려면 +1을 해줍니다.
+            return mainHomeViewModel.categories.value?.size!! + 1
+        }
 
         override fun onBindViewHolder(holder: CategoryTabViewHolder, position: Int) {
-            holder.textViewCategoryName.text = mainHomeViewModel.categories.value?.get(position)?.categoryName
-
-            val backgroundColor = if (position == selectedCategoryPosition) {
-                ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+            // 첫 번째 항목에 고정된 값을 설정
+            if (position == 0) {
+                holder.textViewCategoryName.text = "전체"
+                val backgroundColor = if (position == selectedCategoryPosition) {
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
+                } else {
+                    ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                }
+                holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
             } else {
-                ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                // 데이터가 존재하는 경우에만 데이터를 설정
+                mainHomeViewModel.categories.value?.let { categories ->
+                    val dataIndex = position - 1 // 첫 번째 항목을 제외한 위치
+                    holder.textViewCategoryName.text = categories[dataIndex].categoryName
+
+                    val backgroundColor = if (position == selectedCategoryPosition) {
+                        categories[dataIndex].categoryColor.toInt()
+                    } else {
+                        ContextCompat.getColor(holder.itemView.context, R.color.transparent)
+                    }
+                    holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
+                }
             }
-            holder.cardViewRowCategoryTab.setCardBackgroundColor(backgroundColor)
+        }
+    }
+
+    // 카테고리
+    inner class CategoryRecyclerViewAdapter :
+        RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>() {
+        inner class CategoryViewHolder(private val binding: RowHomeCategoryBinding) :
+            RecyclerView.ViewHolder(binding.root) {
+            val textViewCategory = binding.textViewRowHomeCategoryCategoryName
+            val recyclerViewRowHomeCategory = binding.recyclerViewRowHomeCategory
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder =
+            CategoryViewHolder(
+                RowHomeCategoryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+        override fun getItemCount(): Int = mainHomeViewModel.categories2.value?.size!!
+
+        override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+            holder.textViewCategory.run {
+                text = mainHomeViewModel.categories2.value?.get(position)?.categoryName
+                val color =
+                    mainHomeViewModel.categories2.value?.get(position)?.categoryColor!!.toInt()
+                setTextColor(color)
+            }
+            holder.recyclerViewRowHomeCategory.run {
+                adapter = TodoRecyclerViewAdapter()
+                layoutManager = LinearLayoutManager(context)
+            }
         }
     }
 
@@ -152,11 +247,12 @@ class MainHomeFragment : Fragment() {
     inner class TodoRecyclerViewAdapter :
         RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
 
-        inner class TodoViewHolder(private val binding: RowTodoBinding) :
+        inner class TodoViewHolder(private val binding: RowHomeTodoBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val checkBoxTodo = binding.checkBoxRowTodo
             val textViewTodo = binding.textViewRowTodo
             val textViewTodoMaker = binding.textViewRowTodoMaker
+            val textViewRowTodoLocation = binding.textViewRowTodoLocation
 
             init {
                 checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -188,18 +284,19 @@ class MainHomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
             TodoViewHolder(
-                RowTodoBinding.inflate(
+                RowHomeTodoBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
 
-        override fun getItemCount(): Int = 4
+        override fun getItemCount(): Int = mainHomeViewModel.todoList.value?.size!!
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-            holder.textViewTodo.text = "오전 8기 약먹기"
-            holder.textViewTodoMaker.text = "by 누구"
+            holder.textViewTodo.text = mainHomeViewModel.todoList.value?.get(position)?.todoContent
+            holder.textViewTodoMaker.text = "by ${mainHomeViewModel.todoList.value?.get(position)?.todoOwnerName}"
+            holder.textViewRowTodoLocation.text = mainHomeViewModel.todoList.value?.get(position)?.todoLocationName
         }
     }
 
@@ -207,7 +304,7 @@ class MainHomeFragment : Fragment() {
     inner class MemoSearchViewAdapter :
         RecyclerView.Adapter<MemoSearchViewAdapter.MemoSearchHolder>() {
 
-        inner class MemoSearchHolder(private val binding: RowMemoSearchBinding) :
+        inner class MemoSearchHolder(private val binding: RowHomeMemoSearchBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewDate = binding.textViewRowMemoSearchDate
             val textViewCategory = binding.textViewRowMemoSearchCategory
@@ -245,7 +342,7 @@ class MainHomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoSearchHolder =
             MemoSearchHolder(
-                RowMemoSearchBinding.inflate(
+                RowHomeMemoSearchBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -260,5 +357,11 @@ class MainHomeFragment : Fragment() {
             holder.textViewRowMemoSearchMaker.text = "by 누구"
             holder.textViewRowMemoSearch.text = "3시 강사님과 미팅"
         }
+    }
+
+    fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = Date()
+        return dateFormat.format(currentDate)
     }
 }
