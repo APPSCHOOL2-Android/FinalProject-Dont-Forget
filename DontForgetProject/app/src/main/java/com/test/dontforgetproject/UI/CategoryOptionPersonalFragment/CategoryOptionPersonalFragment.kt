@@ -128,11 +128,15 @@ class CategoryOptionPersonalFragment : Fragment() {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 
                 dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
-                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리의 메모도 같이 삭제됩니다."
+                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리의 할일도 같이 삭제됩니다."
 
                 builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                    mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
+                    CategoryRepository.removeCategory(categoryIdx) {
+                        Toast.makeText(mainActivity, "카테고리 삭제 완료", Toast.LENGTH_SHORT)
+                            .show()
+                        mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
+                    }
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
 

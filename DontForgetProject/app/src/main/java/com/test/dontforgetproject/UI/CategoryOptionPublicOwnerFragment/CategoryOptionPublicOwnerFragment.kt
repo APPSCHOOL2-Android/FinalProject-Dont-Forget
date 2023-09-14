@@ -243,11 +243,15 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
 
                 dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
-                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "참여인원의 캘린더에서도 삭제됩니다."
+                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "참여인원의 캘린더에서도 카테고리와\n할일이 모두 삭제됩니다."
 
                 builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                    mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
+                    CategoryRepository.removeCategory(categoryIdx) {
+                        Toast.makeText(mainActivity, "카테고리 삭제 완료", Toast.LENGTH_SHORT)
+                            .show()
+                        mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
+                    }
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
 
