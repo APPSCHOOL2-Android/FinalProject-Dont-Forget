@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.firebase.ui.auth.data.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.test.dontforgetproject.DAO.UserClass
@@ -23,23 +26,27 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.UI.JoinFragment.JoinFragment
+import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageViewModel
+import com.test.dontforgetproject.UI.MainMyPageFragment.MyPageModifyViewModel
 import com.test.dontforgetproject.databinding.FragmentMyPageModifyBinding
 
 class MyPageModifyFragment : Fragment() {
     lateinit var fragmentMyPageModifyBinding: FragmentMyPageModifyBinding
     lateinit var mainActivity: MainActivity
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
+    lateinit var myPageModifyViewModel : MyPageModifyViewModel
     // 업로드할 이미지의 Uri
     var uploadUri: Uri? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentMyPageModifyBinding = FragmentMyPageModifyBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        // 앨범 설정
+        albumLauncher = albumSetting(fragmentMyPageModifyBinding.imageViewMyPageModifyProfile)
         fragmentMyPageModifyBinding.run {
-            albumLauncher = albumSetting(fragmentMyPageModifyBinding.imageViewMyPageModifyProfile)
             toolbarMyPageModify.run {
                 title = getString(R.string.myPage_modify)
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
@@ -47,16 +54,33 @@ class MyPageModifyFragment : Fragment() {
                     mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
                 }
             }
-            val user = MyApplication.loginedUserInfo
-            val name = user.userName
-            val introduce = user.userIntroduce
-            val userImage = if (uploadUri == null) {
-                "None"
-            } else {
-                "image/img_${System.currentTimeMillis()}.jpg"
+
+            UserRepository.getProfile(MyApplication.loginedUserInfo.userImage){
+                if(it.isSuccessful){
+                    val fileUri = it.result
+                    Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
+                }
             }
-            textInputEditTextMyPageModifyName.setText(name)
-            textInputEditTextMyPageModifyIntroduce.setText(introduce)
+            myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
+            myPageModifyViewModel.run {
+                userName.observe(mainActivity){
+                    textInputEditTextMyPageModifyName.setText(it.toString())
+                }
+                userIntoduce.observe(mainActivity){
+                    fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
+                }
+                userImage.observe(mainActivity){
+                    UserRepository.getProfile(it.toString()){
+                        if(it.isSuccessful){
+                            val fileUri = it.result
+                            Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
+                        }
+                    }
+                }
+            }
+            myPageModifyViewModel.getUserInfo(MyApplication.loginedUserInfo)
+            var user = MyApplication.loginedUserInfo
+
 
             // 사진 변경 클릭
             buttonMyPageModifyModifyPhoto.setOnClickListener {
@@ -73,39 +97,50 @@ class MyPageModifyFragment : Fragment() {
             buttonMyPageModifyModifyComplete.setOnClickListener {
                 val newUser = fragmentMyPageModifyBinding.textInputLayoutMyPageModifyName.editText?.text.toString()
                 val newIntroduce = fragmentMyPageModifyBinding.textInputLayoutMyPageModifyIntroduce.editText?.text.toString()
-                if(MyApplication.loginedUserInfo.userImage != "None"){
-                    UserRepository.deleteProfile(MyApplication.loginedUserInfo.userImage)
+
+                // 이미지를 변경하지 않을 경우 "None"으로 설정
+                val newImage = if (uploadUri == null) {
+                    "None"
+                } else {
+                    "image/img_${System.currentTimeMillis()}.jpg"
                 }
-                var newImage = userImage
+
+                // 이미지가 변경되지 않으면 업로드하지 않고 이전 이미지를 사용
+                if (newImage != "None") {
+                    UserRepository.deleteProfile(user.userImage)
+                    UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
+                        if (result.isSuccessful) {
+                            Log.e("이미지 성공", "$uploadUri")
+                        } else {
+                            Log.e("이미지 실패", "$uploadUri")
+                        }
+                    }
+                }
+
                 if (newUser.isNotEmpty() && newIntroduce.isNotEmpty()) {
                     val modifyUser = UserClass(
                         user.userIdx,
-                        newUser, // 수정된 사용자 이름
+                        newUser,
                         user.userEmail,
                         newImage,
-                        newIntroduce, // 수정된 소개 내용
+                        newIntroduce,
                         user.userId,
                         user.userFriendList
                     )
-                    UserRepository.modifyUserInfo(modifyUser) {
-                        if (it.isComplete) {
-                            if(newImage != "None"){
-                                UserRepository.setUploadProfile(newImage,uploadUri!!){
-
-                                }
-                            }
+                    UserRepository.modifyUserInfo(modifyUser) { result ->
+                        if (result.isSuccessful) {
                             MyApplication.loginedUserInfo = modifyUser
                         } else {
                             Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
                         }
                     }
-                    MyApplication.loginedUserInfo = modifyUser
                     Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
                     mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
                 } else {
                     Snackbar.make(fragmentMyPageModifyBinding.root, "빈 칸을 채워주세요.", Snackbar.LENGTH_SHORT).show()
                 }
             }
+
 
         }
 
@@ -149,5 +184,6 @@ class MyPageModifyFragment : Fragment() {
 
         return albumLauncher
     }
+
 
 }

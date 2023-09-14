@@ -36,6 +36,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         dialogTodoAddBinding = DialogTodoAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
 
+        //bundle로 받을 데이터
         name = arguments?.getString("category","개인")!!
 
         dialogTodoAddBinding.run {
@@ -61,15 +62,19 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
             init {
                 textOne = rowDialogTodoAddBinding.textViewRowtodoAddBottom
                 rowDialogTodoAddBinding.textViewRowtodoAddBottom.setOnClickListener {
+
                     //다이어로그 종료시 사용자가 선택한 이름을 메인액티비티에 저장
                     var names = viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName.toString()
                     var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoBackgroundColor.toString()
                     var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoFontColor.toString()
+
                     mainActivity.categoryname = names
                     mainActivity.categoryColor = categoryColors
                     mainActivity.categoryFontColor = fontcolors
+
                     saveAction()
-                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName}입니다",Toast.LENGTH_SHORT).show()
+
+                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName} 입니다",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -94,26 +99,27 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
         override fun onBindViewHolder(holder: allviewholder, position: Int) {
             holder.textOne.text = viewModel.categoryInfo.value!!.get(position).todoCategoryName
-            //bundle에서 가져온 데이터가 리사이클러뷰 데이터와 일치시 체크마크 표시 및 색상 표시
 
+            //사용자가 선택한 카데고리를 표시
             if(holder.textOne.text == name){
                holder.textOne.setCheckMarkDrawable(R.drawable.ic_check_24px)
                 holder.textOne.setTextColor(Color.parseColor("#7A97FF"))
                 holder.textOne.isChecked = true
             }
+
+            //리사이클러 데이터 누수방지
+            holder.setIsRecyclable(false)
         }
+
+
     }
 
+    //카데고리 데이터 변경
     fun saveAction(){
         viewModel.name.value = mainActivity.categoryname.toString()
         viewModel.fontColor.value = mainActivity.categoryFontColor.toLong()
         viewModel.categoryColor.value = mainActivity.categoryColor.toLong()
         dismiss()
     }
-
-
-
-
-
 
 }

@@ -21,8 +21,12 @@ class TodoAddFragmentViewModel :ViewModel(){
 
     init {
         categoryInfo.value = mutableListOf<TodoClass>()
+        name = MutableLiveData<String>()
+        categoryColor = MutableLiveData<Long>()
+        fontColor = MutableLiveData<Long>()
     }
 
+    //카데고리 데이터 삽입
     fun getData(){
 
         var templist = mutableListOf<TodoClass>()
@@ -36,11 +40,22 @@ class TodoAddFragmentViewModel :ViewModel(){
                 var fontcolor = c1.child("categoryFontColor").value as Long
                 var owneridx = c1.child("categoryOwnerIdx").value as Long
                 var ownerName = c1.child("categoryOwnerName").value.toString()
-                var datas = TodoClass(idx,"None",0,idx,name,color,fontcolor,"None","None","None","None",
+                var datas = TodoClass(idx,"None",0,idx,name,fontcolor,color,"None","None","None","None",
                 "None",owneridx,ownerName)
+
                 templist.add(datas)
                 categoryInfo.value = templist
             }
         }
     }
+
+
+    //초기화
+    fun resetList(){
+        categoryInfo.value = mutableListOf<TodoClass>()
+        name = MutableLiveData<String>()
+        categoryColor = MutableLiveData<Long>()
+        fontColor = MutableLiveData<Long>()
+    }
+
 }

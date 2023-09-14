@@ -86,6 +86,8 @@ class MainFriendsListFragment : Fragment() {
                 textViewRowMainFriendsName = rowMainFriendsBinding.textViewRowMainFriendsName
 
                 rowMainFriendsBinding.root.setOnClickListener {
+                    MyApplication.chosedFriendIdx = UFL[adapterPosition].friendIdx
+                    MyApplication.chosedFriendName = UFL[adapterPosition].friendName
                     mainActivity.replaceFragment(MainActivity.FRIENDS_DETAIL_FRAGMENT,true,null)
                 }
             }

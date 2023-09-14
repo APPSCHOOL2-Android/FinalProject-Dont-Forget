@@ -35,7 +35,7 @@ class MyApplication :Application(){
         )
 
         // 선택한 친구 인덱스, 친구이름
-        var chosedFriendIdx = 0
+        var chosedFriendIdx : Long = 0
         var chosedFriendName = ""
 
         // 테마설정

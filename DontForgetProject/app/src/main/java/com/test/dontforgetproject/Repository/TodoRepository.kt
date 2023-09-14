@@ -54,11 +54,28 @@ class TodoRepository {
             todoDataRef.orderByChild("todoIdx").equalTo(todoIdx.toDouble()).get().addOnCompleteListener(callback1)
         }
 
+
         // 날짜로 할일 정보 가져오기
         fun getTodoInfoByDate(todoDate: String, callback1: (Task<DataSnapshot>) -> Unit) {
             val database = FirebaseDatabase.getInstance()
             val todoDataRef = database.getReference("todoInfo")
             todoDataRef.orderByChild("todoDate").equalTo(todoDate).get().addOnCompleteListener(callback1)
+
+        //할일 추가 인덱스 저장
+        fun setTodoIdx(todoIdx: Long,callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("TodoIdx")
+            databaseRef.get().addOnCompleteListener {
+                it.result.ref.setValue(todoIdx).addOnCompleteListener(callback1)
+            }
+        }
+
+        //할일 추가 정보 저장
+        fun setTodoAddInfo(todoClass: TodoClass,callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("todoInfo")
+            databaseRef.push().setValue(todoClass).addOnCompleteListener (callback1)
+
         }
     }
 }
