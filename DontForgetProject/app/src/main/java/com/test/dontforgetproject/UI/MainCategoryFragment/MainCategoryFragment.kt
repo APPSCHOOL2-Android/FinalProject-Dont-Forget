@@ -96,6 +96,7 @@ class MainCategoryFragment : Fragment() {
                     val categoryIsPublic = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryIsPublic!!
                     val categoryOwnerIdx = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryOwnerIdx!!
                     val categoryIdx = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryIdx!!
+                    val categoryOwnerName = mainCategoryViewModel.categoryList.value?.get(adapterPosition)?.categoryOwnerName!!
 
                     val bundle = Bundle()
                     bundle.putLong("categoryIdx", categoryIdx)
@@ -112,6 +113,8 @@ class MainCategoryFragment : Fragment() {
                         }
                         // 타인이 만든 카테고리일 경우
                         else {
+                            bundle.putLong("categoryOwnerIdx", categoryOwnerIdx)
+                            bundle.putString("categoryOwnerName", categoryOwnerName)
                             mainActivity.replaceFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT, true, bundle)
                         }
                     }
@@ -139,5 +142,10 @@ class MainCategoryFragment : Fragment() {
             holder.categoryName.text = mainCategoryViewModel.categoryList.value?.get(position)?.categoryName!!
             holder.categoryName.setTextColor(mainCategoryViewModel.categoryList.value?.get(position)?.categoryColor?.toInt()!!)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainCategoryViewModel.reset()
     }
 }
