@@ -54,7 +54,6 @@ class TodoAddFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
 
         viewModel.run {
-            resetList()
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
             }
@@ -63,6 +62,15 @@ class TodoAddFragment : Fragment() {
             }
             viewModel.fontColor.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.setTextColor(it.toInt())
+            }
+            viewModel.date.observe(mainActivity){
+                todoAddBinding.textViewTodoAddDate.setText(it)
+            }
+            viewModel.time.observe(mainActivity){
+                todoAddBinding.textViewTodoAddAlert.setText(it)
+            }
+            viewModel.locate.observe(mainActivity){
+                todoAddBinding.textViewTodoAddLocation.setText(it)
             }
         }
         todoAddBinding.run {
@@ -110,6 +118,7 @@ class TodoAddFragment : Fragment() {
 
                         Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
                        textViewTodoAddDate.setText(dates)
+                        viewModel.date.value = dates
                     }
 
                     materialDatePicker.show(mainActivity.supportFragmentManager,"Date")
@@ -151,11 +160,14 @@ class TodoAddFragment : Fragment() {
                                 if ("${hour}".toInt()>=12){
                                     var hours = "${hour}".toInt()-12
                                     textViewTodoAddAlert.text=  " 오후 ${hours}시 ${minute}분"
+                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
                                     Toast.makeText(mainActivity,"선택한 시간은 오후 ${hours}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }else{
                                     textViewTodoAddAlert.text= " 오전 ${hour}시 ${minute}분"
+                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
                                     Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }
+
                             }
                         }
                         .show(mainActivity.supportFragmentManager,"Time")
@@ -271,9 +283,9 @@ class TodoAddFragment : Fragment() {
         return  todoAddBinding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.resetList()
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        viewModel.resetList()
+//    }
 
 }
