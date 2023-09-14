@@ -84,5 +84,19 @@ class CategoryRepository {
             val databaseRef = database.getReference("categoryInfo")
             databaseRef.orderByChild("categoryOwnerIdx").equalTo(idx.toDouble()!!).get().addOnCompleteListener (callback1)
         }
+
+        // 카테고리 idx를 통해 할일 삭제
+        fun removeTodoByCategoryIdx(categoryIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("todoInfo")
+
+            todoDataRef.orderByChild("todoCategoryIdx").equalTo(categoryIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        // 해당 데이터 삭제
+                        a1.ref.removeValue().addOnCompleteListener(callback1)
+                    }
+                }
+        }
     }
 }

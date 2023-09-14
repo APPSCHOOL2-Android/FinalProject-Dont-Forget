@@ -132,10 +132,15 @@ class CategoryOptionPersonalFragment : Fragment() {
 
                 builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
+                    // 카테고리 삭제
                     CategoryRepository.removeCategory(categoryIdx) {
                         Toast.makeText(mainActivity, "카테고리 삭제 완료", Toast.LENGTH_SHORT)
                             .show()
                         mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
+                    }
+                    // 카테고리에 속한 할일도 삭제
+                    CategoryRepository.removeTodoByCategoryIdx(categoryIdx) {
+
                     }
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->

@@ -28,11 +28,13 @@ import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import com.github.dhaval2404.colorpicker.util.ColorUtil.parseColor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.UI.CategoryOptionPublicOwnerFragment.CategoryOptionPublicOwnerFragment
 import com.test.dontforgetproject.databinding.DialogCategoryAddPeopleBinding
@@ -53,6 +55,7 @@ class CategoryAddPublicFragment : Fragment() {
     companion object {
         private const val COLOR_SELECTED = "selectedColor"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,7 +63,8 @@ class CategoryAddPublicFragment : Fragment() {
         categoryAddPublicBinding = FragmentCategoryAddPublicBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        categoryAddPublicViewModel = ViewModelProvider(mainActivity)[CategoryAddPublicViewModel::class.java]
+        categoryAddPublicViewModel =
+            ViewModelProvider(mainActivity)[CategoryAddPublicViewModel::class.java]
         categoryAddPublicViewModel.run {
             peopleList.observe(mainActivity) {
                 categoryAddPublicBinding.recyclerViewCategoryAddPublic.adapter?.notifyDataSetChanged()
@@ -89,14 +93,15 @@ class CategoryAddPublicFragment : Fragment() {
             // 색상 선택
             textViewCategoryAddPublicColorPicker.setOnClickListener {
                 MaterialColorPickerDialog
-                    .Builder(mainActivity)        					// Pass Activity Instance
-                    .setTitle("색상")           		// Default "Choose Color"
-                    .setColorShape(ColorShape.CIRCLE)   	// Default ColorShape.CIRCLE
-                    .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
-                    .setDefaultColor(R.color.category1) 		// Pass Default Color
+                    .Builder(mainActivity)                            // Pass Activity Instance
+                    .setTitle("색상")                // Default "Choose Color"
+                    .setColorShape(ColorShape.CIRCLE)    // Default ColorShape.CIRCLE
+                    .setColorSwatch(ColorSwatch._300)    // Default ColorSwatch._500
+                    .setDefaultColor(R.color.category1)        // Pass Default Color
                     .setColorRes(resources.getIntArray(R.array.colors))
                     .setColorListener { color, colorHex ->
-                        textViewCategoryAddPublicColorPicker.backgroundTintList = ColorStateList.valueOf(color)
+                        textViewCategoryAddPublicColorPicker.backgroundTintList =
+                            ColorStateList.valueOf(color)
                         textInputCategoryAddPublicName.boxStrokeColor = color
                         textInputCategoryAddPublicName.hintTextColor = ColorStateList.valueOf(color)
                         editTextCategoryAddPublicName.setTextColor(color)
@@ -106,7 +111,8 @@ class CategoryAddPublicFragment : Fragment() {
 
             // 인원 추가
             buttonCategoryAddPublicAdd.setOnClickListener {
-                val dialogCategoryAddPeopleBinding = DialogCategoryAddPeopleBinding.inflate(layoutInflater)
+                val dialogCategoryAddPeopleBinding =
+                    DialogCategoryAddPeopleBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 
                 val friendsList = arrayListOf<Friend>()
@@ -133,7 +139,7 @@ class CategoryAddPublicFragment : Fragment() {
                 val aAdapter = AddPeopleRecyclerViewAdpater(friendsNotInList, mainActivity)
 
                 dialogCategoryAddPeopleBinding.run {
-                    editTextDialogCategoryAddPeople.addTextChangedListener(object: TextWatcher {
+                    editTextDialogCategoryAddPeople.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
                             s: CharSequence?,
                             start: Int,
@@ -159,7 +165,12 @@ class CategoryAddPublicFragment : Fragment() {
                     recyclerViewDialogCategoryAddPeople.run {
                         adapter = aAdapter
                         layoutManager = LinearLayoutManager(context)
-                        addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
+                        addItemDecoration(
+                            MaterialDividerItemDecoration(
+                                context,
+                                MaterialDividerItemDecoration.VERTICAL
+                            )
+                        )
                     }
                 }
 
@@ -207,11 +218,13 @@ class CategoryAddPublicFragment : Fragment() {
                 }
 
                 if (categoryName.isEmpty()) {
-                    val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
+                    val dialogCategoryNormalBinding =
+                        DialogCategoryNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
 
                     dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 이름 오류"
-                    dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리 이름을 입력하세요."
+                    dialogCategoryNormalBinding.textViewDialogCategoryContent.text =
+                        "카테고리 이름을 입력하세요."
 
                     builder.setView(dialogCategoryNormalBinding.root)
                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
@@ -242,6 +255,31 @@ class CategoryAddPublicFragment : Fragment() {
                     CategoryRepository.addCategoryInfo(categoryClass) {
                         // 카테고리 idx 저장
                         CategoryRepository.setCategoryIdx(categoryIdx) {
+                            // 알림 idx 가져오기
+                            AlertRepository.getAlertIdx {
+                                var alertIdx = it.result.value as Long
+                                val alertContent =
+                                    "${userInfo.userName}님이 ${categoryName} 카테고리에 나를 추가했습니다."
+
+                                for (idx in 1 until categoryJoinUserIdxList.size) {
+                                    alertIdx++
+
+                                    val alertClass = AlertClass(
+                                        alertIdx,
+                                        alertContent,
+                                        categoryJoinUserIdxList[idx],
+                                        1
+                                    )
+
+                                    // 알림 객체 저장
+                                    AlertRepository.addAlertInfo(alertClass) {
+                                        // 알림 idx 저장
+                                        AlertRepository.setAlertIdx(alertIdx) {
+
+                                        }
+                                    }
+                                }
+                            }
                             mainActivity.removeFragment(MainActivity.CATEGORY_ADD_PUBLIC_FRAGMENT)
                         }
                     }
@@ -253,29 +291,34 @@ class CategoryAddPublicFragment : Fragment() {
     }
 
     // 인원추가 다이얼로그 리사이클러뷰 어댑터
-    inner class AddPeopleRecyclerViewAdpater(var friendsList: ArrayList<Friend>, var context: Context) : RecyclerView.Adapter<AddPeopleRecyclerViewAdpater.CategoryAddViewHolder>(), Filterable {
+    inner class AddPeopleRecyclerViewAdpater(
+        var friendsList: ArrayList<Friend>,
+        var context: Context
+    ) : RecyclerView.Adapter<AddPeopleRecyclerViewAdpater.CategoryAddViewHolder>(), Filterable {
         var filteredList: ArrayList<Friend> = friendsList
         val selectedItems = HashSet<Int>()
 
         inner class CategoryAddViewHolder(rowDialogCategoryAddPeopleBinding: RowDialogCategoryAddPeopleBinding) :
             RecyclerView.ViewHolder(rowDialogCategoryAddPeopleBinding.root) {
-                var friendName: TextView
+            var friendName: TextView
 
-                init {
-                    friendName = rowDialogCategoryAddPeopleBinding.textViewRowDialogCategoryAddPeopleName
+            init {
+                friendName =
+                    rowDialogCategoryAddPeopleBinding.textViewRowDialogCategoryAddPeopleName
 
-                    rowDialogCategoryAddPeopleBinding.root.setOnClickListener {
-                        val position = adapterPosition
-                        if (position != RecyclerView.NO_POSITION) {
-                            toggleSelection(position)
-                        }
-                        Log.i("selected", selectedItems.toString())
+                rowDialogCategoryAddPeopleBinding.root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        toggleSelection(position)
                     }
+                    Log.i("selected", selectedItems.toString())
                 }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAddViewHolder {
-            val rowDialogCategoryAddPeopleBinding = RowDialogCategoryAddPeopleBinding.inflate(layoutInflater)
+            val rowDialogCategoryAddPeopleBinding =
+                RowDialogCategoryAddPeopleBinding.inflate(layoutInflater)
             val categoryAddViewHolder = CategoryAddViewHolder(rowDialogCategoryAddPeopleBinding)
 
             rowDialogCategoryAddPeopleBinding.root.layoutParams = ViewGroup.LayoutParams(
@@ -326,7 +369,9 @@ class CategoryAddPublicFragment : Fragment() {
                         val filteredList = ArrayList<Friend>()
                         if (friendsList != null) {
                             for (friend in friendsList) {
-                                if(friend.friendName.lowercase().contains(charString.lowercase())) {
+                                if (friend.friendName.lowercase()
+                                        .contains(charString.lowercase())
+                                ) {
                                     filteredList.add(friend);
                                 }
                             }
@@ -339,7 +384,7 @@ class CategoryAddPublicFragment : Fragment() {
                 }
 
                 override fun publishResults(constraint: CharSequence, results: FilterResults) {
-                    filteredList  = results.values as ArrayList<Friend>
+                    filteredList = results.values as ArrayList<Friend>
                     notifyDataSetChanged()
                 }
             }
@@ -388,7 +433,8 @@ class CategoryAddPublicFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: CategoryOptionPublicViewHolder, position: Int) {
-            holder.userName.text = categoryAddPublicViewModel.peopleList.value?.get(position)?.friendName
+            holder.userName.text =
+                categoryAddPublicViewModel.peopleList.value?.get(position)?.friendName
         }
     }
 

@@ -131,6 +131,7 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 )
             }
 
+            // 인원추가 버튼
             buttonCategoryOptionPublicOwnerAdd.setOnClickListener {
                 val dialogCategoryAddPeopleBinding = DialogCategoryAddPeopleBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
@@ -159,6 +160,7 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 val aAdapter = AddPeopleRecyclerViewAdpater(friendsNotInList, mainActivity)
 
                 dialogCategoryAddPeopleBinding.run {
+                    // 텍스트 입력하면 검색되도록 설정
                     editTextDialogCategoryAddPeople.addTextChangedListener(object: TextWatcher {
                         override fun beforeTextChanged(
                             s: CharSequence?,
@@ -248,10 +250,15 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
 
                 builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
+                    // 카테고리 삭제
                     CategoryRepository.removeCategory(categoryIdx) {
                         Toast.makeText(mainActivity, "카테고리 삭제 완료", Toast.LENGTH_SHORT)
                             .show()
                         mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
+                    }
+                    // 카테고리에 속한 할일도 삭제
+                    CategoryRepository.removeTodoByCategoryIdx(categoryIdx) {
+
                     }
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
