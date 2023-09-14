@@ -142,7 +142,7 @@ class LoginFragment : Fragment() {
                                     }
                                 }
                             }else{
-                                
+                                // 로그인 된 것으로 로그인하기
                             }
                         }
 
