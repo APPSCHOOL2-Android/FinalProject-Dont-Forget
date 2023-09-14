@@ -185,6 +185,7 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                     recyclerViewDialogCategoryAddPeople.run {
                         adapter = aAdapter
                         layoutManager = LinearLayoutManager(context)
+                        addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
                     }
                 }
 
@@ -242,8 +243,8 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 val dialogCategoryNormalBinding = DialogCategoryNormalBinding.inflate(layoutInflater)
 
-                dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "카테고리 삭제"
-                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "참여인원의 캘린더에서도 카테고리와\n할일이 모두 삭제됩니다."
+                dialogCategoryNormalBinding.textViewDialogCategoryTitle.text = "경고"
+                dialogCategoryNormalBinding.textViewDialogCategoryContent.text = "카테고리를 삭제하면 참여인원의 캘린더에서도 카테고리와 할일이 모두 삭제됩니다."
 
                 builder.setView(dialogCategoryNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
