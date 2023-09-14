@@ -1,7 +1,9 @@
 package com.test.dontforgetproject.UI.LoginFragment
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,9 +12,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -24,6 +31,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.Util.FirebaseUtil
 import com.test.dontforgetproject.databinding.FragmentLoginBinding
 import com.test.dontforgetproject.databinding.FragmentMainBinding
 import kotlin.math.log
@@ -33,8 +41,8 @@ class LoginFragment : Fragment() {
     lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
     lateinit var firebaseAuth:FirebaseAuth
-
-
+    lateinit var mGoogleSignInClient : GoogleSignInClient
+    lateinit var firebaseUtil: FirebaseUtil
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +50,7 @@ class LoginFragment : Fragment() {
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
         mainActivity = activity as MainActivity
         fragmentLoginBinding.run {
+
             textInputLayoutLoginEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
                     var emailCheck = textInputLayoutLoginEmail.editText?.text.toString()
@@ -73,6 +82,7 @@ class LoginFragment : Fragment() {
                 }
             }
             firebaseAuth = FirebaseAuth.getInstance()
+            firebaseUtil = FirebaseUtil(firebaseAuth)
             // 로그인버튼
             buttonLogin.setOnClickListener {
                 var email = textInputLayoutLoginEmail.editText?.text.toString()
@@ -93,21 +103,15 @@ class LoginFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.LOGIN_FIND_PW_FRAGMENT,true,null)
             }
             buttonLoginGoogleLogin.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putInt("UserType", MyApplication.GOOGLE_LOGIN)
+                firebaseAuth = FirebaseAuth.getInstance()
                 val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
+                    .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                    .requestEmail() // 이메일 권한 요청 (선택 사항)
                     .build()
+
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
                 val signInIntent = googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, 9001)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    //실행할 코드
-                }, 1000)
-
-                mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
-
             }
 
 
@@ -115,6 +119,44 @@ class LoginFragment : Fragment() {
 
         return fragmentLoginBinding.root
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 9001) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseUtil.firebaseAuthWithGoogle(account?.idToken!!)
+                firebaseAuth.signInWithCustomToken(account.idToken!!).addOnCompleteListener(requireActivity(),
+                    OnCompleteListener {
+                        if(task.isSuccessful){
+                            var userId = firebaseAuth.currentUser?.uid
+                            if (userId != null) {
+                                UserRepository.getUserInfoById(userId){
+                                    if(!it.result.exists()){
+                                        val bundle = Bundle()
+                                        bundle.putInt("UserType", MyApplication.GOOGLE_LOGIN)
+                                        bundle.putString("UserEmail","${account.email}")
+                                        mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
+                                    }
+                                }
+                            }else{
+                                
+                            }
+                        }
+
+                    })
+
+
+
+            } catch (e: ApiException) {
+                // Google 로그인 실패
+            }
+        }
+
+    }
+
     fun checkLogin(email:String, password:String){
         fragmentLoginBinding.run {
             firebaseAuth.signInWithEmailAndPassword(email, password)

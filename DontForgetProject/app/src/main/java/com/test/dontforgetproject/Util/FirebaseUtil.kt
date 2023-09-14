@@ -47,30 +47,23 @@ class FirebaseUtil(var firebaseAuth: FirebaseAuth){
             }
         // [END sign_in_with_email]
     }
-    fun sendEmailVerification() {
-        // [START send_email_verification]
-        val user = firebaseAuth.currentUser!!
-        user.sendEmailVerification()
-            .addOnCompleteListener { task ->
 
-            }
-        // [END send_email_verification]
-    }
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(ContentValues.TAG, "signInWithCredential:success")
-                    val user = firebaseAuth.currentUser
+                    Log.d("성공로그", "signInWithCredential:success")
 
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
+                    Log.w("실패로그", "signInWithCredential:failure", task.exception)
 
                 }
             }
     }
+
+
 
 }

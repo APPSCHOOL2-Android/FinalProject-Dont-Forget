@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,11 +61,17 @@ class JoinFragment : Fragment() {
             var checkBoolean = false
             var userType = arguments?.getInt("UserType")
             // 구글 로그인일 경우
-            if(userType == MyApplication.GOOGLE_LOGIN){
-                textInputLayoutJoinEmail.visibility = View.GONE
-                textInputLayoutJoinPassword.visibility = View.GONE
-                textInputLayoutJoinPasswordCheck.visibility = View.GONE
+            if (userType == MyApplication.GOOGLE_LOGIN) {
+                val userEmail = arguments?.getString("UserEmail")
+                fragmentJoinBinding.textInputLayoutJoinEmail.editText?.apply {
+                    setText(userEmail)
+                    isEnabled = false
+                }
+                fragmentJoinBinding.textInputLayoutJoinPassword.visibility = View.GONE
+                fragmentJoinBinding.textInputLayoutJoinPasswordCheck.visibility = View.GONE
             }
+
+
             // 입력 유효성 검사
             textInputLayoutJoinEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
@@ -131,7 +138,10 @@ class JoinFragment : Fragment() {
                         Toast.makeText(requireContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_SHORT).show()
                     }
                 }else if(checkBoolean && userType == MyApplication.GOOGLE_LOGIN){
+
                     var userId = firebaseAuth.currentUser?.uid
+                    Log.e("아이디","$userId")
+
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
                     }
