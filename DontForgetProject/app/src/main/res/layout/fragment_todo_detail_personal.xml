@@ -56,18 +56,20 @@
             android:layout_height="@dimen/margin_vertical_big2">
 
         </Space>
+
         <LinearLayout
             android:id="@+id/linearLayout_todoDetailPersonal_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
 
+                style="@style/Theme.DontForgetProject.CardView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_vertical_small1"
-                style="@style/Theme.DontForgetProject.CardView">
+                android:layout_margin="@dimen/margin_vertical_small1">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -103,7 +105,8 @@
             android:id="@+id/linearLayout_todoDetailPersonal_alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -145,7 +148,8 @@
             android:id="@+id/linearLayout_todoDetailPersonal_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
