@@ -48,6 +48,9 @@ class TodoDetailPersonalFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
+
+        todoIdx = arguments?.getLong("todoIdx",0)!!
+
         todoDetailPersonalViewModel.run {
 
             todoContent.observe(mainActivity) {
@@ -154,8 +157,33 @@ class TodoDetailPersonalFragment : Fragment() {
                 var date = textViewTodoDetailPersonalDate.text.toString()
                 var time = textViewTodoDetailPersonalAlert.text.toString()
                 var locationName = textViewTodoDetailPersonalLocation.text.toString()
-                var locationLatitude = ""
-                var locationLongitude = ""
+                var locationLatitude = "None"
+                var locationLongitude = "None"
+
+                if(content.isEmpty()) {
+
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
+                    builder.setMessage("할일을 입력해주세요.")
+                    builder.setNegativeButton("취소", null)
+                    builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                        mainActivity.showSoftInput(textInputEditTextTodoDetailPersonal)
+                    }
+                    builder.show()
+
+                    return@setOnClickListener
+                }
+
+                if(date.isEmpty()) {
+
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
+                    builder.setMessage("날짜를 선택해주세요.")
+                    builder.setNegativeButton("취소", null)
+                    builder.setPositiveButton("확인", null)
+                    builder.show()
+
+                    return@setOnClickListener
+
+                }
 
                 val todoDataClass = TodoClass(
                     todoIdx,
