@@ -20,6 +20,7 @@ import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentMainAlertBinding
 import com.test.dontforgetproject.databinding.RowMainAlertBinding
@@ -82,6 +83,28 @@ class MainAlertFragment : Fragment() {
             init{
                 rowAlert = rowBinding.textViewRowMainAlertAlert
                 rowAlertLogo = rowBinding.imageView
+
+                rowBinding.root.setOnClickListener {
+                    // 친구 알림
+                    if(userAlertList.get(position).alertType.toInt() == 0) {
+                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
+
+                        }
+                    }
+                    // 카테고리 알림
+                    else if(userAlertList.get(position).alertType.toInt() == 1) {
+                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
+
+                        }
+                    }
+
+                    // 할일 알림
+                    else if(userAlertList.get(position).alertType.toInt() == 2) {
+                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
+
+                        }
+                    }
+                }
             }
         }
 
