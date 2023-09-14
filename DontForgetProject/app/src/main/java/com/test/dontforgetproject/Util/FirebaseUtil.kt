@@ -2,8 +2,10 @@ package com.test.dontforgetproject.Util
 
 import android.content.ContentValues
 import android.util.Log
+import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.test.dontforgetproject.Repository.UserRepository
 
 class FirebaseUtil(var firebaseAuth: FirebaseAuth){
 
@@ -32,21 +34,6 @@ class FirebaseUtil(var firebaseAuth: FirebaseAuth){
             }
     }
 
-
-    fun signIn(email: String, password: String) {
-        // [START sign_in_with_email]
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = firebaseAuth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-
-                }
-            }
-        // [END sign_in_with_email]
-    }
 
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)

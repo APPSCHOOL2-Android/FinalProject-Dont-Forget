@@ -140,9 +140,40 @@ class LoginFragment : Fragment() {
                                         bundle.putString("UserEmail","${account.email}")
                                         mainActivity.replaceFragment(MainActivity.JOIN_FRAGMENT,true,bundle)
                                     }
+                                    else{
+                                        for(c1 in it.result.children){
+                                            var newFriendList = mutableListOf<Friend>()
+                                            var newHashMap = c1.child("userFriendList").value as ArrayList<HashMap<String,Any>>
+                                            for( i in newHashMap){
+                                                var idx = i["friendIdx"] as Long
+                                                var name = i["friendName"] as String
+                                                var email = i["friendEmail"] as String
+
+                                                var friend = Friend(idx, name, email)
+                                                newFriendList.add(friend)
+                                            }
+                                            var userInfo = UserClass(
+                                                c1.child("userIdx").value as Long,
+                                                c1.child("userName").value as String,
+                                                c1.child("userEmail").value as String,
+                                                c1.child("userImage").value as String,
+                                                c1.child("userIntroduce").value as String,
+                                                c1.child("userId").value as String,
+                                                newFriendList as ArrayList<Friend>
+                                            )
+                                            MyApplication.loginedUserInfo = userInfo
+                                            MyApplication.isLogined = true
+                                            val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                                            val editor = sharedPreferences.edit()
+                                            editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
+                                            editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
+                                            editor.apply()
+                                            Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
+                                            mainActivity.removeFragment(MainActivity.LOGIN_FRAGMENT)
+                                            mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT,false,null)
+                                        }
+                                    }
                                 }
-                            }else{
-                                // 로그인 된 것으로 로그인하기
                             }
                         }
 
