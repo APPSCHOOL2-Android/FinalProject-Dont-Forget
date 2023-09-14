@@ -33,6 +33,8 @@ class TodoDetailPublicFragment : Fragment() {
         fragmentTodoDetailPublicBinding = FragmentTodoDetailPublicBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        todoIdx = arguments?.getLong("todoIdx",0)!!
+
         todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
         todoDetailPersonalViewModel.run {
 

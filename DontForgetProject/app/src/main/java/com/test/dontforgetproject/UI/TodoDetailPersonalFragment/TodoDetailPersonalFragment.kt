@@ -48,6 +48,9 @@ class TodoDetailPersonalFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
+
+        todoIdx = arguments?.getLong("todoIdx",0)!!
+
         todoDetailPersonalViewModel.run {
 
             todoContent.observe(mainActivity) {
