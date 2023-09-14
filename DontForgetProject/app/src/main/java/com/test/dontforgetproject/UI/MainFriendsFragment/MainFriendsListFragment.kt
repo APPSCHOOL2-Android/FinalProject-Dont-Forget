@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,8 +27,11 @@ class MainFriendsListFragment : Fragment() {
 
     lateinit var viewModel: MainFriendsViewModel
 
-    // 친구목록 리스트
+    // 친구목록 전체 리스트
     var UFL = mutableListOf<Friend>()
+
+    // 현재 내가 보여줄 리스트
+    var searchUFL = mutableListOf<Friend>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,12 +46,13 @@ class MainFriendsListFragment : Fragment() {
         viewModel.run{
             this.myFriendList.observe(mainActivity){
                 UFL = it as ArrayList<Friend>
+                searchUFL = UFL
                 MyApplication.loginedUserInfo.userFriendList
 
                 // 자기자신은 제거
-                for((index,friend) in UFL.withIndex()){
+                for((index,friend) in searchUFL.withIndex()){
                     if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
-                        UFL.removeAt(index)
+                        searchUFL.removeAt(index)
                     }
                 }
 
@@ -56,10 +62,53 @@ class MainFriendsListFragment : Fragment() {
         viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
 
         binding.run{
+            // 아래로 드래그 새로고침
+            swipeMainFriendList.setOnRefreshListener {
+                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
+                binding.swipeMainFriendList.isRefreshing = false
+
+                viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
+                viewModel.run{
+                    this.myFriendList.observe(mainActivity){
+                        UFL = it as ArrayList<Friend>
+                        searchUFL = UFL
+                        MyApplication.loginedUserInfo.userFriendList
+
+                        // 자기자신은 제거
+                        for((index,friend) in searchUFL.withIndex()){
+                            if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
+                                searchUFL.removeAt(index)
+                            }
+                        }
+
+                        binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+                    }
+                }
+            }
 
             // 검색창
             searchViewMainFriendsList.run{
+                queryHint = "친구이름을 입력해주세요"
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        //검색어 입력 순간마다의 이벤트...
+                        return true
+                    }
 
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        //키보드에서 검색 버튼을 누르는 순간의 이벤트
+                        val resultList = mutableListOf<Friend>()
+                        for((i,v) in UFL.withIndex()){
+                            if(v.friendName?.contains(query) == true){
+                                resultList.add(v)
+                            }
+                        }
+                        searchUFL = resultList
+                        binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+
+                        return true
+                    }
+                })
             }
 
 
@@ -108,11 +157,11 @@ class MainFriendsListFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-           return UFL.size
+           return searchUFL.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderFL, position: Int) {
-            holder.textViewRowMainFriendsName.text = UFL[position].friendName
+            holder.textViewRowMainFriendsName.text = searchUFL[position].friendName
         }
     }
 }

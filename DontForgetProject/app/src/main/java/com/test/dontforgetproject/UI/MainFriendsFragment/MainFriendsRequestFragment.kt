@@ -51,6 +51,20 @@ class MainFriendsRequestFragment : Fragment() {
         viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
 
         binding.run {
+            // 드래그시 새로고침
+            swipeMainFriendsRequest.setOnRefreshListener {
+                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
+                binding.swipeMainFriendsRequest.isRefreshing = false
+
+                viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
+                viewModel.run {
+                    joinFriendList.observe(mainActivity) {
+                        requestList = it
+                        binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+                    }
+                }
+            }
+
             // 리싸이클러
             recyclerMainFriendsRequest.run {
                 adapter = RecyclerAdapterFR()
