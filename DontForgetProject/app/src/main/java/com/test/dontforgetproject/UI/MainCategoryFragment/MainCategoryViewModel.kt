@@ -12,6 +12,11 @@ class MainCategoryViewModel() : ViewModel() {
     init {
         categoryList.value = mutableListOf<CategoryClass>()
     }
+
+    fun reset() {
+        categoryList.value = mutableListOf<CategoryClass>()
+    }
+
     // 나의 카테고리 가져오기
     fun getMyCategory(userIdx: Long) {
         val tempCategoryList = mutableListOf<CategoryClass>()
