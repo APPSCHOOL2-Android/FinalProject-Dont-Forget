@@ -2,13 +2,17 @@ package com.test.dontforgetproject.UI.MainMyPageFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -22,13 +26,14 @@ class MainMyPageFragment : Fragment() {
     lateinit var fragmentMainMyPageBinding: FragmentMainMyPageBinding
     lateinit var mainActivity: MainActivity
     lateinit var mainMyPageViewModel: MainMyPageViewModel
+    lateinit var firebaseAuth : FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentMainMyPageBinding = FragmentMainMyPageBinding.inflate(inflater)
         mainActivity = activity as MainActivity
-
+        firebaseAuth = FirebaseAuth.getInstance()
         fragmentMainMyPageBinding.run {
             toolbarMainMyPage.run {
                 setTitle(getString(R.string.myPage))
@@ -75,7 +80,10 @@ class MainMyPageFragment : Fragment() {
                     editor.remove("isLoggedIn")
                     editor.remove("isLoggedUser")
                     editor.apply()
+                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    googleSignInClient.signOut().addOnCompleteListener {}
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+
                 }
                 builder.setNegativeButton("취소",null)
 
@@ -87,7 +95,23 @@ class MainMyPageFragment : Fragment() {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
                 builder.setView(dialogMypageWithdrawBinding.root)
                 builder.setNegativeButton("회원탈퇴") { dialog, which ->
-                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                    UserRepository.deleteUserInfo(MyApplication.loginedUserInfo.userIdx){
+                        if(it.isSuccessful){
+                            var currentUser = firebaseAuth.currentUser!!
+                            currentUser.delete().addOnCompleteListener {task ->
+                                if(task.isSuccessful) {
+                                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                                    val editor = sharedPreferences.edit()
+                                    editor.remove("isLoggedIn")
+                                    editor.remove("isLoggedUser")
+                                    editor.apply()
+                                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    googleSignInClient.signOut().addOnCompleteListener {}
+                                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,false,null)
+                                }
+                            }
+                        }
+                    }
                 }
                 builder.setPositiveButton("취소",null)
                 builder.show()
