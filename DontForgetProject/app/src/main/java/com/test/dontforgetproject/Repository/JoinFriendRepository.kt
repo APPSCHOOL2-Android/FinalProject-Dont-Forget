@@ -44,7 +44,7 @@ class JoinFriendRepository {
         }
 
         // 이메일로 해당 친구 이름 가져오기
-        fun getNameByEmail(userEmail:String, callback1: (Task<DataSnapshot>) -> Unit){
+        fun getUserInfoByEmail(userEmail:String, callback1: (Task<DataSnapshot>) -> Unit){
             val database = FirebaseDatabase.getInstance()
             val databaseRef = database.getReference("userInfo")
             databaseRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener(callback1)

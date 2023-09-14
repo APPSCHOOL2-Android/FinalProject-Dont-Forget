@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
-import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.databinding.FragmentMainFriendsMyRequestBinding
-import com.test.dontforgetproject.databinding.RowMainFriendsListBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsMyRequestBinding
 
 class MainFriendsMyRequestFragment : Fragment() {
@@ -89,7 +87,7 @@ class MainFriendsMyRequestFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolderMR, position: Int) {
             // 상대방 이름
-            JoinFriendRepository.getNameByEmail(MRL[position].joinFriendReceiverEmail){
+            JoinFriendRepository.getUserInfoByEmail(MRL[position].joinFriendReceiverEmail){
                 for(c1 in it.result.children){
                     var userName = c1.child("userName").value as String
                     holder.textViewRowMainFriendsMyRequestName.text = userName
