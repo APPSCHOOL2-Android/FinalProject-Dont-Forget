@@ -159,6 +159,7 @@ class CategoryAddPublicFragment : Fragment() {
                     recyclerViewDialogCategoryAddPeople.run {
                         adapter = aAdapter
                         layoutManager = LinearLayoutManager(context)
+                        addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
                     }
                 }
 
