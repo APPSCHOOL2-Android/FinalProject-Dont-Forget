@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,11 +61,17 @@ class JoinFragment : Fragment() {
             var checkBoolean = false
             var userType = arguments?.getInt("UserType")
             // 구글 로그인일 경우
-            if(userType == MyApplication.GOOGLE_LOGIN){
-                textInputLayoutJoinEmail.visibility = View.GONE
-                textInputLayoutJoinPassword.visibility = View.GONE
-                textInputLayoutJoinPasswordCheck.visibility = View.GONE
+            if (userType == MyApplication.GOOGLE_LOGIN) {
+                val userEmail = arguments?.getString("UserEmail")
+                fragmentJoinBinding.textInputLayoutJoinEmail.editText?.apply {
+                    setText(userEmail)
+                    isEnabled = false
+                }
+                fragmentJoinBinding.textInputLayoutJoinPassword.visibility = View.GONE
+                fragmentJoinBinding.textInputLayoutJoinPasswordCheck.visibility = View.GONE
             }
+
+
             // 입력 유효성 검사
             textInputLayoutJoinEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
@@ -112,11 +119,6 @@ class JoinFragment : Fragment() {
                             if (firebaseCheck == "성공") {
                                 if (userId != null) {
                                     makeUser(userName,email,userImage,userIntroduce,userId)
-                                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                                    val editor = sharedPreferences.edit()
-                                    editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
-                                    editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
-                                    editor.apply()
                                 }
                             }
                             // 이미 등록된 이메일일 경우
@@ -136,14 +138,12 @@ class JoinFragment : Fragment() {
                         Toast.makeText(requireContext(), "비밀번호가 서로 다릅니다.", Toast.LENGTH_SHORT).show()
                     }
                 }else if(checkBoolean && userType == MyApplication.GOOGLE_LOGIN){
+
                     var userId = firebaseAuth.currentUser?.uid
+                    Log.e("아이디","$userId")
+
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
-                        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putBoolean("isLoggedIn", true) // 로그인 상태를 true로 설정
-                        editor.putString("isLoggedUser", userId) // 로그인 상태를 true로 설정
-                        editor.apply()
                     }
                 }
                 else if(!checkBoolean){
@@ -228,8 +228,6 @@ class JoinFragment : Fragment() {
                 UserRepository.setUserIdx(userindex){
                     if(uploadUri!=null){
                         UserRepository.setUploadProfile(userImage,uploadUri!!){
-                            if(it.isSuccessful) Toast.makeText(requireContext(),"성공적",Toast.LENGTH_SHORT).show()
-                            else Toast.makeText(requireContext(),"왜지",Toast.LENGTH_SHORT).show()
                         }
                     }
                     Snackbar.make(fragmentJoinBinding.root, "저장되었습니다.", Snackbar.LENGTH_SHORT).show()
