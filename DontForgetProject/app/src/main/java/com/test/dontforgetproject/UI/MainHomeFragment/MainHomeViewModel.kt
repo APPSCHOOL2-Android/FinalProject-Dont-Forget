@@ -138,4 +138,8 @@ class MainHomeViewModel : ViewModel() {
             todoList.value = tempList
         }
     }
+
+    fun getTodoListForCategory(categoryIdx: Long): List<TodoClass> {
+        return todoList.value?.filter { it.todoCategoryIdx == categoryIdx } ?: emptyList()
+    }
 }

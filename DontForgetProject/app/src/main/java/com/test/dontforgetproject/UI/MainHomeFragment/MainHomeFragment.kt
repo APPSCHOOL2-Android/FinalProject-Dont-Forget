@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
+import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -62,7 +63,10 @@ class MainHomeFragment : Fragment() {
         }
 
         selectedDate = getCurrentDate()
-        mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+        mainHomeViewModel.getTodoByDate(
+            selectedDate,
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+        )
         Log.d("asdasdasd", selectedDate)
 
         binding.run {
@@ -115,7 +119,10 @@ class MainHomeFragment : Fragment() {
                 Log.d("asdasdasd", selectedDate)
 
                 // 고른 날에 맞는 todo가져오기
-                mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+                mainHomeViewModel.getTodoByDate(
+                    selectedDate,
+                    mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                )
             }
 
             mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
@@ -129,8 +136,6 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
-        //private var selectedCategoryPosition = 0
-
         inner class CategoryTabViewHolder(private val binding: RowHomeCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val textViewCategoryName = binding.textViewRowCategoryTab
@@ -138,12 +143,12 @@ class MainHomeFragment : Fragment() {
 
             init {
                 binding.root.setOnClickListener {
-                    Log.d("asdasdasd", "인덱스 : ${adapterPosition}")
+                    Log.d("asdasdasd", "탭 인덱스 : ${adapterPosition}")
                     if (adapterPosition != 0) {
                         // 전체가 아닌 카테고리
                         Log.d(
                             "asdasdasd",
-                            "인덱스 : ${mainHomeViewModel.categories.value?.get(adapterPosition - 1)?.categoryIdx}"
+                            "카테고리 인덱스 : ${mainHomeViewModel.categories.value?.get(adapterPosition - 1)?.categoryIdx}"
                         )
                         mainHomeViewModel.getCategoryByCategoryIdx(
                             mainHomeViewModel.categories.value?.get(
@@ -231,20 +236,31 @@ class MainHomeFragment : Fragment() {
 
         override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
             holder.textViewCategory.run {
-                text = mainHomeViewModel.categories2.value?.get(position)?.categoryName
-                val color =
-                    mainHomeViewModel.categories2.value?.get(position)?.categoryColor!!.toInt()
+                val category = mainHomeViewModel.categories2.value?.get(position)
+                text = category?.categoryName
+                val color = category?.categoryColor?.toInt() ?: 0
                 setTextColor(color)
             }
             holder.recyclerViewRowHomeCategory.run {
-                adapter = TodoRecyclerViewAdapter()
+                val categoryIdx =
+                    mainHomeViewModel.categories2.value?.get(position)?.categoryIdx ?: -1
+                val todoListForCategory = mainHomeViewModel.getTodoListForCategory(categoryIdx)
+                val isCategoryPublic =
+                    mainHomeViewModel.categories2.value?.get(position)?.categoryIsPublic
+                val ownerIdx = mainHomeViewModel.categories2.value?.get(position)?.categoryOwnerIdx
+                adapter =
+                    TodoRecyclerViewAdapter(todoListForCategory, isCategoryPublic!!, ownerIdx!!)
                 layoutManager = LinearLayoutManager(context)
             }
         }
     }
 
     // 할 일
-    inner class TodoRecyclerViewAdapter :
+    inner class TodoRecyclerViewAdapter(
+        private val todoList: List<TodoClass>,
+        private val isCategoryPublic: Long,
+        private val ownerIdx: Long
+    ) :
         RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
 
         inner class TodoViewHolder(private val binding: RowHomeTodoBinding) :
@@ -270,15 +286,6 @@ class MainHomeFragment : Fragment() {
                         }
                     }
                 }
-
-                textViewTodo.setOnClickListener {
-                    // 개인, 공유(내가만듬), 공유(내가 안만듬) 분기 필요
-                    mainActivity.replaceFragment(
-                        MainActivity.TODO_DETAIL_PERSONAL_FRAGMENT,
-                        true,
-                        null
-                    )
-                }
             }
         }
 
@@ -291,12 +298,44 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.todoList.value?.size!!
+        override fun getItemCount(): Int = todoList.size
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-            holder.textViewTodo.text = mainHomeViewModel.todoList.value?.get(position)?.todoContent
-            holder.textViewTodoMaker.text = "by ${mainHomeViewModel.todoList.value?.get(position)?.todoOwnerName}"
-            holder.textViewRowTodoLocation.text = mainHomeViewModel.todoList.value?.get(position)?.todoLocationName
+            Log.d(
+                "asdasdasd",
+                "인덱스 : ${mainHomeViewModel.todoList.value?.get(position)?.todoCategoryIdx}"
+            )
+            val todo = todoList[position]
+            holder.textViewTodo.run {
+                text = todo.todoContent
+                setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putLong("todoIdx", todo.todoIdx)
+                    if (isCategoryPublic == 0L) {
+                        mainActivity.replaceFragment(
+                            MainActivity.TODO_DETAIL_PERSONAL_FRAGMENT,
+                            true,
+                            bundle
+                        )
+                    } else {
+                        if (MyApplication.loginedUserInfo.userIdx == ownerIdx) {
+                            mainActivity.replaceFragment(
+                                MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT,
+                                true,
+                                bundle
+                            )
+                        } else {
+                            mainActivity.replaceFragment(
+                                MainActivity.TODO_DETAIL_PUBLIC_FRAGMENT,
+                                true,
+                                bundle
+                            )
+                        }
+                    }
+                }
+            }
+            holder.textViewTodoMaker.text = "by ${todo.todoOwnerName}"
+            holder.textViewRowTodoLocation.text = todo.todoLocationName
         }
     }
 
