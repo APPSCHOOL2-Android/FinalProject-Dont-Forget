@@ -41,7 +41,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imageView_friendsDetail"
                     android:layout_width="@dimen/image_size_profile"
                     android:layout_height="@dimen/image_size_profile"
                     android:scaleType="centerCrop"
@@ -56,14 +56,6 @@
                     android:text="친구이름"
                     android:textSize="@dimen/font_size_medium" />
 
-                <TextView
-                    android:id="@+id/textView_friendsDetail_code"
-                    style="@style/Theme.DontForgetProject.Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/scdream_light"
-                    android:text="999999"
-                    android:textSize="@dimen/font_size_medium" />
 
                 <TextView
                     android:id="@+id/textView_friendsDetail_email"

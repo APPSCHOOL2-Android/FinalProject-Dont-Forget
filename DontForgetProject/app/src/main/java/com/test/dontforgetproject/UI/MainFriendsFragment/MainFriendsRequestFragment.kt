@@ -26,6 +26,7 @@ import com.test.dontforgetproject.databinding.RowMainFriendsRequestBinding
 class MainFriendsRequestFragment : Fragment() {
     lateinit var binding: FragmentMainFriendsRequestBinding
     lateinit var mainActivity: MainActivity
+    lateinit var mainFriendsListFragment: MainFriendsListFragment
 
     lateinit var viewModel: MainFriendsViewModel
 
@@ -38,6 +39,7 @@ class MainFriendsRequestFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMainFriendsRequestBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        mainFriendsListFragment = MainFriendsListFragment()
 
         viewModel = ViewModelProvider(mainActivity)[MainFriendsViewModel::class.java]
         viewModel.run {
@@ -174,8 +176,10 @@ class MainFriendsRequestFragment : Fragment() {
                         userInfo.userFriendList.add(newFriend)
 
                         UserRepository.modifyUserInfo(userInfo) {
-                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT).show()
+                            // Todo MainFriendsListFragment notify
+                            mainFriendsListFragment.UFL.add(newFriend)
+                            mainFriendsListFragment.binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
                         }
                     }
                 }

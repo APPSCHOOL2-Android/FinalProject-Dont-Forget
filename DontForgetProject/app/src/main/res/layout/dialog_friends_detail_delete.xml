@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_size_normal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/scdream_bold"
+        android:text="친구 삭제"
+        style="@style/Theme.DontForgetProject.Text"
+        android:textSize="@dimen/font_size_big" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_size_normal"
+        android:fontFamily="@font/scdream_regular"
+        android:text="친구를 삭제합니다"
+        style="@style/Theme.DontForgetProject.Text"
+        android:textSize="@dimen/font_size_medium" />
+</LinearLayout>
