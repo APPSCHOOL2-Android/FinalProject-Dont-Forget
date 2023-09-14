@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,12 +36,24 @@ class MainFriendsMyRequestFragment : Fragment() {
         viewModel.run{
             myRequestList.observe(mainActivity){
                 MRL = it
-                binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
             }
         }
         viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
 
         binding.run{
+            swipeMainFriendsMyRequest.setOnRefreshListener {
+                binding.swipeMainFriendsMyRequest.isRefreshing = false
+                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
+
+                viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
+                viewModel.run{
+                    myRequestList.observe(mainActivity){
+                        MRL = it
+                        binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
+                    }
+                }
+            }
+
             recyclerMainFriendsMyRequest.run{
                 adapter = RecyclerAdapterMR()
                 layoutManager = LinearLayoutManager(mainActivity)

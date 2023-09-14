@@ -64,4 +64,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
     implementation 'com.google.firebase:firebase-storage:20.2.1'
 
+    // 아래로 드래그시 새로고침 뷰
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

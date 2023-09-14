@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.MainFriendsFragment
 
+import android.app.Application
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -13,12 +14,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.JoinFriend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogMainFriendsBinding
@@ -213,16 +216,30 @@ class MainFriendsFragment : Fragment() {
                                                                 )
                                                                 JoinFriendRepository.addJoinFriend(joinFriend) {
                                                                     JoinFriendRepository.setJoinFriendIdx(joinFriendIdx) {
-                                                                        Toast.makeText(
-                                                                            mainActivity,
-                                                                            "친구 요청이 완료 되었습니다!",
-                                                                            Toast.LENGTH_SHORT
-                                                                        ).show()
 
                                                                         // TODO MainFriendMyRequestFragment 리싸이클러뷰 notifysetchange
                                                                         // 아직 구현 미완
                                                                         mainFriendsMyRequestFragment.MRL.add(joinFriend)
-//                                                                        mainFriendsMyRequestFragment.binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
+
+                                                                        // TODO ALert 생성
+                                                                        AlertRepository.getAlertIdx {
+                                                                            var alertIdx = it.result.value as Long
+                                                                            alertIdx ++
+
+                                                                            var alertContent = MyApplication.loginedUserInfo.userName + " 님이 친구 요청을 보냈습니다"
+                                                                            var alertReceiverIdx = receiverIdx
+                                                                            var alertType : Long = 0
+
+                                                                            var alert = AlertClass(alertIdx, alertContent, alertReceiverIdx, alertType)
+
+                                                                            AlertRepository.addAlertInfo(alert){
+                                                                                Toast.makeText(
+                                                                                    mainActivity,
+                                                                                    "친구 요청이 완료 되었습니다!",
+                                                                                    Toast.LENGTH_SHORT
+                                                                                ).show()
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
