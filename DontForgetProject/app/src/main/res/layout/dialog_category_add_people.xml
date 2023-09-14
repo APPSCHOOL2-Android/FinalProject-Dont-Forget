@@ -4,14 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="24dp"
-    android:paddingRight="16dp">
+    android:paddingLeft="@dimen/margin_vertical_big1"
+    android:paddingTop="@dimen/margin_vertical_big1"
+    android:paddingRight="@dimen/margin_vertical_big1">
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/Theme.DontForgetProject.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/scdream_bold"
+        android:text="@string/category_participation_choose"
+        android:textSize="@dimen/font_size_big" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInput_dialogCategory_addPeople"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_vertical_small3"
         android:transitionGroup="true"
         app:boxBackgroundColor="#00FFFFFF"
         app:boxBackgroundMode="filled"
