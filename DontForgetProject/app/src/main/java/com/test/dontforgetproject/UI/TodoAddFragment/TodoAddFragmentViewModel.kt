@@ -26,6 +26,7 @@ class TodoAddFragmentViewModel :ViewModel(){
         fontColor = MutableLiveData<Long>()
     }
 
+    //카데고리 데이터 삽입
     fun getData(){
 
         var templist = mutableListOf<TodoClass>()

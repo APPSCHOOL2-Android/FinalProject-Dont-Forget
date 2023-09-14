@@ -34,7 +34,7 @@
                 android:layout_marginBottom="@dimen/margin_vertical_big3"
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
-                android:hint="추가할 할일을 입력해주세요."
+                android:hint="@string/todo_add_hint"
                 android:inputType="text|textMultiLine"
                 android:scrollHorizontally="true"
                 android:textSize="@dimen/font_size_big" />
@@ -98,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/scdream_regular"
-                        android:text="카데고리 없음"
+                        android:text="@string/todo_category_empty"
                         android:textSize="@dimen/font_size_medium">
 
                     </TextView>
@@ -144,14 +144,15 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:layout_gravity="center"
                 android:id="@+id/textView_todoAdd_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_vertical_small2"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
                 android:gravity="right"
-                android:text="날짜 없음"
+                android:text="@string/todo_date_empty"
                 android:textSize="@dimen/font_size_medium" />
 
         </LinearLayout>
@@ -192,14 +193,15 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:layout_gravity="center"
                 android:id="@+id/textView_todoAdd_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_vertical_small2"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
                 android:gravity="right"
-                android:text="알림 없음"
+                android:text="@string/todo_notification_empty"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
@@ -239,14 +241,15 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:layout_gravity="center"
                 android:id="@+id/textView_todoAdd_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_vertical_small2"
                 android:layout_weight="1"
                 android:fontFamily="@font/scdream_regular"
                 android:gravity="right"
-                android:text="위치 없음"
+                android:text="@string/todo_location_empty"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
@@ -263,11 +266,11 @@
 
             <Button
                 android:id="@+id/button_todoAdd_complete"
+                style="@style/Theme.DontForgetProject.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="작성하기"
-                android:textSize="@dimen/font_size_big"
-                style="@style/Theme.DontForgetProject.Button">
+                android:text="@string/todo_fiil"
+                android:textSize="@dimen/font_size_big">
 
             </Button>
         </LinearLayout>

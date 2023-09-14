@@ -34,8 +34,8 @@ class TodoAddFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var todoAddBinding: FragmentTodoAddBinding
-
     lateinit var viewModel: TodoAddFragmentViewModel
+
 
     var date:String =""
     var time:String = ""
@@ -62,7 +62,6 @@ class TodoAddFragment : Fragment() {
             }
         }
         todoAddBinding.run {
-
             //툴바
             toolbarTodoAdd.run {
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
@@ -72,15 +71,15 @@ class TodoAddFragment : Fragment() {
                 }
                 setTitle("할일 추가")
             }
-
             //카데고리
             linearlayoutTodoAddCategory.run {
 
                 setOnClickListener {
-
-                    var bottomDialog = TodoAddBottomDialog()
+                    //번들로 기존 카데고리 데이터 넘겨줌
                     var bundle = Bundle()
                     bundle.putString("category","${textViewTodoAddCategory.text}")
+
+                    var bottomDialog = TodoAddBottomDialog()
                     bottomDialog.arguments = bundle
                     bottomDialog.show(mainActivity.supportFragmentManager,"카테고리")
                 }
@@ -96,11 +95,11 @@ class TodoAddFragment : Fragment() {
                         .build()
                     materialDatePicker.addOnPositiveButtonClickListener {
 
-                        //Show DateFormat
+                        //보여주는 DateFormat
                         val dateformatter = SimpleDateFormat("yyyy년 MM월 dd일")
                         val dates = dateformatter.format(Date(it))
 
-                        //Send DateFormat
+                        //보내는 DateFormat
                         val sendDateFormats = SimpleDateFormat("yyyy-MM-dd")
                         val dateOne = sendDateFormats.format(Date(it))
                         date = dateOne
@@ -122,10 +121,10 @@ class TodoAddFragment : Fragment() {
                         .setTitleText("Select Time")
                         .setHour(12)
                         .setMinute(30)
-
                         .setInputMode(INPUT_MODE_KEYBOARD)
                         .build().apply {
                             addOnPositiveButtonClickListener {
+
                                 //시간
                                 time = "${hour}:${minute}"
 
@@ -133,10 +132,12 @@ class TodoAddFragment : Fragment() {
                                 if("${hour}".toInt()<10){
                                     time = "0${hour}:${minute}"
                                 }
+
                                 //분 숫자가 10보다 작을떄
                                 if("${minute}".toInt()<10){
                                     time = "${hour}:0${minute}"
                                 }
+
                                 //시,분 숫자가 10보다 작을 떄
                                 if("${hour}".toInt()<10 && "${minute}".toInt()<10){
                                     time = "0${hour}:0${minute}"
@@ -163,7 +164,7 @@ class TodoAddFragment : Fragment() {
                     mainActivity.replaceFragment(MainActivity.TODO_ADD_SEARCH_FRAGMENT,true,null)
                 }
             }
-            //작성하기 button
+
             buttonTodoAddComplete.run {
 
                 setOnClickListener {
@@ -179,6 +180,7 @@ class TodoAddFragment : Fragment() {
                             mainActivity.showSoftInput(editTextTodoAdd)
                         }
                         builder.show()
+                        return@setOnClickListener
                     }
                     if(textViewTodoAddCategory.text == "카데고리 없음"){
                         val builder= AlertDialog.Builder(mainActivity)
@@ -191,6 +193,7 @@ class TodoAddFragment : Fragment() {
 
                         }
                         builder.show()
+                        return@setOnClickListener
                     }
                     if(textViewTodoAddDate.text == "날짜 없음"){
                         val builder= AlertDialog.Builder(mainActivity)
@@ -203,6 +206,7 @@ class TodoAddFragment : Fragment() {
 
                         }
                         builder.show()
+                        return@setOnClickListener
                     }
 
 
