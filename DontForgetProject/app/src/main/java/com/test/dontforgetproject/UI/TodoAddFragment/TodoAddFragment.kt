@@ -18,14 +18,17 @@ import com.google.android.material.timepicker.MaterialTimePicker
 
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -38,6 +41,7 @@ class TodoAddFragment : Fragment() {
 
 
     var date:String =""
+    var myDate :String = ""
     var time:String = ""
     var name :String = ""
 
@@ -98,7 +102,7 @@ class TodoAddFragment : Fragment() {
                         //보여주는 DateFormat
                         val dateformatter = SimpleDateFormat("yyyy년 MM월 dd일")
                         val dates = dateformatter.format(Date(it))
-
+                        myDate = dates
                         //보내는 DateFormat
                         val sendDateFormats = SimpleDateFormat("yyyy-MM-dd")
                         val dateOne = sendDateFormats.format(Date(it))
@@ -239,8 +243,19 @@ class TodoAddFragment : Fragment() {
 
                                     TodoRepository.setTodoAddInfo(newclass){
                                         TodoRepository.setTodoIdx(idx){
-                                            Toast.makeText(mainActivity,"저장되었습니다",Toast.LENGTH_SHORT).show()
-                                            mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                            var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
+                                            AlertRepository.getAlertIdx {
+                                                var idx = it.result.value as Long
+                                                idx++
+                                                var newclass2 = AlertClass(idx,text,useridx,2)
+                                                AlertRepository.addAlertInfo(newclass2){
+                                                    AlertRepository.setAlertIdx(idx){
+                                                        Toast.makeText(mainActivity,"저장되었습니다",Toast.LENGTH_SHORT).show()
+                                                        mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                    }
+
+                                                }
+                                            }
                                         }
                                     }
 

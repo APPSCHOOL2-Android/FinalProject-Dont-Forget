@@ -32,22 +32,28 @@ class TodoAddFragmentViewModel :ViewModel(){
         var templist = mutableListOf<TodoClass>()
         var useridx = MyApplication.loginedUserInfo.userIdx
 
-        CategoryRepository.getCategoryInfoByIdx(useridx){
-            for(c1 in it.result.children){
+        CategoryRepository.getAllCategory {
+            for (c1 in it.result.children){
                 var idx = c1.child("categoryIdx").value as Long
                 var name = c1.child("categoryName").value.toString()
                 var color = c1.child("categoryColor").value as Long
+                val categoryJoinUserIdxList =
+                    c1.child("categoryJoinUserIdxList").value as ArrayList<Long>?
                 var fontcolor = c1.child("categoryFontColor").value as Long
                 var owneridx = c1.child("categoryOwnerIdx").value as Long
                 var ownerName = c1.child("categoryOwnerName").value.toString()
+                if(useridx !in categoryJoinUserIdxList!!){
+                    continue
+                }
                 var datas = TodoClass(idx,"None",0,idx,name,fontcolor,color,"None","None","None","None",
-                "None",owneridx,ownerName)
-
+                    "None",owneridx,ownerName)
                 templist.add(datas)
                 categoryInfo.value = templist
             }
         }
     }
+
+
 
 
     //초기화
