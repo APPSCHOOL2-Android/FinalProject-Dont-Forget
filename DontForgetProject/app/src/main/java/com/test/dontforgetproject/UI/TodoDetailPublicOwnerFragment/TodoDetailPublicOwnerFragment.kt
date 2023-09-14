@@ -12,14 +12,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 class TodoDetailPublicOwnerFragment : Fragment() {
 
@@ -77,6 +83,67 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
+            }
+
+            linearLayoutTodoDetailPublicOwnerDate.setOnClickListener {
+                val materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select Date")
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build()
+                materialDatePicker.addOnPositiveButtonClickListener {
+
+                    //Show DateFormat
+                    val dateformatter = SimpleDateFormat("yyyy-MM-dd")
+                    val dates = dateformatter.format(Date(it))
+
+                    textViewTodoDetailPublicOwnerDate.setText(dates)
+                }
+
+                materialDatePicker.show(mainActivity.supportFragmentManager,"Date")
+            }
+
+            linearLayoutTodoDetailPublicOwnerAlert.setOnClickListener {
+                var today = Calendar.getInstance()
+                var currentHour = today.get(Calendar.HOUR)
+                var currentMinute = today.get(Calendar.MINUTE)
+                var materialTimePicker = MaterialTimePicker.Builder()
+                materialTimePicker
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setTitleText("Select Time")
+                    .setHour(currentHour)
+                    .setMinute(currentMinute)
+                    .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+                    .build().apply {
+                        addOnPositiveButtonClickListener {
+
+                            var time = ""
+
+                            //시간
+                            time = "${hour}:${minute}"
+
+                            //시 숫자가 10보다 작을떄
+                            if("${hour}".toInt()<10){
+                                time = "0${hour}:${minute}"
+                            }
+                            //분 숫자가 10보다 작을떄
+                            if("${minute}".toInt()<10){
+                                time = "${hour}:0${minute}"
+                            }
+                            //시,분 숫자가 10보다 작을 떄
+                            if("${hour}".toInt()<10 && "${minute}".toInt()<10){
+                                time = "0${hour}:0${minute}"
+                            }
+
+                            //오전,오후 분기
+                            if ("${hour}".toInt()>=12){
+                                var hours = "${hour}".toInt()-12
+                                textViewTodoDetailPublicOwnerAlert.text=  " 오후 ${hours}시 ${minute}분"
+                            }else{
+                                textViewTodoDetailPublicOwnerAlert.text= " 오전 ${hour}시 ${minute}분"
+                            }
+                        }
+                    }
+                    .show(mainActivity.supportFragmentManager,"Time")
             }
 
 
