@@ -90,7 +90,7 @@
                 style="@style/Theme.DontForgetProject.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="인원추가"
+                android:text="@string/button_addPeople"
                 android:textSize="@dimen/font_size_medium" />
         </LinearLayout>
 
