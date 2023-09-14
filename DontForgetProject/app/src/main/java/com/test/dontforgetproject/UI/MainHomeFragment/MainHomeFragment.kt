@@ -1,7 +1,6 @@
 package com.test.dontforgetproject.UI.MainHomeFragment
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -24,12 +23,18 @@ import com.test.dontforgetproject.databinding.RowHomeCategoryBinding
 import com.test.dontforgetproject.databinding.RowHomeCategoryTabBinding
 import com.test.dontforgetproject.databinding.RowHomeMemoSearchBinding
 import com.test.dontforgetproject.databinding.RowHomeTodoBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainHomeFragment : Fragment() {
 
     lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
     lateinit var mainHomeViewModel: MainHomeViewModel
+
+    var selectedCategoryPosition = 0
+    lateinit var selectedDate: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +54,16 @@ class MainHomeFragment : Fragment() {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
                 binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
+
+            todoList.observe(mainActivity) {
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
+            }
         }
+
+        selectedDate = getCurrentDate()
+        mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+        Log.d("asdasdasd", selectedDate)
 
         binding.run {
             textInputEditTextMainHomeFragment.onFocusChangeListener =
@@ -95,7 +109,13 @@ class MainHomeFragment : Fragment() {
             }
 
             calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
-                Log.d("선택한 날짜", "${year}년 ${month + 1}월 ${dayOfMonth}일")
+                selectedCategoryPosition = 0
+                val formattedMonth = String.format("%02d", month + 1)
+                selectedDate = "${year}-${formattedMonth}-${dayOfMonth}"
+                Log.d("asdasdasd", selectedDate)
+
+                // 고른 날에 맞는 todo가져오기
+                mainHomeViewModel.getTodoByDate(selectedDate, mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
             }
 
             mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
@@ -109,7 +129,7 @@ class MainHomeFragment : Fragment() {
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
 
-        private var selectedCategoryPosition = 0
+        //private var selectedCategoryPosition = 0
 
         inner class CategoryTabViewHolder(private val binding: RowHomeCategoryTabBinding) :
             RecyclerView.ViewHolder(binding.root) {
@@ -232,6 +252,7 @@ class MainHomeFragment : Fragment() {
             val checkBoxTodo = binding.checkBoxRowTodo
             val textViewTodo = binding.textViewRowTodo
             val textViewTodoMaker = binding.textViewRowTodoMaker
+            val textViewRowTodoLocation = binding.textViewRowTodoLocation
 
             init {
                 checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -270,11 +291,12 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = 4
+        override fun getItemCount(): Int = mainHomeViewModel.todoList.value?.size!!
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-            holder.textViewTodo.text = "오전 8기 약먹기"
-            holder.textViewTodoMaker.text = "by 누구"
+            holder.textViewTodo.text = mainHomeViewModel.todoList.value?.get(position)?.todoContent
+            holder.textViewTodoMaker.text = "by ${mainHomeViewModel.todoList.value?.get(position)?.todoOwnerName}"
+            holder.textViewRowTodoLocation.text = mainHomeViewModel.todoList.value?.get(position)?.todoLocationName
         }
     }
 
@@ -335,5 +357,11 @@ class MainHomeFragment : Fragment() {
             holder.textViewRowMemoSearchMaker.text = "by 누구"
             holder.textViewRowMemoSearch.text = "3시 강사님과 미팅"
         }
+    }
+
+    fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = Date()
+        return dateFormat.format(currentDate)
     }
 }

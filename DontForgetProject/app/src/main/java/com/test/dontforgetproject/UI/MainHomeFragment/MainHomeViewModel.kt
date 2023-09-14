@@ -94,11 +94,11 @@ class MainHomeViewModel : ViewModel() {
         }
     }
 
-    // 할 일 목록
-    fun getTodoAll(categoryIdxList: List<Long>) {
+    // 해당 날짜의 할 일 목록
+    fun getTodoByDate(date: String, categoryIdxList: List<Long>) {
         val tempList = mutableListOf<TodoClass>()
 
-        TodoRepository.getAllTodo {
+        TodoRepository.getTodoInfoByDate(date) {
             for (c1 in it.result.children) {
                 var todoIdx = c1.child("todoIdx").value as Long
                 var todoContent = c1.child("todoContent").value as String
@@ -116,49 +116,6 @@ class MainHomeViewModel : ViewModel() {
                 var todoOwnerName = c1.child("todoOwnerName").value as String
 
                 if (!categoryIdxList.contains(todoCategoryIdx)) continue
-
-                val todo = TodoClass(
-                    todoIdx,
-                    todoContent,
-                    todoIsChecked,
-                    todoCategoryIdx,
-                    todoCategoryName,
-                    todoFontColor,
-                    todoBackgroundColor,
-                    todoDate,
-                    todoAlertTime,
-                    todoLocationName,
-                    todoLocationLatitude,
-                    todoLocationLongitude,
-                    todoOwnerIdx,
-                    todoOwnerName
-                )
-                tempList.add(todo)
-            }
-            todoList.value = tempList
-        }
-    }
-
-    // 해당 카테고리의 할 일 목록
-    fun getTodoByCategoryIdx(categoryIdx: Long) {
-        val tempList = mutableListOf<TodoClass>()
-
-        TodoRepository.getTodoInfoByIdx(categoryIdx) {
-            for (c1 in it.result.children) {
-                var todoIdx = c1.child("todoIdx").value as Long
-                var todoContent = c1.child("todoContent").value as String
-                var todoIsChecked = c1.child("todoIsChecked").value as Long
-                var todoCategoryIdx = c1.child("todoCategoryIdx").value as Long
-                var todoCategoryName = c1.child("todoCategoryName").value as String
-                var todoFontColor = c1.child("todoFontColor").value as Long
-                var todoBackgroundColor = c1.child("todoBackgroundColor").value as Long
-                var todoDate = c1.child("todoDate").value as String
-                var todoAlertTime = c1.child("todoAlertTime").value as String
-                var todoLocationName = c1.child("todoLocationName").value as String
-                var todoLocationLatitude = c1.child("todoLocationLatitude").value as String
-                var todoLocationLongitude = c1.child("todoLocationLongitude").value as String
-                var todoOwnerIdx = c1.child("todoOwnerIdx").value as Long
-                var todoOwnerName = c1.child("todoOwnerName").value as String
 
                 val todo = TodoClass(
                     todoIdx,
