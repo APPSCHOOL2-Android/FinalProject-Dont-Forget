@@ -44,6 +44,11 @@ class MainHomeFragment : Fragment() {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
                 binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
+
+            categories2.observe(mainActivity) {
+                binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
+            }
         }
 
         binding.run {
@@ -113,7 +118,23 @@ class MainHomeFragment : Fragment() {
 
             init {
                 binding.root.setOnClickListener {
-                    Log.d("asdasdasd", textViewCategoryName.text.toString())
+                    Log.d("asdasdasd", "인덱스 : ${adapterPosition}")
+                    if (adapterPosition != 0) {
+                        // 전체가 아닌 카테고리
+                        Log.d(
+                            "asdasdasd",
+                            "인덱스 : ${mainHomeViewModel.categories.value?.get(adapterPosition - 1)?.categoryIdx}"
+                        )
+                        mainHomeViewModel.getCategoryByCategoryIdx(
+                            mainHomeViewModel.categories.value?.get(
+                                adapterPosition - 1
+                            )?.categoryIdx!!
+                        )
+
+                    } else {
+                        // 전체 카테고리
+                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                    }
                     val position = adapterPosition
 
                     // 이전에 선택한 항목의 배경색을 원래대로 돌려놓음
@@ -186,12 +207,13 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.categories.value?.size!!
+        override fun getItemCount(): Int = mainHomeViewModel.categories2.value?.size!!
 
         override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
             holder.textViewCategory.run {
-                text = mainHomeViewModel.categories.value?.get(position)?.categoryName
-                val color = mainHomeViewModel.categories.value?.get(position)?.categoryColor!!.toInt()
+                text = mainHomeViewModel.categories2.value?.get(position)?.categoryName
+                val color =
+                    mainHomeViewModel.categories2.value?.get(position)?.categoryColor!!.toInt()
                 setTextColor(color)
             }
             holder.recyclerViewRowHomeCategory.run {
