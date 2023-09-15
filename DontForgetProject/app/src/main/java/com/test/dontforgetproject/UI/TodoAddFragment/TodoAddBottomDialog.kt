@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.test.dontforgetproject.MainActivity
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.DialogTodoAddBinding
 import com.test.dontforgetproject.databinding.RowDialogTodoAddBinding
@@ -68,9 +69,9 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                     var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoBackgroundColor.toString()
                     var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoFontColor.toString()
 
-                    mainActivity.categoryname = names
-                    mainActivity.categoryColor = categoryColors
-                    mainActivity.categoryFontColor = fontcolors
+                   MyApplication.categoryname = names
+                    MyApplication.categoryColor = categoryColors
+                    MyApplication.categoryFontColor = fontcolors
 
                     saveAction()
 
@@ -116,9 +117,9 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
     //카데고리 데이터 변경
     fun saveAction(){
-        viewModel.name.value = mainActivity.categoryname.toString()
-        viewModel.fontColor.value = mainActivity.categoryFontColor.toLong()
-        viewModel.categoryColor.value = mainActivity.categoryColor.toLong()
+        viewModel.name.value = MyApplication.categoryname.toString()
+        viewModel.fontColor.value = MyApplication.categoryFontColor.toLong()
+        viewModel.categoryColor.value = MyApplication.categoryColor.toLong()
         dismiss()
     }
 

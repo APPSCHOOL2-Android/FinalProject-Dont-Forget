@@ -48,11 +48,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     var newFragment:Fragment? = null
     var oldFragment:Fragment? = null
-
-    //변경된 카데고리 색상,이름
-    var categoryname = ""
-    var categoryColor = ""
-    var categoryFontColor = ""
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

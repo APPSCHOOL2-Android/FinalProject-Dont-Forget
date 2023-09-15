@@ -58,21 +58,20 @@ class TodoAddFragment : Fragment() {
                 if(intent!=null){
                     val place = Autocomplete.getPlaceFromIntent(intent)
 
+                    //장소 이름
                     var name = place.name
                     MyApplication.locationName = name
+
                     viewModel.locate.value = MyApplication.locationName
+
+                    //장소 위도
                     var latitude = place.latLng.latitude
                     MyApplication.locationLatitude = latitude.toString()
+
+                    //장소 경도
                     var longitude = place.latLng.longitude
                     MyApplication.locationLongitude = longitude.toString()
 
-                    Log.d(
-                        "Lim TAG1", "Place: ${place.latLng}"
-                    )
-                    Log.d(
-                        "Lim TAG2", "Place: ${name}, Latitude:${latitude}, Longitude:${longitude}"
-
-                    )
                 }else if(it.resultCode == Activity.RESULT_CANCELED){
                     Log.d(
                         "Lim TAG", "Place FAil"
@@ -222,9 +221,14 @@ class TodoAddFragment : Fragment() {
             linearlayoutTodoAddLocation.run {
 
                 setOnClickListener {
+
+                    //구글맵 키 받아옴
                     val key = com.test.dontforgetproject.BuildConfig.googlemapkey
+
+                    // plac api 초기화
                     Places.initialize(context,key)
                     val placesClient = Places.createClient(mainActivity)
+
                     val field = listOf(Place.Field.NAME,Place.Field.LAT_LNG)
                     val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,field)
                         .build(mainActivity)
@@ -285,19 +289,36 @@ class TodoAddFragment : Fragment() {
                     TodoRepository.getTodoIdx {
                         var idx = it.result.value as Long
                         idx++
+
                         var content = editTextTodoAdd.text.toString()
                         var useridx = MyApplication.loginedUserInfo.userIdx
-                        var name = mainActivity.categoryname
-                        var backgroundColor = mainActivity.categoryColor
-                        var fontColor = mainActivity.categoryFontColor
+                        var name = MyApplication.categoryname
+                        var backgroundColor = MyApplication.categoryColor
+                        var fontColor = MyApplication.categoryFontColor
                         var dates = newDate
+
+
+                        //알림, 장소 이름,위도,경도 없을시 None으로 변경
                         var time = newTime
                         if(time==""){
                             time = "None"
                         }
+
                         var locationName = MyApplication.locationName
+                        if(locationName == ""){
+                            locationName = "None"
+                        }
+
                         var locationLongtitude = MyApplication.locationLongitude
+                        if(locationLongtitude == ""){
+                            locationLongtitude = "None"
+                        }
+
                         var locationLatitude = MyApplication.locationLatitude
+                        if(locationLatitude == ""){
+                            locationLatitude = "None"
+                        }
+
                         CategoryRepository.getCategoryInfoByIdx(useridx){
 
                             for(a1 in it.result.children){
@@ -320,6 +341,7 @@ class TodoAddFragment : Fragment() {
                                                     AlertRepository.setAlertIdx(idx){
                                                         Toast.makeText(mainActivity,"저장되었습니다",Toast.LENGTH_SHORT).show()
                                                         mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                        viewModel.resetList()
                                                     }
 
                                                 }
