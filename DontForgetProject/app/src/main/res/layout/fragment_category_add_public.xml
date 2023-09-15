@@ -90,8 +90,14 @@
                 style="@style/Theme.DontForgetProject.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="4dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="4dp"
                 android:text="@string/button_addPeople"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_small" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
