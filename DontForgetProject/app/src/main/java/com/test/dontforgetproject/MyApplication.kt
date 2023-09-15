@@ -41,6 +41,11 @@ class MyApplication :Application(){
         // 테마설정
         var selectedTheme: String = ThemeUtil.DEFAULT_MODE
 
+        //위치
+        var locationName=""
+        var locationLatitude=""
+        var locationLongitude =""
+
     }
 
     override fun onCreate() {

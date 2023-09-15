@@ -2,7 +2,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("com.google.gms.google-services")
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def googleMapApiKey = properties.getProperty('google.map.key')
 
 android {
     namespace 'com.test.dontforgetproject'
@@ -14,8 +19,13 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "SAMPLE_API_KEY", properties["google.map.key"]
+        manifestPlaceholders = [googleMapApiKey:googleMapApiKey]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -66,4 +76,7 @@ dependencies {
 
     // 아래로 드래그시 새로고침 뷰
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //google
+    implementation 'com.google.android.libraries.places:places:3.2.0'
 }

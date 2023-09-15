@@ -1,7 +1,9 @@
 package com.test.dontforgetproject.UI.TodoAddFragment
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +12,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.BuildConfig
 import com.bumptech.glide.Glide.init
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -33,11 +41,45 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
+
+
 class TodoAddFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var todoAddBinding: FragmentTodoAddBinding
     lateinit var viewModel: TodoAddFragmentViewModel
+
+
+    private val startAutocomplete =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
+            if(it.resultCode == Activity.RESULT_OK){
+                val intent = it.data
+                if(intent!=null){
+                    val place = Autocomplete.getPlaceFromIntent(intent)
+
+                    var name = place.name
+                    MyApplication.locationName = name
+                    viewModel.locate.value = MyApplication.locationName
+                    var latitude = place.latLng.latitude
+                    MyApplication.locationLatitude = latitude.toString()
+                    var longitude = place.latLng.longitude
+                    MyApplication.locationLongitude = longitude.toString()
+
+                    Log.d(
+                        "Lim TAG1", "Place: ${place.latLng}"
+                    )
+                    Log.d(
+                        "Lim TAG2", "Place: ${name}, Latitude:${latitude}, Longitude:${longitude}"
+
+                    )
+                }else if(it.resultCode == Activity.RESULT_CANCELED){
+                    Log.d(
+                        "Lim TAG", "Place FAil"
+                    )
+                }
+            }
+        }
 
 
     var date:String =""
@@ -73,6 +115,8 @@ class TodoAddFragment : Fragment() {
                 todoAddBinding.textViewTodoAddLocation.setText(it)
             }
         }
+
+
         todoAddBinding.run {
             //툴바
             toolbarTodoAdd.run {
@@ -176,9 +220,18 @@ class TodoAddFragment : Fragment() {
             }
             //위치
             linearlayoutTodoAddLocation.run {
+
                 setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.TODO_ADD_SEARCH_FRAGMENT,true,null)
+                    val key = com.test.dontforgetproject.BuildConfig.googlemapkey
+                    Places.initialize(context,key)
+                    val placesClient = Places.createClient(mainActivity)
+                    val field = listOf(Place.Field.NAME,Place.Field.LAT_LNG)
+                    val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,field)
+                        .build(mainActivity)
+                    startAutocomplete.launch(intent)
+
                 }
+
             }
 
             buttonTodoAddComplete.run {
@@ -242,6 +295,9 @@ class TodoAddFragment : Fragment() {
                         if(time==""){
                             time = "None"
                         }
+                        var locationName = MyApplication.locationName
+                        var locationLongtitude = MyApplication.locationLongitude
+                        var locationLatitude = MyApplication.locationLatitude
                         CategoryRepository.getCategoryInfoByIdx(useridx){
 
                             for(a1 in it.result.children){
@@ -251,7 +307,7 @@ class TodoAddFragment : Fragment() {
                                     var ownerIdx = a1.child("categoryOwnerIdx").value as Long
                                     var ownerName = a1.child("categoryOwnerName").value.toString()
                                     var newclass = TodoClass(idx,content,0,catgoryIdx,name,fontColor.toLong(),backgroundColor.toLong(),
-                                        dates,time,"None","None","None",ownerIdx,ownerName)
+                                        dates,time,locationName,locationLatitude,locationLongtitude,ownerIdx,ownerName)
 
                                     TodoRepository.setTodoAddInfo(newclass){
                                         TodoRepository.setTodoIdx(idx){
