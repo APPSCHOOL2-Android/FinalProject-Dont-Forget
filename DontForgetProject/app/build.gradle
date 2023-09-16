@@ -66,4 +66,10 @@ dependencies {
 
     // 아래로 드래그시 새로고침 뷰
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    // 코루틴
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
+
 }

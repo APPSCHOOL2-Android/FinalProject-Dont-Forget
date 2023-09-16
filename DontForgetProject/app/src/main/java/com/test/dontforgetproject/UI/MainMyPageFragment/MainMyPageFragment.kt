@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,9 +22,14 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
 import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 
@@ -30,6 +38,8 @@ class MainMyPageFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var mainMyPageViewModel: MainMyPageViewModel
     lateinit var firebaseAuth : FirebaseAuth
+    lateinit var loadingDialog: LoadingDialog
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,24 +48,30 @@ class MainMyPageFragment : Fragment() {
         mainActivity = activity as MainActivity
         firebaseAuth = FirebaseAuth.getInstance()
         fragmentMainMyPageBinding.run {
+            loadingDialog = LoadingDialog(requireContext())
+            loadingDialog.show()
             toolbarMainMyPage.run {
                 setTitle(getString(R.string.myPage))
             }
-            imageViewMyPageProfile.setImageResource(R.drawable.ic_person_24px)
             mainMyPageViewModel = ViewModelProvider(mainActivity)[MainMyPageViewModel::class.java]
             mainMyPageViewModel.run {
                 userName.observe(mainActivity){
                     fragmentMainMyPageBinding.textViewMainMyPageName.setText(it.toString())
                 }
-                userImage.observe(mainActivity){ it ->
-                    if(it.toString() != "None"){
-                        UserRepository.getProfile(it.toString()){task->
-                            if(task.isSuccessful){
-                                val fileUri = task.result
-                                Glide.with(mainActivity).load(fileUri).into(imageViewMyPageProfile)
+                userImage.observe(mainActivity){
+                    GlobalScope.launch {
+                        UserRepository.getProfile(it.toString()){
+                            if(it.isSuccessful){
+                                val fileUri = it.result
+                                Glide.with(mainActivity).load(fileUri).diskCacheStrategy(
+                                    DiskCacheStrategy.ALL).into(imageViewMyPageProfile)
+                                MyApplication.loginedUserProfile = fileUri.toString()
                             }
+                            loadingDialog.dismiss()
                         }
+
                     }
+
                 }
                 userEmail.observe(mainActivity){
                     fragmentMainMyPageBinding.textViewMainMyPageEmail.setText(it.toString())
@@ -63,8 +79,9 @@ class MainMyPageFragment : Fragment() {
                 userIntoduce.observe(mainActivity){
                     fragmentMainMyPageBinding.textViewMainMyPageIntroduce.setText(it.toString())
                 }
-
             }
+            Glide.with(requireActivity()).load(MyApplication.loginedUserProfile).into(imageViewMyPageProfile)
+
             mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
 
             cardViewMainMyPageModify.setOnClickListener {
@@ -87,6 +104,7 @@ class MainMyPageFragment : Fragment() {
                     val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
                     googleSignInClient.signOut()
                     firebaseAuth.signOut()
+                    Glide.with(requireActivity()).clear(imageViewMyPageProfile)
                     MyApplication.isLogined = false
                     mainActivity.removeFragment(MainActivity.MAIN_FRAGMENT)
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,false,null)

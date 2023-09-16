@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.firebase.ui.auth.data.model.User
 import com.google.android.material.snackbar.Snackbar
+import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -28,7 +29,11 @@ import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageViewModel
 import com.test.dontforgetproject.UI.MainMyPageFragment.MyPageModifyViewModel
+import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.FragmentMyPageModifyBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 class MyPageModifyFragment : Fragment() {
     lateinit var fragmentMyPageModifyBinding: FragmentMyPageModifyBinding
@@ -37,7 +42,8 @@ class MyPageModifyFragment : Fragment() {
     lateinit var myPageModifyViewModel : MyPageModifyViewModel
     // 업로드할 이미지의 Uri
     var uploadUri: Uri? = null
-
+    lateinit var user : UserClass
+    lateinit var loadingDialog : LoadingDialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +52,18 @@ class MyPageModifyFragment : Fragment() {
         mainActivity = activity as MainActivity
         // 앨범 설정
         albumLauncher = albumSetting(fragmentMyPageModifyBinding.imageViewMyPageModifyProfile)
+        loadingDialog = LoadingDialog(requireContext())
+        loadingDialog.show()
         fragmentMyPageModifyBinding.run {
+            user = UserClass(
+                userIdx = 0,
+                userName = "",
+                userEmail = "",
+                userImage = "",
+                userIntroduce = "",
+                userId = "",
+                userFriendList = ArrayList<Friend>()
+            )
             toolbarMyPageModify.run {
                 title = getString(R.string.myPage_modify)
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
@@ -63,25 +80,43 @@ class MyPageModifyFragment : Fragment() {
             }
             myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
             myPageModifyViewModel.run {
+                userIdx.observe(mainActivity){
+                    user.userIdx = it.toLong()
+                }
                 userName.observe(mainActivity){
+                    user.userName = it.toString()
                     textInputEditTextMyPageModifyName.setText(it.toString())
                 }
                 userIntoduce.observe(mainActivity){
+                    user.userIntroduce = it.toString()
                     fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
                 }
                 userImage.observe(mainActivity){
-                    UserRepository.getProfile(it.toString()){
-                        if(it.isSuccessful){
-                            val fileUri = it.result
-                            Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
+                    GlobalScope.launch {
+                        UserRepository.getProfile(it.toString()){
+                            if(it.isSuccessful){
+                                val fileUri = it.result
+                                Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
+                                MyApplication.loginedUserProfile = fileUri.toString()
+                            }
                         }
                     }
+                    loadingDialog.dismiss()
+
+                    user.userImage = it.toString()
+                }
+                userEmail.observe(mainActivity){
+                    user.userEmail = it.toString()
+                }
+                userId.observe(mainActivity){
+                    user.userId = it.toString()
+                }
+                userFriendList.observe(mainActivity){
+                    user.userFriendList = it as ArrayList<Friend>
                 }
             }
             myPageModifyViewModel.getUserInfo(MyApplication.loginedUserInfo)
-            var user = MyApplication.loginedUserInfo
-
-
+            Glide.with(requireActivity()).load(MyApplication.loginedUserProfile).into(imageViewMyPageModifyProfile)
             // 사진 변경 클릭
             buttonMyPageModifyModifyPhoto.setOnClickListener {
                 // 앨범에서 사진을 선택할 수 있는 Activity를 실행한다.
@@ -100,13 +135,13 @@ class MyPageModifyFragment : Fragment() {
 
                 // 이미지를 변경하지 않을 경우 "None"으로 설정
                 val newImage = if (uploadUri == null) {
-                    "None"
+                    user.userImage
                 } else {
                     "image/img_${System.currentTimeMillis()}.jpg"
                 }
 
                 // 이미지가 변경되지 않으면 업로드하지 않고 이전 이미지를 사용
-                if (newImage != "None") {
+                if (newImage != user.userImage) {
                     UserRepository.deleteProfile(user.userImage)
                     UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
                         if (result.isSuccessful) {

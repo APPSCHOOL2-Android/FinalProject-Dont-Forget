@@ -29,12 +29,12 @@ class MyApplication :Application(){
             userIdx = 0,
             userName = "",
             userEmail = "",
-            userImage = "None",
+            userImage = "",
             userIntroduce = "",
             userId = "",
             userFriendList = ArrayList<Friend>()
         )
-
+        var loginedUserProfile = ""
         // 선택한 친구 인덱스, 친구이름
         var chosedFriendIdx : Long = 0
         var chosedFriendName = ""
