@@ -13,6 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.test.dontforgetproject.DAO.Friend
+import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -20,6 +22,7 @@ import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
 import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
+import java.util.ArrayList
 
 
 class MainMyPageFragment : Fragment() {
@@ -38,18 +41,19 @@ class MainMyPageFragment : Fragment() {
             toolbarMainMyPage.run {
                 setTitle(getString(R.string.myPage))
             }
-
+            imageViewMyPageProfile.setImageResource(R.drawable.ic_person_24px)
             mainMyPageViewModel = ViewModelProvider(mainActivity)[MainMyPageViewModel::class.java]
             mainMyPageViewModel.run {
-
                 userName.observe(mainActivity){
                     fragmentMainMyPageBinding.textViewMainMyPageName.setText(it.toString())
                 }
-                userImage.observe(mainActivity){
-                    UserRepository.getProfile(it.toString()){
-                        if(it.isSuccessful){
-                            val fileUri = it.result
-                            Glide.with(mainActivity).load(fileUri).into(imageViewMyPageProfile)
+                userImage.observe(mainActivity){ it ->
+                    if(it.toString() != "None"){
+                        UserRepository.getProfile(it.toString()){task->
+                            if(task.isSuccessful){
+                                val fileUri = task.result
+                                Glide.with(mainActivity).load(fileUri).into(imageViewMyPageProfile)
+                            }
                         }
                     }
                 }
@@ -81,12 +85,14 @@ class MainMyPageFragment : Fragment() {
                     editor.remove("isLoggedUser")
                     editor.apply()
                     val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    googleSignInClient.signOut().addOnCompleteListener {}
-                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,true,null)
+                    googleSignInClient.signOut()
+                    firebaseAuth.signOut()
+                    MyApplication.isLogined = false
+                    mainActivity.removeFragment(MainActivity.MAIN_FRAGMENT)
+                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,false,null)
 
                 }
                 builder.setNegativeButton("취소",null)
-
                 builder.show()
 
             }

@@ -175,6 +175,16 @@ class LoginFragment : Fragment() {
                                     }
                                 }
                             }
+                            else{
+                                val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                                    .requestEmail() // 이메일 권한 요청 (선택 사항)
+                                    .build()
+
+                                val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+                                val signInIntent = googleSignInClient.signInIntent
+                                startActivityForResult(signInIntent, 9001)
+                            }
                         }
 
                     })
