@@ -50,6 +50,7 @@ class TodoAddFragment : Fragment() {
     lateinit var viewModel: TodoAddFragmentViewModel
 
 
+    //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 
@@ -319,37 +320,39 @@ class TodoAddFragment : Fragment() {
                             locationLatitude = "None"
                         }
 
-                        CategoryRepository.getCategoryInfoByIdx(useridx){
-
-                            for(a1 in it.result.children){
-                                var names = a1.child("categoryName").value.toString()
-                                if(names == name){
-                                    var catgoryIdx = a1.child("categoryIdx").value as Long
-                                    var ownerIdx = a1.child("categoryOwnerIdx").value as Long
-                                    var ownerName = a1.child("categoryOwnerName").value.toString()
-                                    var newclass = TodoClass(idx,content,0,catgoryIdx,name,fontColor.toLong(),backgroundColor.toLong(),
-                                        dates,time,locationName,locationLatitude,locationLongtitude,ownerIdx,ownerName)
-
-                                    TodoRepository.setTodoAddInfo(newclass){
-                                        TodoRepository.setTodoIdx(idx){
+                        CategoryRepository.getAllCategory {
+                            for (c1 in it.result.children){
+                                val categoryJoinUserIdxList =
+                                    c1.child("categoryJoinUserIdxList").value as ArrayList<Long>?
+                                var names = c1.child("categoryName").value.toString()
+                                if(useridx !in categoryJoinUserIdxList!!){
+                                    continue
+                                }
+                                if(names == name) {
+                                    var catgoryIdx = c1.child("categoryIdx").value as Long
+                                    var owneridx = c1.child("categoryOwnerIdx").value as Long
+                                    var ownerName = c1.child("categoryOwnerName").value.toString()
+                                    var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
+                                        time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
+                                    TodoRepository.setTodoAddInfo(newclass) {
+                                        TodoRepository.setTodoIdx(idx) {
                                             var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
                                             AlertRepository.getAlertIdx {
                                                 var idx = it.result.value as Long
                                                 idx++
-                                                var newclass2 = AlertClass(idx,text,useridx,2)
-                                                AlertRepository.addAlertInfo(newclass2){
-                                                    AlertRepository.setAlertIdx(idx){
-                                                        Toast.makeText(mainActivity,"저장되었습니다",Toast.LENGTH_SHORT).show()
+                                                var newclass2 = AlertClass(idx, text, useridx, 2)
+                                                AlertRepository.addAlertInfo(newclass2) {
+                                                    AlertRepository.setAlertIdx(idx) {
+                                                        Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
                                                         mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
                                                         viewModel.resetList()
                                                     }
-
                                                 }
                                             }
                                         }
                                     }
-
                                 }
+
                             }
                         }
                     }
