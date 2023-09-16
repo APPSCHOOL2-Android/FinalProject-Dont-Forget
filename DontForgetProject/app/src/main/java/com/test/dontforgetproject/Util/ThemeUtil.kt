@@ -4,12 +4,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 
 
-
 object ThemeUtil {
     const val LIGHT_MODE = "light"
     const val DARK_MODE = "dark"
     const val DEFAULT_MODE = "default"
-    fun applyTheme(themeColor: String?) {
+    fun applyTheme(themeColor: String) {
         when (themeColor) {
             LIGHT_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             DARK_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
