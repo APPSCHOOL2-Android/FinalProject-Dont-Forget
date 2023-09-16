@@ -18,6 +18,7 @@ import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
 import com.test.dontforgetproject.databinding.RowHomeCategoryBinding
@@ -202,6 +203,7 @@ class MainHomeFragment : Fragment() {
                 mainHomeViewModel.categories.value?.let { categories ->
                     val dataIndex = position - 1 // 첫 번째 항목을 제외한 위치
                     holder.textViewCategoryName.text = categories[dataIndex].categoryName
+                    holder.textViewCategoryName.setTextColor(categories[dataIndex].categoryFontColor.toInt())
 
                     val backgroundColor = if (position == selectedCategoryPosition) {
                         categories[dataIndex].categoryColor.toInt()
@@ -269,24 +271,6 @@ class MainHomeFragment : Fragment() {
             val textViewTodo = binding.textViewRowTodo
             val textViewTodoMaker = binding.textViewRowTodoMaker
             val textViewRowTodoLocation = binding.textViewRowTodoLocation
-
-            init {
-                checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
-                    if (isChecked) {
-                        textViewTodo.paintFlags =
-                            textViewTodo.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        textViewTodo.setTextColor(resources.getColor(R.color.accentGray))
-                    } else {
-                        textViewTodo.paintFlags =
-                            textViewTodo.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                        if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
-                            textViewTodo.setTextColor(resources.getColor(android.R.color.white))
-                        } else {
-                            textViewTodo.setTextColor(resources.getColor(android.R.color.black))
-                        }
-                    }
-                }
-            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
@@ -336,6 +320,59 @@ class MainHomeFragment : Fragment() {
             }
             holder.textViewTodoMaker.text = "by ${todo.todoOwnerName}"
             holder.textViewRowTodoLocation.text = todo.todoLocationName
+            if (todo.todoIsChecked == 0L) {
+                holder.checkBoxTodo.isChecked = false
+                holder.textViewTodo.paintFlags =
+                    holder.textViewTodo.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                    holder.textViewTodo.setTextColor(resources.getColor(android.R.color.white))
+                } else {
+                    holder.textViewTodo.setTextColor(resources.getColor(android.R.color.black))
+                }
+            } else {
+                holder.checkBoxTodo.isChecked = true
+                holder.textViewTodo.paintFlags =
+                    holder.textViewTodo.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                holder.textViewTodo.setTextColor(resources.getColor(R.color.accentGray))
+            }
+            holder.checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
+                val newTodoIsChecked: Long = if (isChecked) 1 else 0
+
+                val todoDataClass = TodoClass(
+                    todoIdx = todo.todoIdx,
+                    todoContent = todo.todoContent,
+                    todoIsChecked = newTodoIsChecked,
+                    todoCategoryIdx = todo.todoCategoryIdx,
+                    todoCategoryName = todo.todoCategoryName,
+                    todoFontColor = todo.todoFontColor,
+                    todoBackgroundColor = todo.todoBackgroundColor,
+                    todoDate = todo.todoDate,
+                    todoAlertTime = todo.todoAlertTime,
+                    todoLocationName = todo.todoLocationName,
+                    todoLocationLatitude = todo.todoLocationLatitude,
+                    todoLocationLongitude = todo.todoLocationLongitude,
+                    todoOwnerIdx = todo.todoOwnerIdx,
+                    todoOwnerName = todo.todoOwnerName
+                )
+
+                TodoRepository.modifyTodo(todoDataClass) { task ->
+
+                }
+
+                if (isChecked) {
+                    holder.textViewTodo.paintFlags =
+                        holder.textViewTodo.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    holder.textViewTodo.setTextColor(resources.getColor(R.color.accentGray))
+                } else {
+                    holder.textViewTodo.paintFlags =
+                        holder.textViewTodo.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                    if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                        holder.textViewTodo.setTextColor(resources.getColor(android.R.color.white))
+                    } else {
+                        holder.textViewTodo.setTextColor(resources.getColor(android.R.color.black))
+                    }
+                }
+            }
         }
     }
 
