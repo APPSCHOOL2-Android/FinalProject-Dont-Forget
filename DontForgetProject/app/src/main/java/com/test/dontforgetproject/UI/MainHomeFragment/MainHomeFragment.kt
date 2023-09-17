@@ -1,6 +1,7 @@
 package com.test.dontforgetproject.UI.MainHomeFragment
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.SystemClock
@@ -90,9 +91,6 @@ class MainHomeFragment : Fragment() {
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
                             memoList = mainHomeViewModel.getTodo()
-                            for(i in memoList){
-                                Log.d("asdasdasd", "메모 내용 ${i.todoContent}")
-                            }
                             mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
@@ -230,6 +228,19 @@ class MainHomeFragment : Fragment() {
             // 첫 번째 항목에 고정된 값을 설정
             if (position == 0) {
                 holder.textViewCategoryName.text = "전체"
+
+                // 포지션이 0이면서 선택된 상태인 경우 글자색을 흰색으로, 아닌 경우 검은색으로 설정
+                val textColor = if (position == selectedCategoryPosition) {
+                    Color.WHITE
+                } else {
+                    if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                        Color.WHITE
+                    } else {
+                        Color.BLACK
+                    }
+                }
+                holder.textViewCategoryName.setTextColor(textColor)
+
                 val backgroundColor = if (position == selectedCategoryPosition) {
                     ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)
                 } else {
@@ -241,7 +252,18 @@ class MainHomeFragment : Fragment() {
                 mainHomeViewModel.categories.value?.let { categories ->
                     val dataIndex = position - 1 // 첫 번째 항목을 제외한 위치
                     holder.textViewCategoryName.text = categories[dataIndex].categoryName
-                    // holder.textViewCategoryName.setTextColor(categories[dataIndex].categoryFontColor.toInt())
+
+                    // 포지션이 0이 아니면서 선택된 상태인 경우 글자색을 흰색으로, 아닌 경우 검은색으로 설정
+                    val textColor = if (position == selectedCategoryPosition) {
+                        categories[dataIndex].categoryFontColor.toInt()
+                    } else {
+                        if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                            Color.WHITE
+                        } else {
+                            Color.BLACK
+                        }
+                    }
+                    holder.textViewCategoryName.setTextColor(textColor)
 
                     val backgroundColor = if (position == selectedCategoryPosition) {
                         categories[dataIndex].categoryColor.toInt()
@@ -451,7 +473,7 @@ class MainHomeFragment : Fragment() {
             holder.textViewDate.text = memoList[position].todoDate
             holder.textViewCategory.text = memoList[position].todoCategoryName
             holder.textViewRowMemoSearchMaker.text = "by ${memoList[position].todoOwnerName}"
-            holder.textViewLocation.text = "by ${memoList[position].todoLocationName}"
+            holder.textViewLocation.text = "by ${memoList[position].todoLocationName }"
             holder.textViewRowMemoSearch.run {
                 text = memoList[position].todoContent
                 setOnClickListener {
