@@ -64,17 +64,14 @@ class FriendsDetailFragment : Fragment() {
             friendUserImage.observe(mainActivity) {
                 _FImage = it
                 // 프로필 사진
-                if (it != "None") {
-                    Glide.with(mainActivity)
-                        .load(it)
-                        .override(80, 80)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL) // 디스크 캐싱 사용
-                        .into(binding.imageViewFriendsDetail)
-                }
                 UserRepository.getProfile(it) {
                     if (it.isSuccessful) {
                         val fileUri = it.result
                         Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
+                    }
+                    else{
+//                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
+                        binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
                     }
                 }
             }
@@ -89,7 +86,7 @@ class FriendsDetailFragment : Fragment() {
                 var tempList = it
                 // 데이터 정제, 공유 카테고리만 골라내기
                 for ((index, category) in tempList.withIndex()) {
-                    if (category.categoryJoinUserIdxList?.contains(MyApplication.loginedUserInfo.userIdx)!!) {
+                    if (category.categoryJoinUserIdxList?.contains(MyApplication.loginedUserInfo.userIdx)!! && category.categoryJoinUserIdxList?.contains(MyApplication.chosedFriendIdx)!!) {
                         MCL.add(category)
                     }
                 }
@@ -196,6 +193,24 @@ class FriendsDetailFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.friendUserImage.observe(mainActivity) {
+            _FImage = it
+            // 프로필 사진
+            UserRepository.getProfile(it) {
+                if (it.isSuccessful) {
+                    val fileUri = it.result
+                    Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
+                }
+                else{
+//                    Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
+                    binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
+                }
+            }
+        }
     }
 
 
