@@ -45,6 +45,7 @@ class TodoRepository {
                         a1.ref.child("todoLocationName").setValue(todoDataClass.todoLocationName)
                         a1.ref.child("todoLocationLatitude")
                             .setValue(todoDataClass.todoLocationLatitude)
+                        a1.ref.child("todoIsChecked").setValue(todoDataClass.todoIsChecked)
                         a1.ref.child("todoLocationLongitude")
                             .setValue(todoDataClass.todoLocationLongitude)
                             .addOnCompleteListener(callback1)
@@ -68,22 +69,31 @@ class TodoRepository {
             todoDataRef.orderByChild("todoDate").equalTo(todoDate).get()
                 .addOnCompleteListener(callback1)
         }
-            //할일 추가 인덱스 저장
-            fun setTodoIdx(todoIdx: Long, callback1: (Task<Void>) -> Unit) {
-                val database = FirebaseDatabase.getInstance()
-                val databaseRef = database.getReference("TodoIdx")
-                databaseRef.get().addOnCompleteListener {
-                    it.result.ref.setValue(todoIdx).addOnCompleteListener(callback1)
-                }
-            }
 
-            //할일 추가 정보 저장
-            fun setTodoAddInfo(todoClass: TodoClass, callback1: (Task<Void>) -> Unit) {
-                val database = FirebaseDatabase.getInstance()
-                val databaseRef = database.getReference("todoInfo")
-                databaseRef.push().setValue(todoClass).addOnCompleteListener(callback1)
-
+        //할일 추가 인덱스 저장
+        fun setTodoIdx(todoIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("TodoIdx")
+            databaseRef.get().addOnCompleteListener {
+                it.result.ref.setValue(todoIdx).addOnCompleteListener(callback1)
             }
         }
+
+        //할일 추가 정보 저장
+        fun setTodoAddInfo(todoClass: TodoClass, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("todoInfo")
+            databaseRef.push().setValue(todoClass).addOnCompleteListener(callback1)
+
+        }
+
+        // 날짜순으로 할일 정보 가져오기
+        fun getAllTodo(callback1: (Task<DataSnapshot>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("todoInfo")
+            databaseRef.orderByChild("todoDate").get().addOnCompleteListener(callback1)
+        }
+
+    }
 
 }
