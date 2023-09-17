@@ -90,12 +90,16 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
                     // 카테고리 알림
                     else if(userAlertList.get(position).alertType.toInt() == 1) {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
 
                     // 할일 알림
@@ -103,6 +107,8 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
                 }
             }
