@@ -61,6 +61,7 @@ class MainHomeFragment : Fragment() {
 
             categories2.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
 
             todoList.observe(mainActivity) {
@@ -475,7 +476,7 @@ class MainHomeFragment : Fragment() {
             holder.textViewDate.text = todo.todoDate
             holder.textViewCategory.text = todo.todoCategoryName
             holder.textViewRowMemoSearchMaker.text = "by ${todo.todoOwnerName}"
-            holder.textViewLocation.text = "by ${todo.todoLocationName }"
+            holder.textViewLocation.text = "${todo.todoLocationName }"
             holder.textViewRowMemoSearch.run {
                 text = todo.todoContent
                 setOnClickListener {
