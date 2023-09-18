@@ -141,13 +141,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 // back 버튼 설정
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    navigationIcon?.colorFilter =
-                        BlendModeColorFilter(Color.DKGRAY, BlendMode.SRC_ATOP)
-                } else {
-                    navigationIcon?.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP)
-                }
-
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
