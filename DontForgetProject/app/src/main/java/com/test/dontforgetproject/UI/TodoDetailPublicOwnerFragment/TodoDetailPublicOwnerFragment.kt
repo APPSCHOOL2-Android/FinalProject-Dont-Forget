@@ -36,6 +36,7 @@ import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PUBLIC_OWNE
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -238,9 +239,15 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 var locationLongitude = longitude
 
                 if(content.isEmpty()) {
-
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setMessage("할일을 입력해주세요.")
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
+
+                    builder.setView(dialogNormalBinding.root)
+//                    val builder = MaterialAlertDialogBuilder(mainActivity)
+//                    builder.setMessage("할일을 입력해주세요.")
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                         mainActivity.showSoftInput(textInputEditTextTodoDetailPublicOwner)
@@ -251,9 +258,15 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 }
 
                 if(date.isEmpty()) {
-
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setMessage("날짜를 선택해주세요.")
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
+
+                    builder.setView(dialogNormalBinding.root)
+//                    val builder = MaterialAlertDialogBuilder(mainActivity)
+//                    builder.setMessage("날짜를 선택해주세요.")
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인", null)
                     builder.show()
@@ -279,9 +292,16 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     todoDetailPersonalViewModel.todoOwnerName.value!!.toString()
                 )
 
+                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("경고")
-                builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                dialogNormalBinding.textViewDialogNormalContent.text = "수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다."
+
+                builder.setView(dialogNormalBinding.root)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setTitle("경고")
+//                builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("수정") { dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.modifyTodo(todoDataClass) {
@@ -306,9 +326,16 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
 
             buttonTodoDetailPublicOwnerDelete.setOnClickListener {
+                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("경고")
-                builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                dialogNormalBinding.textViewDialogNormalContent.text = "삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다."
+
+                builder.setView(dialogNormalBinding.root)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setTitle("경고")
+//                builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.removeTodo(todoIdx) {
