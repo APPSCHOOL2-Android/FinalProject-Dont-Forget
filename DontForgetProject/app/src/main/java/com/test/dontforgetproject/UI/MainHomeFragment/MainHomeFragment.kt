@@ -61,7 +61,6 @@ class MainHomeFragment : Fragment() {
 
             categories2.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
-                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
             }
 
             todoList.observe(mainActivity) {
@@ -71,7 +70,6 @@ class MainHomeFragment : Fragment() {
 
             todoList2.observe(mainActivity) {
                 memoList = mainHomeViewModel.getTodo()
-                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
                 binding.recyclerViewMainHomeFragmentMemoSearch.adapter?.notifyDataSetChanged()
             }
         }
