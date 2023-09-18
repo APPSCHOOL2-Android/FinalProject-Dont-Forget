@@ -41,8 +41,8 @@ class MainHomeFragment : Fragment() {
     lateinit var loadingDialog: LoadingDialog
 
     var selectedCategoryPosition = 0
-    lateinit var selectedDate: String
     lateinit var memoList: List<TodoClass>
+    lateinit var selectedDate: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +67,6 @@ class MainHomeFragment : Fragment() {
             todoList.observe(mainActivity) {
                 binding.recyclerViewMainHomeFragmentCategory.adapter?.notifyDataSetChanged()
                 binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
-                binding.recyclerViewMainHomeFragmentMemoSearch.adapter?.notifyDataSetChanged()
             }
 
             todoList2.observe(mainActivity) {
@@ -75,6 +74,7 @@ class MainHomeFragment : Fragment() {
             }
         }
 
+        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         setTodoData()
         mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
 
@@ -93,8 +93,8 @@ class MainHomeFragment : Fragment() {
                     View.OnFocusChangeListener { _, hasFocus ->
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
-                            memoList = mainHomeViewModel.getTodo()
                             mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
+                            memoList = mainHomeViewModel.getTodo()
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
                                 setEndIconDrawable(R.drawable.ic_close_24px)
@@ -140,26 +140,26 @@ class MainHomeFragment : Fragment() {
             }
 
             setCalendar()
-
-            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         }
 
 
         return binding.root
     }
 
-    private fun FragmentMainHomeBinding.setCalendar() {
-        calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            selectedCategoryPosition = 0
-            val formattedMonth = String.format("%02d", month + 1)
-            selectedDate = "${year}-${formattedMonth}-${dayOfMonth}"
-            Log.d("asdasdasd", selectedDate)
+    private fun setCalendar() {
+        binding.run {
+            calendarViewMainHomeFragment.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                selectedCategoryPosition = 0
+                val formattedMonth = String.format("%02d", month + 1)
+                selectedDate = "${year}-${formattedMonth}-${dayOfMonth}"
+                Log.d("asdasdasd", selectedDate)
 
-            // 고른 날에 맞는 todo가져오기
-            mainHomeViewModel.getTodoByDate(
-                selectedDate,
-                mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
-            )
+                // 고른 날에 맞는 todo가져오기
+                mainHomeViewModel.getTodoByDate(
+                    selectedDate,
+                    mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+                )
+            }
         }
     }
 
@@ -365,7 +365,7 @@ class MainHomeFragment : Fragment() {
                             bundle
                         )
                     } else {
-                        if (MyApplication.loginedUserInfo.userIdx == ownerIdx) {
+                        if (MyApplication.loginedUserInfo.userIdx == todo.todoOwnerIdx) {
                             mainActivity.replaceFragment(
                                 MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT,
                                 true,
