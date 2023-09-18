@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.CategoryOptionPersonalFragment
 
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.Repository.CategoryRepository
@@ -7,6 +8,11 @@ import com.test.dontforgetproject.Repository.CategoryRepository
 class CategoryOptionPersonalViewModel() : ViewModel() {
     var categoryName = MutableLiveData<String>()
     var categoryColor = MutableLiveData<Int>()
+
+    fun reset() {
+        categoryName.value = ""
+        categoryColor.value = Color.WHITE
+    }
 
     // 카테고리 정보 가져오기
     fun getCategoryInfo(categoryIdx: Long) {
