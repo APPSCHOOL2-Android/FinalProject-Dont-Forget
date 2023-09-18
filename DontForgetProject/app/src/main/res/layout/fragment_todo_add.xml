@@ -235,18 +235,17 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+
 
             <TextView
+                android:maxLines="1"
                 android:id="@+id/textView_todoAdd_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_vertical_small2"
                 android:layout_weight="1"
+                android:ellipsize="start"
                 android:fontFamily="@font/scdream_regular"
                 android:gravity="right"
                 android:text="@string/todo_location_empty"

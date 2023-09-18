@@ -67,5 +67,39 @@ class JoinFriendRepository {
                 }
             }
         }
+
+        /* 회원탈퇴시 관련된 JoinFriend 모두 삭제 */
+        // 1. userIdx 로 삭제
+        // 삭제할계정이 보낸 친구추가 삭제
+        fun deleteJoinFriendByUserIdx(userIdx : Long, callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.orderByChild("joinFriendSenderIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener {
+                for(c1 in it.result.children){
+                    c1.ref.removeValue().addOnCompleteListener(callback1)
+                }
+            }
+        }
+
+        // 2. email 로 삭제
+        // 삭제할계정의 email 로 보내진 친구추가 삭제
+        fun deleteJoinFriendByEmail(userEmail : String, callback1: (Task<Void>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("joinFriendInfo")
+            databaseRef.orderByChild("joinFriendReceiverEmail").equalTo(userEmail).get().addOnCompleteListener {
+                for(c1 in it.result.children){
+                    c1.ref.removeValue().addOnCompleteListener(callback1)
+                }
+            }
+        }
+
+        // 요거 쓰시면 됩니다.
+        // userIdx, userEmail 입력하여 관련된 모든 JoinFriend삭제
+        fun deleteJoinFriendByMyData(userIdx : Long, userEmail : String){
+            deleteJoinFriendByUserIdx(userIdx){
+                deleteJoinFriendByEmail(userEmail){
+                }
+            }
+        }
     }
 }
