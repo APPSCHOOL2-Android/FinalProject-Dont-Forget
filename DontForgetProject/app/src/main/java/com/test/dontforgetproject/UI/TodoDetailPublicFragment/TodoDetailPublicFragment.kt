@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.TodoDetailPublicFragment
 
+import android.content.res.ColorStateList
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -51,10 +52,20 @@ class TodoDetailPublicFragment : Fragment() {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = it.toString()
             }
             todoLocationName.observe(mainActivity) {
-                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString()
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString().split("@").get(0)
             }
             todoOwnerName.observe(mainActivity) {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicMadeby.text = it.toString()
+            }
+            todoFontColor.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.buttonTodoDetailPublicCategory.setTextColor(it.toInt())
+            }
+            todoBackgroundColor.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.run {
+                    buttonTodoDetailPublicCategory.setBackgroundColor(it.toInt())
+                    textInputLayoutTodoDetailPublic.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoDetailPublic.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
             }
         }
         todoDetailPersonalViewModel.getTodoInfo(todoIdx)
@@ -68,13 +79,6 @@ class TodoDetailPublicFragment : Fragment() {
 
                 // back 버튼 설정
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    navigationIcon?.colorFilter =
-                        BlendModeColorFilter(Color.DKGRAY, BlendMode.SRC_ATOP)
-                } else {
-                    navigationIcon?.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP)
-                }
 
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_FRAGMENT)
