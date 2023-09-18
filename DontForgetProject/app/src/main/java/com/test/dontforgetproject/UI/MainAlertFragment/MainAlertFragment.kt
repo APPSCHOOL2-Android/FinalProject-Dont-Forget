@@ -13,9 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -90,6 +92,7 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                         fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
@@ -98,6 +101,7 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                         fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
@@ -107,6 +111,7 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                         fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
