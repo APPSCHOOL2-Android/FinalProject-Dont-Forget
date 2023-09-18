@@ -37,7 +37,6 @@ import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.UI.MyPageModifyFragment.MyPageModifyFragment
 import com.test.dontforgetproject.UI.MyPageThemeFragment.MyPageThemeFragment
 import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
-import com.test.dontforgetproject.UI.TodoAddSearchFragment.TodoAddSearchFragment
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicFragment.TodoDetailPublicFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment.TodoDetailPublicOwnerFragment
@@ -119,7 +118,6 @@ class MainActivity : AppCompatActivity() {
         val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
-        val TODO_ADD_SEARCH_FRAGMENT = "TodoAddSearchFragment"
         val TODO_DETAIL_PERSONAL_FRAGMENT = "TodoDetailPersonalFragment"
         val TODO_DETAIL_PUBLIC_FRAGMENT = "TodoDetailPublicFragment"
         val TODO_DETAIL_PUBLIC_OWNER_FRAGMENT = "TodoDetailPublicOwnerFragment"
@@ -151,7 +149,6 @@ class MainActivity : AppCompatActivity() {
             MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
-            TODO_ADD_SEARCH_FRAGMENT -> TodoAddSearchFragment()
             TODO_DETAIL_PERSONAL_FRAGMENT -> TodoDetailPersonalFragment()
             TODO_DETAIL_PUBLIC_FRAGMENT -> TodoDetailPublicFragment()
             TODO_DETAIL_PUBLIC_OWNER_FRAGMENT -> TodoDetailPublicOwnerFragment()

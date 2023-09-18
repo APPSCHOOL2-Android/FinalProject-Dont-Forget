@@ -6,11 +6,9 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,21 +16,23 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.BuildConfig
-import com.bumptech.glide.Glide.init
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.timepicker.MaterialTimePicker
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+
+import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.TodoClass
+import com.test.dontforgetproject.GeofenceBroadcastReceiver
 import com.test.dontforgetproject.GeofenceManager
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -40,13 +40,12 @@ import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
+
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
-
-
 
 
 class TodoAddFragment : Fragment() {
@@ -55,7 +54,7 @@ class TodoAddFragment : Fragment() {
     lateinit var todoAddBinding: FragmentTodoAddBinding
     lateinit var viewModel: TodoAddFragmentViewModel
     lateinit var geofenceManager: GeofenceManager
-
+    lateinit var geofenceBroadcastReceiver: GeofenceBroadcastReceiver
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -65,11 +64,15 @@ class TodoAddFragment : Fragment() {
                 if(intent!=null){
                     val place = Autocomplete.getPlaceFromIntent(intent)
 
+                    var placeName = place.name
+                    // ㅎㅎ포차
+                    var placeDetail = place.address
+                    // 대한민국 서울특별시 중랑구 상봉동 번지 1층 88-48
 
-                    var datas3 = place.address
-                    Log.d("Lim log","${datas3}")
+                    var temp = placeDetail + "@" + placeName
+                    Log.d("Lim log","${placeDetail}")
 
-                    MyApplication.locationName =datas3
+                    MyApplication.locationName = temp
 
                     viewModel.locate.value = MyApplication.locationName
 
@@ -103,6 +106,7 @@ class TodoAddFragment : Fragment() {
         todoAddBinding = FragmentTodoAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
         geofenceManager = GeofenceManager(requireContext())
+        geofenceBroadcastReceiver = GeofenceBroadcastReceiver()
         viewModel.run {
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
@@ -230,19 +234,27 @@ class TodoAddFragment : Fragment() {
             linearlayoutTodoAddLocation.run {
 
                 setOnClickListener {
+                    val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
+                    val requestCode = 123 // 요청 코드 (임의의 숫자)
 
-                    //구글맵 키 받아옴
-                    val key = com.test.dontforgetproject.BuildConfig.googlemapkey
+                    if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
+                        //구글맵 키 받아옴
+                        val key = com.test.dontforgetproject.BuildConfig.googlemapkey
 
-                    // plac api 초기화
-                    Places.initialize(context,key)
-                    val placesClient = Places.createClient(mainActivity)
+                        // plac api 초기화
+                        Places.initialize(context,key)
+                        val placesClient = Places.createClient(mainActivity)
 
-                    val field = listOf(Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS_COMPONENTS,Place.Field.TYPES,Place.Field.ADDRESS)
-                    val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,field)
-                        .setHint("주소를 입력해주세요")
-                        .build(mainActivity)
-                    startAutocomplete.launch(intent)
+                        val field = listOf(Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS_COMPONENTS,Place.Field.TYPES,Place.Field.ADDRESS)
+                        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,field)
+                            .setHint("주소를 입력해주세요")
+                            .build(mainActivity)
+                        startAutocomplete.launch(intent)
+                    } else {
+                        // 권한을 요청
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                    }
+
 
                 }
 
@@ -253,9 +265,16 @@ class TodoAddFragment : Fragment() {
                 setOnClickListener {
                     //유효성 검사
                     if(editTextTodoAdd.text!!.isEmpty()){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("할일을 입력해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("할일을 입력해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -266,9 +285,16 @@ class TodoAddFragment : Fragment() {
                         return@setOnClickListener
                     }
                     if(textViewTodoAddCategory.text == "카데고리 없음"){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("카데고리를 선택해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "카데고리를 선택해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("카데고리를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -279,9 +305,16 @@ class TodoAddFragment : Fragment() {
                         return@setOnClickListener
                     }
                     if(textViewTodoAddDate.text == "날짜 없음"){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("날짜를 선택해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("날짜를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -310,12 +343,12 @@ class TodoAddFragment : Fragment() {
                         //알림, 장소 이름,위도,경도 없을시 None으로 변경
                         var time = newTime
                         if(time==""){
-                            time = "None"
+                            time = "알림 없음"
                         }
 
                         var locationName = MyApplication.locationName
                         if(locationName == ""){
-                            locationName = "None"
+                            locationName = "위치 없음"
                         }
 
                         var locationLongtitude = MyApplication.locationLongitude
@@ -327,23 +360,15 @@ class TodoAddFragment : Fragment() {
                         if(locationLatitude == ""){
                             locationLatitude = "None"
                         }
-                        val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
-                        val requestCode = 123 // 요청 코드 (임의의 숫자)
 
-                        if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
-                            // 이미 위치 권한이 허용되어 있음
-                            // 권한이 필요한 기능 수행
-                        } else {
-                            // 권한을 요청
-                            ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                        if(locationLatitude !="None" && locationLongtitude != "None"){
+                            val location = Location("my_provider")
+                            location.latitude = MyApplication.locationLatitude.toDouble() // 위도
+                            location.longitude = MyApplication.locationLongitude.toDouble() // 경도
+                            geofenceManager.addGeofence("$locationName", location)
+                            geofenceManager.registerGeofence()
+
                         }
-
-//                        val location = Location("my_provider")
-//                        location.latitude = MyApplication.locationLatitude.toDouble() // 위도
-//                        location.longitude = MyApplication.locationLongitude.toDouble() // 경도
-//
-//                        geofenceManager.addGeofence("$locationName", location)
-//                        geofenceManager.registerGeofence()
 
                         CategoryRepository.getAllCategory {
                             for (c1 in it.result.children){
@@ -357,20 +382,41 @@ class TodoAddFragment : Fragment() {
                                     var catgoryIdx = c1.child("categoryIdx").value as Long
                                     var owneridx = MyApplication.loginedUserInfo.userIdx
                                     var ownerName = MyApplication.loginedUserInfo.userName
-                                    var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
-                                        time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
-                                    TodoRepository.setTodoAddInfo(newclass) {
-                                        TodoRepository.setTodoIdx(idx) {
-                                            var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
-                                            AlertRepository.getAlertIdx {
-                                                var idx = it.result.value as Long
-                                                idx++
-                                                var newclass2 = AlertClass(idx, text, useridx, 2)
-                                                AlertRepository.addAlertInfo(newclass2) {
-                                                    AlertRepository.setAlertIdx(idx) {
-                                                        Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
-                                                        mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
-                                                        viewModel.resetList()
+                                    var categoryIsPublic = c1.child("categoryIsPublic").value as Long
+                                    var newPublicdata = categoryIsPublic.toInt()
+                                    Log.d("Lim log","${categoryIsPublic}")
+
+                                    //개인 카테고리 추가시
+                                    if(newPublicdata == 0){
+                                        var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
+                                            time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
+
+                                        TodoRepository.setTodoAddInfo(newclass){
+                                            TodoRepository.setTodoIdx(idx){
+                                                Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
+                                                mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                viewModel.resetList()
+                                            }
+                                        }
+                                    }
+
+                                    //공용 카데고리 추가시
+                                    if(newPublicdata == 1){
+                                        var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
+                                            time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
+                                        TodoRepository.setTodoAddInfo(newclass) {
+                                            TodoRepository.setTodoIdx(idx) {
+                                                var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
+                                                AlertRepository.getAlertIdx {
+                                                    var idx = it.result.value as Long
+                                                    idx++
+                                                    var newclass2 = AlertClass(idx, text, useridx, 2)
+                                                    AlertRepository.addAlertInfo(newclass2) {
+                                                        AlertRepository.setAlertIdx(idx) {
+                                                            Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
+                                                            mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                            viewModel.resetList()
+                                                        }
                                                     }
                                                 }
                                             }
@@ -380,6 +426,9 @@ class TodoAddFragment : Fragment() {
 
                             }
                         }
+
+
+
                     }
 
                 }

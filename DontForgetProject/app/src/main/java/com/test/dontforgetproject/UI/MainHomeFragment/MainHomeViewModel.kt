@@ -2,16 +2,21 @@ package com.test.dontforgetproject.UI.MainHomeFragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.Util.LoadingDialog
+import kotlinx.coroutines.launch
 
 class MainHomeViewModel : ViewModel() {
     var categories = MutableLiveData<List<CategoryClass>>()
     var categories2 = MutableLiveData<List<CategoryClass>>()
     var todoList = MutableLiveData<List<TodoClass>>()
     var todoList2 = MutableLiveData<List<TodoClass>>()
+
+    private var loadingDialog: LoadingDialog? = null
 
     init {
         categories.value = mutableListOf()
@@ -24,43 +29,55 @@ class MainHomeViewModel : ViewModel() {
         return todoList2.value!!
     }
 
+    private fun closeLoadingDialog() {
+        // 로딩 다이얼로그가 null이 아니면 닫습니다.
+        loadingDialog?.dismiss()
+    }
+
     // 카테고리 목록
-    fun getCategoryAll(userIdx: Long): List<Long> {
+    fun getCategoryAll(userIdx: Long, loadingDialog: LoadingDialog): List<Long> {
         val categoryList = mutableListOf<CategoryClass>()
         val categoryIdxList = mutableListOf<Long>()
 
-        CategoryRepository.getAllCategory {
-            for (c1 in it.result.children) {
-                var categoryIdx = c1.child("categoryIdx").value as Long
-                var categoryName = c1.child("categoryName").value as String
-                var categoryColor = c1.child("categoryColor").value as Long
-                var categoryFontColor = c1.child("categoryFontColor").value as Long
-                var categoryJoinUserIdxList =
-                    c1.child("categoryJoinUserIdxList").value as ArrayList<Long>?
-                var categoryJoinUserNameList =
-                    c1.child("categoryJoinUserNameList").value as ArrayList<String>?
-                var categoryIsPublic = c1.child("categoryIsPublic").value as Long
-                var categoryOwnerIdx = c1.child("categoryOwnerIdx").value as Long
-                var categoryOwnerName = c1.child("categoryOwnerName").value as String
+        this.loadingDialog = loadingDialog
+        loadingDialog.show()
 
-                if (!categoryJoinUserIdxList?.contains(userIdx)!!) continue
+        viewModelScope.launch {
+            CategoryRepository.getAllCategory {
+                for (c1 in it.result.children) {
+                    var categoryIdx = c1.child("categoryIdx").value as Long
+                    var categoryName = c1.child("categoryName").value as String
+                    var categoryColor = c1.child("categoryColor").value as Long
+                    var categoryFontColor = c1.child("categoryFontColor").value as Long
+                    var categoryJoinUserIdxList =
+                        c1.child("categoryJoinUserIdxList").value as ArrayList<Long>?
+                    var categoryJoinUserNameList =
+                        c1.child("categoryJoinUserNameList").value as ArrayList<String>?
+                    var categoryIsPublic = c1.child("categoryIsPublic").value as Long
+                    var categoryOwnerIdx = c1.child("categoryOwnerIdx").value as Long
+                    var categoryOwnerName = c1.child("categoryOwnerName").value as String
 
-                val category = CategoryClass(
-                    categoryIdx,
-                    categoryName,
-                    categoryColor,
-                    categoryFontColor,
-                    categoryJoinUserIdxList,
-                    categoryJoinUserNameList,
-                    categoryIsPublic,
-                    categoryOwnerIdx,
-                    categoryOwnerName
-                )
-                categoryList.add(category)
-                categoryIdxList.add(categoryIdx)
+                    if (!categoryJoinUserIdxList?.contains(userIdx)!!) continue
+
+                    val category = CategoryClass(
+                        categoryIdx,
+                        categoryName,
+                        categoryColor,
+                        categoryFontColor,
+                        categoryJoinUserIdxList,
+                        categoryJoinUserNameList,
+                        categoryIsPublic,
+                        categoryOwnerIdx,
+                        categoryOwnerName
+                    )
+                    categoryList.add(category)
+                    categoryIdxList.add(categoryIdx)
+                }
+                categories.value = categoryList
+                categories2.value = categoryList
+
+                closeLoadingDialog()
             }
-            categories.value = categoryList
-            categories2.value = categoryList
         }
         return categoryIdxList
     }

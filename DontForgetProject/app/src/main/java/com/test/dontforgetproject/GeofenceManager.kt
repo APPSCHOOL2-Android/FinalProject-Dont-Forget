@@ -36,7 +36,7 @@ class GeofenceManager(context: Context) {
         key: String,
         location: Location,
         radiusInMeters: Float = 100.0f,
-        expirationTimeInMillis: Long = 30 * 60 * 1000,
+        expirationTimeInMillis: Long = 12 * 60 * 60 * 1000 ,
     ) {
         geofenceList[key] = createGeofence(key, location, radiusInMeters, expirationTimeInMillis)
     }
