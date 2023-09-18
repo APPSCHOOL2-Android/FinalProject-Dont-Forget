@@ -24,6 +24,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PERSONAL_FRAGMENT
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPersonalBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -161,9 +162,15 @@ class TodoDetailPersonalFragment : Fragment() {
                 var locationLongitude = "None"
 
                 if(content.isEmpty()) {
-
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setMessage("할일을 입력해주세요.")
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
+
+                    builder.setView(dialogNormalBinding.root)
+//                    val builder = MaterialAlertDialogBuilder(mainActivity)
+//                    builder.setMessage("할일을 입력해주세요.")
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                         mainActivity.showSoftInput(textInputEditTextTodoDetailPersonal)
@@ -174,9 +181,15 @@ class TodoDetailPersonalFragment : Fragment() {
                 }
 
                 if(date.isEmpty()) {
-
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setMessage("날짜를 선택해주세요.")
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
+
+                    builder.setView(dialogNormalBinding.root)
+//                    val builder = MaterialAlertDialogBuilder(mainActivity)
+//                    builder.setMessage("날짜를 선택해주세요.")
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인", null)
                     builder.show()
@@ -212,9 +225,16 @@ class TodoDetailPersonalFragment : Fragment() {
             }
 
             buttonTodoDetailPersonalDelete.setOnClickListener {
+                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("삭제")
-                builder.setMessage("삭제하시겠습니까?")
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                dialogNormalBinding.textViewDialogNormalContent.text = "삭제하시겠습니까?"
+
+                builder.setView(dialogNormalBinding.root)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setTitle("삭제")
+//                builder.setMessage("삭제하시겠습니까?")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.removeTodo(todoIdx) {

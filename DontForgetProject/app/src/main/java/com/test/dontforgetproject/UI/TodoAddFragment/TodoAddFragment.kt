@@ -26,6 +26,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 
@@ -41,6 +42,7 @@ import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -253,9 +255,16 @@ class TodoAddFragment : Fragment() {
                 setOnClickListener {
                     //유효성 검사
                     if(editTextTodoAdd.text!!.isEmpty()){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("할일을 입력해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("할일을 입력해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -266,9 +275,16 @@ class TodoAddFragment : Fragment() {
                         return@setOnClickListener
                     }
                     if(textViewTodoAddCategory.text == "카데고리 없음"){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("카데고리를 선택해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "카데고리를 선택해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("카데고리를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -279,9 +295,16 @@ class TodoAddFragment : Fragment() {
                         return@setOnClickListener
                     }
                     if(textViewTodoAddDate.text == "날짜 없음"){
-                        val builder= AlertDialog.Builder(mainActivity)
-                        builder.setTitle("경고")
-                        builder.setMessage("날짜를 선택해주세요")
+                        var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                        val builder = MaterialAlertDialogBuilder(mainActivity)
+
+                        dialogNormalBinding.textViewDialogNormalTitle.text = "경고"
+                        dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
+
+                        builder.setView(dialogNormalBinding.root)
+//                        val builder= AlertDialog.Builder(mainActivity)
+//                        builder.setTitle("경고")
+//                        builder.setMessage("날짜를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }

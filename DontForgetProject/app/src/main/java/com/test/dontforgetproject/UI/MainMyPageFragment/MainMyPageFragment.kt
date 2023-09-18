@@ -25,6 +25,7 @@ import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
 import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -91,9 +92,17 @@ class MainMyPageFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_THEME_FRAGMENT,true,null)
             }
             cardViewMainMyPageLogout.setOnClickListener {
-                val dialogMypageLogoutBinding = DialogMypageLogoutBinding.inflate(layoutInflater)
+//                val dialogMypageLogoutBinding = DialogMypageLogoutBinding.inflate(layoutInflater)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setView(dialogMypageLogoutBinding.root)
+                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setView(dialogMypageLogoutBinding.root)
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "로그아웃"
+                dialogNormalBinding.textViewDialogNormalContent.text = "로그아웃 하시겠습니까?"
+
+                builder.setView(dialogNormalBinding.root)
+
                 builder.setPositiveButton("로그아웃") { dialog, which ->
                     // 자동 로그인 해제
                     val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
@@ -115,9 +124,16 @@ class MainMyPageFragment : Fragment() {
 
             }
             cardViewMainMyPageWithDraw.setOnClickListener {
-                val dialogMypageWithdrawBinding = DialogMypageWithdrawBinding.inflate(layoutInflater)
+//                val dialogMypageWithdrawBinding = DialogMypageWithdrawBinding.inflate(layoutInflater)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setView(dialogMypageWithdrawBinding.root)
+                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setView(dialogMypageWithdrawBinding.root)
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "회원탈퇴"
+                dialogNormalBinding.textViewDialogNormalContent.text = "회원 탈퇴 후에는 계정과 관련된 모든 정보가 삭제됩니다."
+
+                builder.setView(dialogNormalBinding.root)
                 builder.setNegativeButton("회원탈퇴") { dialog, which ->
                     UserRepository.deleteUserInfo(MyApplication.loginedUserInfo.userIdx){
                         if(it.isSuccessful){

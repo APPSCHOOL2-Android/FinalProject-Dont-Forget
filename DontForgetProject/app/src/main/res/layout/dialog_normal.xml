@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+    <TextView
+        android:id="@+id/textView_dialogNormal_title"
+        style="@style/Theme.DontForgetProject.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/scdream_bold"
+        android:text="다이얼로그 제목"
+        android:textSize="@dimen/font_size_big" />
+
+    <TextView
+        android:id="@+id/textView_dialogNormal_content"
+        style="@style/Theme.DontForgetProject.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_size_normal"
+        android:fontFamily="@font/scdream_regular"
+        android:text="다이얼로그 내용"
+        android:textSize="@dimen/font_size_medium" />
+</LinearLayout>

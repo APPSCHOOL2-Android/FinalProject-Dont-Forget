@@ -32,6 +32,7 @@ import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.Util.FirebaseUtil
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentLoginBinding
 import com.test.dontforgetproject.databinding.FragmentMainBinding
 import kotlin.math.log
@@ -208,9 +209,14 @@ class LoginFragment : Fragment() {
                             UserRepository.getUserInfoById(userId){
                                 // 가져온 데이터가 없을때
                                 if(!it.result.exists()){
+                                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                                    builder.setTitle("로그인 오류")
-                                    builder.setMessage("존재하지 않는 아이디 입니다")
+
+                                    dialogNormalBinding.textViewDialogNormalTitle.text = "로그인 오류"
+                                    dialogNormalBinding.textViewDialogNormalContent.text = "존재하지 않는 아이디 입니다."
+
+                                    builder.setView(dialogNormalBinding.root)
+
                                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                                         textInputEditTextLoginEmail.setText("")
                                         textInputEditTextLoginPassword.setText("")
