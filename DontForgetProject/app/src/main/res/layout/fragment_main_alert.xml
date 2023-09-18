@@ -21,12 +21,23 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/Theme.DontForgetProject.Toolbar" />
 
+        <Button
+            android:id="@+id/button_mainAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/margin_vertical_small1"
+            android:backgroundTint="@color/transparent"
+            android:text="전체 읽음"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_small" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_mainAlert"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="@dimen/padding_size_normal"
-            android:paddingTop="@dimen/padding_size_normal"
             android:paddingEnd="@dimen/padding_size_normal" />
     </LinearLayout>
 
