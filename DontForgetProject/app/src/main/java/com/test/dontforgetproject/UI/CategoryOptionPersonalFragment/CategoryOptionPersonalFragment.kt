@@ -155,4 +155,9 @@ class CategoryOptionPersonalFragment : Fragment() {
 
         return fragmentCategoryOptionPersonalBinding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+        categoryOptionPersonalViewModel.reset()
+    }
 }
