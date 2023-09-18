@@ -1,12 +1,7 @@
 package com.test.dontforgetproject.UI.MainAlertFragment
 
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.os.Build
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,14 +12,11 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
-import com.test.dontforgetproject.UI.MainFragment.MainFragment.Companion.MAIN_FRIENDS_FRAGMENT
-import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentMainAlertBinding
 import com.test.dontforgetproject.databinding.RowMainAlertBinding
 
@@ -51,7 +43,6 @@ class MainAlertFragment : Fragment() {
 
             alertList.observe(mainActivity) {
                 userAlertList = it
-                Log.d("lion","userAlertList : $userAlertList")
                 fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
             }
         }
@@ -93,9 +84,6 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
-                        var bundle = Bundle()
-                        bundle.putString("oldFragment", "Alert")
-                        mainActivity.replaceFragment(MAIN_FRIENDS_FRAGMENT, true, bundle)
                         Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                         fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
@@ -136,7 +124,6 @@ class MainAlertFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            Log.d("lion","size : ${userAlertList.size}")
             return userAlertList.size
         }
 
