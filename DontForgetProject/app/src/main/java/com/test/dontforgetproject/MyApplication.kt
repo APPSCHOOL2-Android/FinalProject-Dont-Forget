@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
@@ -28,12 +29,12 @@ class MyApplication :Application(){
             userIdx = 0,
             userName = "",
             userEmail = "",
-            userImage = "None",
+            userImage = "",
             userIntroduce = "",
             userId = "",
             userFriendList = ArrayList<Friend>()
         )
-
+        var loginedUserProfile = ""
         // 선택한 친구 인덱스, 친구이름
         var chosedFriendIdx : Long = 0
         var chosedFriendName = ""
@@ -41,11 +42,6 @@ class MyApplication :Application(){
         // 테마설정
         var selectedTheme: String = ThemeUtil.DEFAULT_MODE
 
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        applyTheme(selectedTheme)
     }
 
 

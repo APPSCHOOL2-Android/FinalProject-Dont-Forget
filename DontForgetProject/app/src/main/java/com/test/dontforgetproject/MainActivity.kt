@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
@@ -55,12 +56,16 @@ class MainActivity : AppCompatActivity() {
     var categoryFontColor = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
+        if (themeName != null) {
+            ThemeUtil.applyTheme(themeName)
+        }
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         // 테마 설정 적용
-        val sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-        MyApplication.selectedTheme = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE).toString()
+
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val loginedUser = sharedPreferences.getString("isLoggedUser",null)
         if (isLoggedIn) {
@@ -207,6 +212,7 @@ class MainActivity : AppCompatActivity() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
+
 
 
 }

@@ -39,8 +39,9 @@ class MyPageThemeFragment : Fragment() {
                     mainActivity.removeFragment(MainActivity.MY_PAGE_THEME_FRAGMENT)
                 }
             }
-
-            when(MyApplication.selectedTheme){
+            val sharedPreferences =  requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+            val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
+            when(themeName){
                 DEFAULT_MODE -> {
                     radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_system)
                 }
