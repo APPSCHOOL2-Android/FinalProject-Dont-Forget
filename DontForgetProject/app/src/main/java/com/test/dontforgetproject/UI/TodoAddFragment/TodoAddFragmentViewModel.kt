@@ -18,12 +18,18 @@ class TodoAddFragmentViewModel :ViewModel(){
     var name = MutableLiveData<String>()
     var categoryColor = MutableLiveData<Long>()
     var fontColor = MutableLiveData<Long>()
+    var date = MutableLiveData<String>()
+    var time = MutableLiveData<String>()
+    var locate = MutableLiveData<String>()
 
     init {
         categoryInfo.value = mutableListOf<TodoClass>()
         name = MutableLiveData<String>()
         categoryColor = MutableLiveData<Long>()
         fontColor = MutableLiveData<Long>()
+        date = MutableLiveData<String>()
+        time = MutableLiveData<String>()
+        locate = MutableLiveData<String>()
     }
 
     //카데고리 데이터 삽입
@@ -62,6 +68,9 @@ class TodoAddFragmentViewModel :ViewModel(){
         name = MutableLiveData<String>()
         categoryColor = MutableLiveData<Long>()
         fontColor = MutableLiveData<Long>()
+        date = MutableLiveData<String>()
+        time = MutableLiveData<String>()
+        locate = MutableLiveData<String>()
     }
 
 }

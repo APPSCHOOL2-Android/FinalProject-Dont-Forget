@@ -42,6 +42,16 @@ class MyApplication :Application(){
         // 테마설정
         var selectedTheme: String = ThemeUtil.DEFAULT_MODE
 
+        //위치 이름,위도,경도
+        var locationName=""
+        var locationLatitude=""
+        var locationLongitude =""
+
+        //변경된 카데고리 색상,이름
+        var categoryname = ""
+        var categoryColor = ""
+        var categoryFontColor = ""
+
     }
 
 
