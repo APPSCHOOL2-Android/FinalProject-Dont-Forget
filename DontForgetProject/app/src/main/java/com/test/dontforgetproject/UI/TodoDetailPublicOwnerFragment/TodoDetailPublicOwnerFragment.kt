@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -61,8 +62,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 val intent = it.data
                 if(intent!=null){
                     val place = Autocomplete.getPlaceFromIntent(intent)
-
-                    placeAddress = place.address
 
                     var placeName = place.name
                     var placeDetail = place.address
@@ -113,6 +112,13 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString().split("@").get(0)
+                placeAddress = todoDetailPersonalViewModel.todoLocationName.value.toString()
+            }
+            todoLocationLatitude.observe(mainActivity) {
+                latitude = it.toString()
+            }
+            todoLocationLongitude.observe(mainActivity) {
+                longitude = it.toString()
             }
             todoFontColor.observe(mainActivity) {
                 fragmentTodoDetailPublicOwnerBinding.buttonTodoDetailPublicOwnerCategory.setTextColor(it.toInt())
@@ -299,11 +305,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                         ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
                     }
 
-                    Snackbar.make(
-                        fragmentTodoDetailPublicOwnerBinding.root,
-                        "수정이 완료되었습니다.",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(mainActivity, "수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     todoDetailPersonalViewModel.getTodoInfo(todoIdx)
                     mainActivity.removeFragment(TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
@@ -319,7 +321,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     TodoRepository.removeTodo(todoIdx) {
 
                     }
-                    Snackbar.make(fragmentTodoDetailPublicOwnerBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT)
+                    Toast.makeText(mainActivity, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.removeFragment(MainActivity.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
                 builder.show()

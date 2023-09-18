@@ -64,8 +64,6 @@ class TodoDetailPersonalFragment : Fragment() {
                 if(intent!=null){
                     val place = Autocomplete.getPlaceFromIntent(intent)
 
-                    placeAddress = place.address
-
                     var placeName = place.name
                     var placeDetail = place.address
 
@@ -117,6 +115,13 @@ class TodoDetailPersonalFragment : Fragment() {
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text =
                     it.toString().split("@").get(0)
+                placeAddress = todoDetailPersonalViewModel.todoLocationName.value.toString()
+            }
+            todoLocationLatitude.observe(mainActivity) {
+                latitude = it.toString()
+            }
+            todoLocationLongitude.observe(mainActivity) {
+                longitude = it.toString()
             }
             todoFontColor.observe(mainActivity) {
                 fragmentTodoDetailPersonalBinding.buttonTodoDetailPersonalCategory.setTextColor(it.toInt())
@@ -300,8 +305,7 @@ class TodoDetailPersonalFragment : Fragment() {
 
                 }
                 mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
-                Snackbar.make(fragmentTodoDetailPersonalBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
-                todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+                Toast.makeText(mainActivity, "수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
             }
 
             buttonTodoDetailPersonalDelete.setOnClickListener {
@@ -313,7 +317,7 @@ class TodoDetailPersonalFragment : Fragment() {
 
                     }
                     mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
-                    Snackbar.make(fragmentTodoDetailPersonalBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(mainActivity, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
                 builder.show()
             }
