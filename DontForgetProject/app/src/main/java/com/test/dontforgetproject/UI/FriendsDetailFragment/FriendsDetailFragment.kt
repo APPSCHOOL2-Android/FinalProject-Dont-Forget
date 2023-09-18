@@ -2,6 +2,7 @@ package com.test.dontforgetproject.UI.FriendsDetailFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -142,11 +143,14 @@ class FriendsDetailFragment : Fragment() {
 
                         /* 1. */
                         var temp = MyApplication.loginedUserInfo.userFriendList
-                        for ((i, v) in temp.withIndex()) {
+                        var buff = ArrayList<Friend>()
+                        for (v in temp) {
                             if (MyApplication.chosedFriendIdx == v.friendIdx) {
-                                MyApplication.loginedUserInfo.userFriendList.removeAt(i)
+                                buff.add(v)
                             }
                         }
+                        temp.remove(buff[0])
+                        MyApplication.loginedUserInfo.userFriendList = temp
 
                         /* 2. */
                         // 내정보
@@ -173,13 +177,17 @@ class FriendsDetailFragment : Fragment() {
                         )
 
                         // 친구 목록에서 내정보 삭제
+                        var temp2 = _FFL
+                        var buff2 = mutableListOf<Friend>()
                         for((i,v) in _FFL.withIndex()){
                             if(v.friendIdx == MIdx){
-                                FInfo.userFriendList.removeAt(i)
+                               buff2.add(v)
                             }
                         }
+                        temp2.remove(buff2[0])
+                        _FFL = temp2
 
-                        // modify
+//                        // modify
                         UserRepository.modifyUserInfo(MInfo){}
                         UserRepository.modifyUserInfo(FInfo){}
 
