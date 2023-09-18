@@ -118,6 +118,15 @@ class TodoDetailPersonalFragment : Fragment() {
                 fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text =
                     it.toString().split("@").get(0)
             }
+            todoFontColor.observe(mainActivity) {
+                fragmentTodoDetailPersonalBinding.buttonTodoDetailPersonalCategory.setTextColor(it.toInt())
+            }
+            todoBackgroundColor.observe(mainActivity) {
+                fragmentTodoDetailPersonalBinding.run {
+                    buttonTodoDetailPersonalCategory.setBackgroundColor(it.toInt())
+                    textInputLayoutTodoDetailPersonal.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoDetailPersonal.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
             }
         }
         todoDetailPersonalViewModel.getTodoInfo(todoIdx)

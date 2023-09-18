@@ -114,6 +114,15 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString().split("@").get(0)
             }
+            todoFontColor.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.buttonTodoDetailPublicOwnerCategory.setTextColor(it.toInt())
+            }
+            todoBackgroundColor.observe(mainActivity) {
+                fragmentTodoDetailPublicOwnerBinding.run {
+                    buttonTodoDetailPublicOwnerCategory.setBackgroundColor(it.toInt())
+                    textInputLayoutTodoDetailPublicOwner.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoDetailPublicOwner.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
             }
         }
         todoDetailPersonalViewModel.getTodoInfo(todoIdx)

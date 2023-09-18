@@ -57,6 +57,16 @@ class TodoDetailPublicFragment : Fragment() {
             todoOwnerName.observe(mainActivity) {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicMadeby.text = it.toString()
             }
+            todoFontColor.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.buttonTodoDetailPublicCategory.setTextColor(it.toInt())
+            }
+            todoBackgroundColor.observe(mainActivity) {
+                fragmentTodoDetailPublicBinding.run {
+                    buttonTodoDetailPublicCategory.setBackgroundColor(it.toInt())
+                    textInputLayoutTodoDetailPublic.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoDetailPublic.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
+            }
         }
         todoDetailPersonalViewModel.getTodoInfo(todoIdx)
 
