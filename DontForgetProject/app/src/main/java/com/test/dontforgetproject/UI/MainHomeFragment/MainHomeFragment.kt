@@ -382,7 +382,17 @@ class MainHomeFragment : Fragment() {
                 }
             }
             holder.textViewTodoMaker.text = "by ${todo.todoOwnerName}"
-            holder.textViewRowTodoLocation.text = todo.todoLocationName
+            holder.textViewRowTodoLocation.text = if (todo.todoLocationName == "위치 없음") {
+                todo.todoLocationName
+            } else {
+                val parts = todo.todoLocationName.split("@")
+                if (parts.size > 1) {
+                    parts[1]
+                } else {
+                    todo.todoLocationName
+                }
+            }
+
             if (todo.todoIsChecked == 0L) {
                 holder.checkBoxTodo.isChecked = false
                 holder.textViewTodo.paintFlags =
@@ -476,7 +486,17 @@ class MainHomeFragment : Fragment() {
             holder.textViewDate.text = todo.todoDate
             holder.textViewCategory.text = todo.todoCategoryName
             holder.textViewRowMemoSearchMaker.text = "by ${todo.todoOwnerName}"
-            holder.textViewLocation.text = "${todo.todoLocationName }"
+            holder.textViewLocation.text = if (todo.todoLocationName == "위치 없음") {
+                todo.todoLocationName
+            } else {
+                val parts = todo.todoLocationName.split("@")
+                if (parts.size > 1) {
+                    parts[1]
+                } else {
+                    todo.todoLocationName
+                }
+            }
+
             holder.textViewRowMemoSearch.run {
                 text = todo.todoContent
                 setOnClickListener {
