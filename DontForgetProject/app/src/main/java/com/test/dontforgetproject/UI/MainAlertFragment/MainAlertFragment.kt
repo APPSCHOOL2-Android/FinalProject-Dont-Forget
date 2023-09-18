@@ -49,6 +49,12 @@ class MainAlertFragment : Fragment() {
         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
 
         fragmentMainAlertBinding.run {
+
+            swipeMainAlert.setOnRefreshListener {
+                swipeMainAlert.isRefreshing = false
+                mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+            }
+
             toolbarMainAlert.run {
                 title = "알림"
             }
