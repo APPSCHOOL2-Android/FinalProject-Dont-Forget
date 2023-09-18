@@ -22,6 +22,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
+import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.FragmentMainHomeBinding
 import com.test.dontforgetproject.databinding.RowHomeCategoryBinding
@@ -37,6 +38,7 @@ class MainHomeFragment : Fragment() {
     lateinit var binding: FragmentMainHomeBinding
     lateinit var mainActivity: MainActivity
     lateinit var mainHomeViewModel: MainHomeViewModel
+    lateinit var loadingDialog: LoadingDialog
 
     var selectedCategoryPosition = 0
     lateinit var selectedDate: String
@@ -48,6 +50,7 @@ class MainHomeFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         binding = FragmentMainHomeBinding.inflate(inflater, container, false)
+        loadingDialog = LoadingDialog(requireContext())
 
         mainHomeViewModel = ViewModelProvider(this)[MainHomeViewModel::class.java]
         mainHomeViewModel.run {
@@ -73,7 +76,7 @@ class MainHomeFragment : Fragment() {
         }
 
         setTodoData()
-        mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+        mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
 
         binding.run {
             textInputEditTextMainHomeFragment.run {
@@ -91,7 +94,7 @@ class MainHomeFragment : Fragment() {
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
                             memoList = mainHomeViewModel.getTodo()
-                            mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx))
+                            mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
                                 setEndIconDrawable(R.drawable.ic_close_24px)
@@ -111,7 +114,7 @@ class MainHomeFragment : Fragment() {
                         } else {
                             mainHomeViewModel.getTodoByDate(
                                 selectedDate,
-                                mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                                mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
                             )
                             textInputLayoutMainHomeFragment.endIconMode = TextInputLayout.END_ICON_NONE
                             scrollViewMainHomeFragment.visibility = View.VISIBLE
@@ -138,7 +141,7 @@ class MainHomeFragment : Fragment() {
 
             setCalendar()
 
-            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         }
 
 
@@ -155,7 +158,7 @@ class MainHomeFragment : Fragment() {
             // 고른 날에 맞는 todo가져오기
             mainHomeViewModel.getTodoByDate(
                 selectedDate,
-                mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
             )
         }
     }
@@ -164,7 +167,7 @@ class MainHomeFragment : Fragment() {
         selectedDate = getCurrentDate()
         mainHomeViewModel.getTodoByDate(
             selectedDate,
-            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         )
         Log.d("asdasdasd", selectedDate)
     }
@@ -195,7 +198,7 @@ class MainHomeFragment : Fragment() {
 
                     } else {
                         // 전체 카테고리
-                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx)
+                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
                     }
                     val position = adapterPosition
 
@@ -459,7 +462,7 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = memoList.size
+        override fun getItemCount(): Int = mainHomeViewModel.todoList2.value?.size!!
 
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
             Log.d(
@@ -470,12 +473,12 @@ class MainHomeFragment : Fragment() {
             val todo = mainHomeViewModel.todoList2.value?.get(position)!!
             val isCategoryPublic = mainHomeViewModel.getCategoryByCategoryIdx(todo.todoCategoryIdx).categoryIsPublic
 
-            holder.textViewDate.text = memoList[position].todoDate
-            holder.textViewCategory.text = memoList[position].todoCategoryName
-            holder.textViewRowMemoSearchMaker.text = "by ${memoList[position].todoOwnerName}"
-            holder.textViewLocation.text = "by ${memoList[position].todoLocationName }"
+            holder.textViewDate.text = todo.todoDate
+            holder.textViewCategory.text = todo.todoCategoryName
+            holder.textViewRowMemoSearchMaker.text = "by ${todo.todoOwnerName}"
+            holder.textViewLocation.text = "by ${todo.todoLocationName }"
             holder.textViewRowMemoSearch.run {
-                text = memoList[position].todoContent
+                text = todo.todoContent
                 setOnClickListener {
                     val bundle = Bundle()
                     bundle.putLong("todoIdx", todo.todoIdx)
@@ -537,9 +540,9 @@ class MainHomeFragment : Fragment() {
                     todoOwnerName = todo.todoOwnerName
                 )
 
-                TodoRepository.modifyTodo(todoDataClass) { task ->
-
-                }
+//                TodoRepository.modifyTodo(todoDataClass) { task ->
+//
+//                }
 
                 if (isChecked) {
                     holder.textViewRowMemoSearch.paintFlags =
