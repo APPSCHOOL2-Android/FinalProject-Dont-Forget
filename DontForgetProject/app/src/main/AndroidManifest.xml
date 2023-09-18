@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DontForgetProject"
         tools:targetApi="31">
-
+        <service android:name=".AlertService"/>
+        <receiver android:name=".GeofenceBroadcastReceiver"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,10 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleMapApiKey}" />
     </application>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>

@@ -1,10 +1,13 @@
 package com.test.dontforgetproject.UI.TodoAddFragment
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.BuildConfig
 import com.bumptech.glide.Glide.init
@@ -28,6 +33,7 @@ import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYB
 import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.TodoClass
+import com.test.dontforgetproject.GeofenceManager
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -48,7 +54,7 @@ class TodoAddFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var todoAddBinding: FragmentTodoAddBinding
     lateinit var viewModel: TodoAddFragmentViewModel
-
+    lateinit var geofenceManager: GeofenceManager
 
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
@@ -94,7 +100,7 @@ class TodoAddFragment : Fragment() {
         mainActivity = activity as MainActivity
         todoAddBinding = FragmentTodoAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
-
+        geofenceManager = GeofenceManager(requireContext())
         viewModel.run {
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
@@ -319,7 +325,23 @@ class TodoAddFragment : Fragment() {
                         if(locationLatitude == ""){
                             locationLatitude = "None"
                         }
+                        val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
+                        val requestCode = 123 // 요청 코드 (임의의 숫자)
 
+                        if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
+                            // 이미 위치 권한이 허용되어 있음
+                            // 권한이 필요한 기능 수행
+                        } else {
+                            // 권한을 요청
+                            ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                        }
+
+                        val location = Location("my_provider")
+                        location.latitude = MyApplication.locationLatitude.toDouble() // 위도
+                        location.longitude = MyApplication.locationLongitude.toDouble() // 경도
+
+                        geofenceManager.addGeofence("$locationName", location)
+                        geofenceManager.registerGeofence()
                         CategoryRepository.getAllCategory {
                             for (c1 in it.result.children){
                                 val categoryJoinUserIdxList =
@@ -356,6 +378,7 @@ class TodoAddFragment : Fragment() {
                             }
                         }
                     }
+
 
                 }
             }

@@ -165,6 +165,7 @@ class MyPageModifyFragment : Fragment() {
                     UserRepository.modifyUserInfo(modifyUser) { result ->
                         if (result.isSuccessful) {
                             MyApplication.loginedUserInfo = modifyUser
+                            Glide.with(mainActivity).clear(requireView())
                         } else {
                             Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
                         }
