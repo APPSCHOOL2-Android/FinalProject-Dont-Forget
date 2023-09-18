@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
         if (themeName != null) {
             ThemeUtil.applyTheme(themeName)
+            MyApplication.selectedTheme = themeName
         }
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)

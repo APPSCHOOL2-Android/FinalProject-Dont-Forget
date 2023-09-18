@@ -86,4 +86,8 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
+    // geofencing
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+
 }
