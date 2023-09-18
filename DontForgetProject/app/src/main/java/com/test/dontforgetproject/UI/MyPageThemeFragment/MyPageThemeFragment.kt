@@ -40,7 +40,7 @@ class MyPageThemeFragment : Fragment() {
                 }
             }
             val sharedPreferences =  requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-            val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
+            val themeName = sharedPreferences.getString("theme", DEFAULT_MODE)
             when(themeName){
                 DEFAULT_MODE -> {
                     radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_system)
@@ -73,7 +73,6 @@ class MyPageThemeFragment : Fragment() {
                 editor.apply()
                 // MyApplication에서 selectedTheme 업데이트
                 MyApplication.selectedTheme = whatsTheme
-
                 // 테마 적용
                 applyTheme(whatsTheme)
 
