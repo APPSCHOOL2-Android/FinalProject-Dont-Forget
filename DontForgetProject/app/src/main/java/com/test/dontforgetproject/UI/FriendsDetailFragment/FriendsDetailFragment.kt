@@ -23,6 +23,7 @@ import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogFriendsDetailBinding
 import com.test.dontforgetproject.databinding.DialogFriendsDetailDeleteBinding
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentFriendsDetailBinding
 import com.test.dontforgetproject.databinding.RowFriendsDetailBinding
 
@@ -121,19 +122,27 @@ class FriendsDetailFragment : Fragment() {
             buttonFriendsDetailDelete.setOnClickListener {
                 // 공유 카테고리가 있으면
                 if (MCL.size > 0) {
-                    var dialogFriendsDetailBinding =
-                        DialogFriendsDetailBinding.inflate(layoutInflater)
+//                    var dialogFriendsDetailBinding =
+//                        DialogFriendsDetailBinding.inflate(layoutInflater)
+//                    builder.setView(dialogFriendsDetailBinding.root)
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setView(dialogFriendsDetailBinding.root)
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "친구 삭제"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "공유 하고 있는 카테고리가 있으면 삭제할 수 없습니다."
+
+                    builder.setView(dialogNormalBinding.root)
                     builder.setPositiveButton("확인", null)
                     builder.show()
                 }
                 // 공유 카테고리가 없으면
                 else {
-                    var dialogFriendsDetailDeleteBinding =
-                        DialogFriendsDetailDeleteBinding.inflate(layoutInflater)
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
-                    builder.setView(dialogFriendsDetailDeleteBinding.root)
+
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "친구 삭제"
+                    dialogNormalBinding.textViewDialogNormalContent.text = "친구를 삭제합니다."
+                    builder.setView(dialogNormalBinding.root)
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                         // Todo

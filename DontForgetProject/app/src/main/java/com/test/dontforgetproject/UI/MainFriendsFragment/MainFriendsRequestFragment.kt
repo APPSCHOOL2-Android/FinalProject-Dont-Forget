@@ -19,7 +19,9 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
 import com.test.dontforgetproject.databinding.DialogMainFriendsRequestDenyBinding
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainFriendsRequestBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsRequestBinding
 
@@ -201,9 +203,16 @@ class MainFriendsRequestFragment : Fragment() {
             }
             // 삭제
             holder.buttonRowMainFriendsRequestDeny.setOnClickListener {
-                var dialogbinding = DialogMainFriendsRequestDenyBinding.inflate(layoutInflater)
+//                var dialogbinding = DialogMainFriendsRequestDenyBinding.inflate(layoutInflater)
+//                val builder = MaterialAlertDialogBuilder(mainActivity)
+//                builder.setView(dialogbinding.root)
+                val dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setView(dialogbinding.root)
+
+                dialogNormalBinding.textViewDialogNormalTitle.text = "친구 요청 거절"
+                dialogNormalBinding.textViewDialogNormalContent.text = "친구 요청을 삭제합니다."
+
+                builder.setView(dialogNormalBinding.root)
                 builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
                     true
                     // 수락시, 삭제시 해당 joinFriend 객체 Firebase 에서 삭제
