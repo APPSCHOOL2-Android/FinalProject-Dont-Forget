@@ -23,6 +23,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
+import com.test.dontforgetproject.UI.MainFragment.MainFragment.Companion.MAIN_FRIENDS_FRAGMENT
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
 import com.test.dontforgetproject.databinding.FragmentMainAlertBinding
 import com.test.dontforgetproject.databinding.RowMainAlertBinding
@@ -92,6 +93,9 @@ class MainAlertFragment : Fragment() {
                         AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
                         }
+                        var bundle = Bundle()
+                        bundle.putString("oldFragment", "Alert")
+                        mainActivity.replaceFragment(MAIN_FRIENDS_FRAGMENT, true, bundle)
                         Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                         fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
