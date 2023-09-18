@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.TodoDetailPublicFragment
 
+import android.content.res.ColorStateList
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -51,7 +52,7 @@ class TodoDetailPublicFragment : Fragment() {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = it.toString()
             }
             todoLocationName.observe(mainActivity) {
-                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString()
+                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString().split("@").get(0)
             }
             todoOwnerName.observe(mainActivity) {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicMadeby.text = it.toString()

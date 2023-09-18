@@ -1,6 +1,10 @@
 package com.test.dontforgetproject.UI.TodoDetailPersonalFragment
 
+import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -13,7 +17,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +33,7 @@ import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PERSONAL_FRAGMENT
+import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPersonalBinding
@@ -38,6 +50,43 @@ class TodoDetailPersonalFragment : Fragment() {
     lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
 
     var todoIdx = 0L
+
+    var placeAddress = ""
+    var latitude = ""
+    var longitude = ""
+
+    //이름,위도,경도 결과 받아옴
+    private val startAutocomplete =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
+            if(it.resultCode == Activity.RESULT_OK) {
+                val intent = it.data
+                if(intent!=null){
+                    val place = Autocomplete.getPlaceFromIntent(intent)
+
+                    placeAddress = place.address
+
+                    var placeName = place.name
+                    var placeDetail = place.address
+
+                    placeAddress = placeDetail + "@" + placeName
+                    Log.d("lion","${placeAddress}")
+                    fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text = placeDetail
+
+                    //장소 위도
+                    latitude = place.latLng.latitude.toString()
+                    Log.d("lion","${latitude}")
+
+                    //장소 경도
+                    longitude = place.latLng.longitude.toString()
+                    Log.d("lion","${longitude}")
+
+                }
+            }
+            else if(it.resultCode == Activity.RESULT_CANCELED) {
+                Log.d("lion", "Place Fail")
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +115,9 @@ class TodoDetailPersonalFragment : Fragment() {
                 fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text = it.toString()
             }
             todoLocationName.observe(mainActivity) {
-                fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text = it.toString()
+                fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text =
+                    it.toString().split("@").get(0)
+            }
             }
         }
         todoDetailPersonalViewModel.getTodoInfo(todoIdx)
@@ -152,13 +203,34 @@ class TodoDetailPersonalFragment : Fragment() {
                     .show(mainActivity.supportFragmentManager,"Time")
             }
 
+            linearLayoutTodoDetailPersonalLocation.setOnClickListener {
+
+                //구글맵 키 받아옴
+                val key = com.test.dontforgetproject.BuildConfig.googlemapkey
+
+                // plac api 초기화
+                Places.initialize(context,key)
+                val placesClient = Places.createClient(mainActivity)
+
+                val field = listOf(
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ADDRESS_COMPONENTS,
+                    Place.Field.TYPES,
+                    Place.Field.ADDRESS)
+                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,field)
+                    .setHint("주소를 입력해주세요")
+                    .build(mainActivity)
+                startAutocomplete.launch(intent)
+            }
+
             buttonTodoDetailPersonalEdit.setOnClickListener {
                 var content = textInputEditTextTodoDetailPersonal.text.toString()
                 var date = textViewTodoDetailPersonalDate.text.toString()
                 var time = textViewTodoDetailPersonalAlert.text.toString()
-                var locationName = textViewTodoDetailPersonalLocation.text.toString()
-                var locationLatitude = "None"
-                var locationLongitude = "None"
+                var locationName = placeAddress
+                var locationLatitude = latitude
+                var locationLongitude = longitude
 
                 if(content.isEmpty()) {
 
@@ -185,6 +257,18 @@ class TodoDetailPersonalFragment : Fragment() {
 
                 }
 
+                val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
+                val requestCode = 123 // 요청 코드 (임의의 숫자)
+
+                if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
+                    // 이미 위치 권한이 허용되어 있음
+                    // 권한이 필요한 기능 수행
+                } else {
+                    // 권한을 요청
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                }
+
+
                 val todoDataClass = TodoClass(
                     todoIdx,
                     content,
@@ -206,22 +290,21 @@ class TodoDetailPersonalFragment : Fragment() {
                 TodoRepository.modifyTodo(todoDataClass) {
 
                 }
-
-                Snackbar.make(fragmentTodoDetailPersonalBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT)
+                mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
+                Snackbar.make(fragmentTodoDetailPersonalBinding.root, "수정이 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
                 todoDetailPersonalViewModel.getTodoInfo(todoIdx)
             }
 
             buttonTodoDetailPersonalDelete.setOnClickListener {
                 val builder = MaterialAlertDialogBuilder(mainActivity)
-                builder.setTitle("삭제")
                 builder.setMessage("삭제하시겠습니까?")
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.removeTodo(todoIdx) {
 
                     }
-                    Snackbar.make(fragmentTodoDetailPersonalBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT)
                     mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
+                    Snackbar.make(fragmentTodoDetailPersonalBinding.root, "삭제가 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
                 }
                 builder.show()
             }
