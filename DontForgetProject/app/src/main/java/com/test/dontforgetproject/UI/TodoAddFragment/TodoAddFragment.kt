@@ -370,7 +370,6 @@ class TodoAddFragment : Fragment() {
 
                         }
 
-
                         CategoryRepository.getAllCategory {
                             for (c1 in it.result.children){
                                 val categoryJoinUserIdxList =
@@ -383,20 +382,41 @@ class TodoAddFragment : Fragment() {
                                     var catgoryIdx = c1.child("categoryIdx").value as Long
                                     var owneridx = MyApplication.loginedUserInfo.userIdx
                                     var ownerName = MyApplication.loginedUserInfo.userName
-                                    var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
-                                        time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
-                                    TodoRepository.setTodoAddInfo(newclass) {
-                                        TodoRepository.setTodoIdx(idx) {
-                                            var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
-                                            AlertRepository.getAlertIdx {
-                                                var idx = it.result.value as Long
-                                                idx++
-                                                var newclass2 = AlertClass(idx, text, useridx, 2)
-                                                AlertRepository.addAlertInfo(newclass2) {
-                                                    AlertRepository.setAlertIdx(idx) {
-                                                        Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
-                                                        mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
-                                                        viewModel.resetList()
+                                    var categoryIsPublic = c1.child("categoryIsPublic").value as Long
+                                    var newPublicdata = categoryIsPublic.toInt()
+                                    Log.d("Lim log","${categoryIsPublic}")
+
+                                    //개인 카테고리 추가시
+                                    if(newPublicdata == 0){
+                                        var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
+                                            time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
+
+                                        TodoRepository.setTodoAddInfo(newclass){
+                                            TodoRepository.setTodoIdx(idx){
+                                                Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
+                                                mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                viewModel.resetList()
+                                            }
+                                        }
+                                    }
+
+                                    //공용 카데고리 추가시
+                                    if(newPublicdata == 1){
+                                        var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
+                                            time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
+                                        TodoRepository.setTodoAddInfo(newclass) {
+                                            TodoRepository.setTodoIdx(idx) {
+                                                var text = "${names}에 ${myDate} 새 할일이 추가되었습니다"
+                                                AlertRepository.getAlertIdx {
+                                                    var idx = it.result.value as Long
+                                                    idx++
+                                                    var newclass2 = AlertClass(idx, text, useridx, 2)
+                                                    AlertRepository.addAlertInfo(newclass2) {
+                                                        AlertRepository.setAlertIdx(idx) {
+                                                            Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
+                                                            mainActivity.removeFragment(MainActivity.TODO_ADD_FRAGMENT)
+                                                            viewModel.resetList()
+                                                        }
                                                     }
                                                 }
                                             }
@@ -406,6 +426,9 @@ class TodoAddFragment : Fragment() {
 
                             }
                         }
+
+
+
                     }
 
                 }
