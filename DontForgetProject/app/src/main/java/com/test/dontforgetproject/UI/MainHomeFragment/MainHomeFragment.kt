@@ -70,6 +70,8 @@ class MainHomeFragment : Fragment() {
             }
 
             todoList2.observe(mainActivity) {
+                memoList = mainHomeViewModel.getTodo()
+                binding.recyclerViewMainHomeFragmentTodo.adapter?.notifyDataSetChanged()
                 binding.recyclerViewMainHomeFragmentMemoSearch.adapter?.notifyDataSetChanged()
             }
         }
@@ -94,7 +96,6 @@ class MainHomeFragment : Fragment() {
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
                             mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
-                            memoList = mainHomeViewModel.getTodo()
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
                                 setEndIconDrawable(R.drawable.ic_close_24px)
@@ -462,7 +463,7 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.todoList2.value?.size!!
+        override fun getItemCount(): Int = memoList.size
 
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
             Log.d(
@@ -470,7 +471,7 @@ class MainHomeFragment : Fragment() {
                 "내용 : ${mainHomeViewModel.todoList2.value?.get(position)?.todoContent}"
             )
 
-            val todo = mainHomeViewModel.todoList2.value?.get(position)!!
+            val todo = memoList[position]
             val isCategoryPublic = mainHomeViewModel.getCategoryByCategoryIdx(todo.todoCategoryIdx).categoryIsPublic
 
             holder.textViewDate.text = todo.todoDate
