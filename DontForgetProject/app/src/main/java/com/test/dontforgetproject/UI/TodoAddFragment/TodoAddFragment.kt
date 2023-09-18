@@ -310,12 +310,12 @@ class TodoAddFragment : Fragment() {
                         //알림, 장소 이름,위도,경도 없을시 None으로 변경
                         var time = newTime
                         if(time==""){
-                            time = "None"
+                            time = "알림 없음"
                         }
 
                         var locationName = MyApplication.locationName
                         if(locationName == ""){
-                            locationName = "None"
+                            locationName = "위치 없음"
                         }
 
                         var locationLongtitude = MyApplication.locationLongitude
