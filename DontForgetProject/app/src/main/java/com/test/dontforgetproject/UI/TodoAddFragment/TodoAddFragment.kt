@@ -338,12 +338,12 @@ class TodoAddFragment : Fragment() {
                             ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
                         }
 
-                        val location = Location("my_provider")
-                        location.latitude = MyApplication.locationLatitude.toDouble() // 위도
-                        location.longitude = MyApplication.locationLongitude.toDouble() // 경도
-
-                        geofenceManager.addGeofence("$locationName", location)
-                        geofenceManager.registerGeofence()
+//                        val location = Location("my_provider")
+//                        location.latitude = MyApplication.locationLatitude.toDouble() // 위도
+//                        location.longitude = MyApplication.locationLongitude.toDouble() // 경도
+//
+//                        geofenceManager.addGeofence("$locationName", location)
+//                        geofenceManager.registerGeofence()
 
                         CategoryRepository.getAllCategory {
                             for (c1 in it.result.children){
@@ -355,8 +355,8 @@ class TodoAddFragment : Fragment() {
                                 }
                                 if(names == name) {
                                     var catgoryIdx = c1.child("categoryIdx").value as Long
-                                    var owneridx = c1.child("categoryOwnerIdx").value as Long
-                                    var ownerName = c1.child("categoryOwnerName").value.toString()
+                                    var owneridx = MyApplication.loginedUserInfo.userIdx
+                                    var ownerName = MyApplication.loginedUserInfo.userName
                                     var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
                                         time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
                                     TodoRepository.setTodoAddInfo(newclass) {
