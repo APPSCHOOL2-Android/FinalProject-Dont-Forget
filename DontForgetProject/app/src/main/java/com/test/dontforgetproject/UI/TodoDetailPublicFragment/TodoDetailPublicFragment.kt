@@ -26,6 +26,8 @@ class TodoDetailPublicFragment : Fragment() {
 
     var todoIdx = 0L
 
+    var time = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,7 +51,14 @@ class TodoDetailPublicFragment : Fragment() {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicDate.text = it.toString()
             }
             todoAlertTime.observe(mainActivity) {
-                fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = it.toString()
+                time = it.toString()
+                var alertTime = it.toString().split(":")
+                if(alertTime.get(0).toInt()>=12) {
+                    var hours = alertTime.get(0).toInt()-12
+                    fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = "오후 ${hours}시 ${alertTime.get(1)}분"
+                } else {
+                    fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                }
             }
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPublicBinding.textViewTodoDetailPublicLocation.text = it.toString().split("@").get(0)

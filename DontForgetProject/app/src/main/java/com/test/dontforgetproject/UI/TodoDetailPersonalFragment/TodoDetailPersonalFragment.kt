@@ -54,6 +54,7 @@ class TodoDetailPersonalFragment : Fragment() {
     var placeAddress = ""
     var latitude = ""
     var longitude = ""
+    var time = ""
 
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
@@ -110,7 +111,14 @@ class TodoDetailPersonalFragment : Fragment() {
                 fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalDate.text = it.toString()
             }
             todoAlertTime.observe(mainActivity) {
-                fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text = it.toString()
+                time = it.toString()
+                var alertTime = it.toString().split(":")
+                if(alertTime.get(0).toInt()>=12) {
+                    var hours = alertTime.get(0).toInt()-12
+                    fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text = "오후 ${hours}시 ${alertTime.get(1)}분"
+                } else {
+                    fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text = "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                }
             }
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text =
@@ -180,8 +188,6 @@ class TodoDetailPersonalFragment : Fragment() {
                     .build().apply {
                         addOnPositiveButtonClickListener {
 
-                            var time = ""
-
                             //시간
                             time = "${hour}:${minute}"
 
@@ -201,9 +207,9 @@ class TodoDetailPersonalFragment : Fragment() {
                             //오전,오후 분기
                             if ("${hour}".toInt()>=12){
                                 var hours = "${hour}".toInt()-12
-                                textViewTodoDetailPersonalAlert.text=  " 오후 ${hours}시 ${minute}분"
+                                textViewTodoDetailPersonalAlert.text=  "오후 ${hours}시 ${minute}분"
                             }else{
-                                textViewTodoDetailPersonalAlert.text= " 오전 ${hour}시 ${minute}분"
+                                textViewTodoDetailPersonalAlert.text= "오전 ${hour}시 ${minute}분"
                             }
                         }
                     }
@@ -234,7 +240,7 @@ class TodoDetailPersonalFragment : Fragment() {
             buttonTodoDetailPersonalEdit.setOnClickListener {
                 var content = textInputEditTextTodoDetailPersonal.text.toString()
                 var date = textViewTodoDetailPersonalDate.text.toString()
-                var time = textViewTodoDetailPersonalAlert.text.toString()
+                var time = time
                 var locationName = placeAddress
                 var locationLatitude = latitude
                 var locationLongitude = longitude
