@@ -70,7 +70,7 @@ class TodoAddFragment : Fragment() {
                     // 대한민국 서울특별시 중랑구 상봉동 번지 1층 88-48
 
                     var temp = placeDetail + "@" + placeName
-                    var temp2 = placeDetail + " "+ placeName
+                    var temp2 = placeDetail + " , "+ placeName
                     Log.d("Lim log","${placeDetail}")
 
                     MyApplication.locationName = temp
