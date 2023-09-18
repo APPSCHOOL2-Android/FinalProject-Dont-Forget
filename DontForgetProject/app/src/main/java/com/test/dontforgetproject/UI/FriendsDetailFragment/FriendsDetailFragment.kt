@@ -21,6 +21,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogFriendsDetailBinding
 import com.test.dontforgetproject.databinding.DialogFriendsDetailDeleteBinding
 import com.test.dontforgetproject.databinding.DialogNormalBinding
@@ -32,6 +33,7 @@ class FriendsDetailFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var viewModel: FriendsDetailViewModel
+    lateinit var loadingDialog: LoadingDialog
 
     // 친구 이메일
     lateinit var _FEmail : String
@@ -63,20 +65,20 @@ class FriendsDetailFragment : Fragment() {
                 _FIntroduce = it
                 binding.textViewFriendsDetailIntroduce.text = it
             }
-            friendUserImage.observe(mainActivity) {
-                _FImage = it
-                // 프로필 사진
-                UserRepository.getProfile(it) {
-                    if (it.isSuccessful) {
-                        val fileUri = it.result
-                        Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
-                    }
-                    else{
-//                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
-                        binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
-                    }
-                }
-            }
+//            friendUserImage.observe(mainActivity) {
+//                _FImage = it
+//                // 프로필 사진
+//                UserRepository.getProfile(it) {
+//                    if (it.isSuccessful) {
+//                        val fileUri = it.result
+//                        Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
+//                    }
+//                    else{
+////                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
+//                        binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
+//                    }
+//                }
+//            }
             friendUserId.observe(mainActivity){
                 _FId = it
             }
@@ -102,6 +104,25 @@ class FriendsDetailFragment : Fragment() {
         viewModel.getCategoryAll()
 
         binding.run {
+            loadingDialog = LoadingDialog(requireContext())
+            loadingDialog.show()
+            viewModel.friendUserImage.observe(mainActivity){
+                _FImage = it
+                // 프로필 사진
+                UserRepository.getProfile(it) {
+                    if (it.isSuccessful) {
+                        val fileUri = it.result
+                        Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
+                        loadingDialog.dismiss()
+                    }
+                    else{
+//                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
+                        binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
+                        loadingDialog.dismiss()
+                    }
+                }
+            }
+
             // 툴바
             toolbarFriendsDetail.run {
                 title = "친구"
