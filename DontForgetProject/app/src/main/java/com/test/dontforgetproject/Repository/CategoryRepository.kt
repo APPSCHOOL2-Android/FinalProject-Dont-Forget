@@ -98,5 +98,19 @@ class CategoryRepository {
                     }
                 }
         }
+
+        // 유저 idx를 통해 카테고리 삭제
+        fun removeCategoryByUserIdx(userIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("categoryInfo")
+
+            todoDataRef.orderByChild("categoryOwnerIdx").equalTo(userIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        // 해당 데이터 삭제
+                        a1.ref.removeValue().addOnCompleteListener(callback1)
+                    }
+                }
+        }
     }
 }

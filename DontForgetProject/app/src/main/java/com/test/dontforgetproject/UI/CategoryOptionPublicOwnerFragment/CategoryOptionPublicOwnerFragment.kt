@@ -26,11 +26,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicViewModel
 import com.test.dontforgetproject.databinding.DialogCategoryAddPeopleBinding
@@ -232,6 +234,43 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                     userInfo.userIdx,
                     userInfo.userName
                 )
+
+                CategoryRepository.getCategoryByIdx(categoryIdx) {
+                    for (c1 in it.result.children) {
+                        val beforeJoinUserIdxList = c1.child("categoryJoinUserIdxList").value as ArrayList<Long>
+                        val afterJoinUserIdxList = ArrayList<Long>()
+                        afterJoinUserIdxList.addAll(categoryJoinUserIdxList)
+                        Log.i("ssss", afterJoinUserIdxList.toString())
+                        afterJoinUserIdxList.removeAll(beforeJoinUserIdxList)
+                        Log.i("ssss", afterJoinUserIdxList.toString())
+
+                        // 알림 idx 가져오기
+                        AlertRepository.getAlertIdx {
+                            var alertIdx = it.result.value as Long
+                            val alertContent =
+                                "${userInfo.userName}님이 ${categoryName} 카테고리에 나를 추가했습니다."
+
+                            for (idx in 0 until afterJoinUserIdxList.size) {
+                                alertIdx++
+
+                                val alertClass = AlertClass(
+                                    alertIdx,
+                                    alertContent,
+                                    afterJoinUserIdxList[idx],
+                                    1
+                                )
+
+                                // 알림 객체 저장
+                                AlertRepository.addAlertInfo(alertClass) {
+                                    // 알림 idx 저장
+                                    AlertRepository.setAlertIdx(alertIdx) {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 CategoryRepository.modifyCategory(categoryClass) {
                     Toast.makeText(mainActivity, "카테고리 수정 완료", Toast.LENGTH_SHORT)
