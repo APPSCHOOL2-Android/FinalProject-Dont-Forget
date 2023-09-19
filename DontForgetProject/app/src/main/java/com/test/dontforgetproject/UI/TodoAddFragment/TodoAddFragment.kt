@@ -3,6 +3,7 @@ package com.test.dontforgetproject.UI.TodoAddFragment
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -55,6 +56,18 @@ class TodoAddFragment : Fragment() {
     lateinit var viewModel: TodoAddFragmentViewModel
     lateinit var geofenceManager: GeofenceManager
     lateinit var geofenceBroadcastReceiver: GeofenceBroadcastReceiver
+
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
+        intent.action = "com.example.ACTION_GEOFENCE_EVENT"
+        PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
+    }
+
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -115,7 +128,8 @@ class TodoAddFragment : Fragment() {
         todoAddBinding = FragmentTodoAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
         geofenceManager = GeofenceManager(requireContext())
-        geofenceBroadcastReceiver = GeofenceBroadcastReceiver()
+
+
         viewModel.run {
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
@@ -259,6 +273,8 @@ class TodoAddFragment : Fragment() {
                             .setHint("주소를 입력해주세요")
                             .build(mainActivity)
                         startAutocomplete.launch(intent)
+
+
                     } else {
                         // 권한을 요청
                         ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
@@ -281,9 +297,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("할일을 입력해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -301,9 +314,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "카데고리를 선택해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("카데고리를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -321,9 +331,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("날짜를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }

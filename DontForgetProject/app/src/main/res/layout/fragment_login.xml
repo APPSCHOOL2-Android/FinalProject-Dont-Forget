@@ -66,6 +66,7 @@
                     android:backgroundTint="#00FFFFFF"
                     android:inputType="textEmailAddress"
                     android:textSize="@dimen/font_size_medium"
+                    android:imeOptions="actionNext"
                     android:fontFamily="@font/scdream_regular"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,10 +86,23 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#00FFFFFF"
                     android:textSize="@dimen/font_size_medium"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:fontFamily="@font/scdream_regular" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_vertical_small3"
+                android:id="@+id/textView_login_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:textSize="@dimen/font_size_small"
+                android:textColor="@color/accentRed"
+                android:text=" 이메일 또는 비밀번호를 잘못 입력했습니다.\n
+입력하신 내용을 다시 확인해주세요" />
 
             <Button
                 android:layout_marginTop="@dimen/margin_vertical_small3"

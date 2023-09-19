@@ -203,12 +203,13 @@ class LoginFragment : Fragment() {
         fragmentLoginBinding.run {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), OnCompleteListener<AuthResult?> { task ->
-                    if(task.isSuccessful){
+                    if (task.isSuccessful) {
+                        // 로그인 성공
                         var userId = firebaseAuth.currentUser?.uid
                         if (userId != null) {
-                            UserRepository.getUserInfoById(userId){
-                                // 가져온 데이터가 없을때
-                                if(!it.result.exists()){
+                            UserRepository.getUserInfoById(userId) { dataSnapshot ->
+                                // 가져온 데이터가 없을 때
+                                if (!dataSnapshot.result.exists()) {
                                     var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                                     val builder = MaterialAlertDialogBuilder(mainActivity)
 
@@ -225,12 +226,12 @@ class LoginFragment : Fragment() {
                                         )
                                     }
                                     builder.show()
-                                }
-                                else{
-                                    for(c1 in it.result.children){
+                                } else {
+                                    // 로그인 성공 시 처리
+                                    for (c1 in dataSnapshot.result.children) {
                                         var newFriendList = mutableListOf<Friend>()
-                                        var newHashMap = c1.child("userFriendList").value as ArrayList<HashMap<String,Any>>
-                                        for( i in newHashMap){
+                                        var newHashMap = c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+                                        for (i in newHashMap) {
                                             var idx = i["friendIdx"] as Long
                                             var name = i["friendName"] as String
                                             var email = i["friendEmail"] as String
@@ -256,16 +257,18 @@ class LoginFragment : Fragment() {
                                         editor.apply()
                                         Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
                                         mainActivity.removeFragment(MainActivity.LOGIN_FRAGMENT)
-                                        mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT,false,null)
+                                        mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT, false, null)
                                     }
                                 }
                             }
                         }
                     }
                 })
+                .addOnFailureListener { exception ->
+                    mainActivity.hideKeyboard()
+                    fragmentLoginBinding.textViewLoginError.visibility = View.VISIBLE
+                }
         }
-
-        
     }
 
 
