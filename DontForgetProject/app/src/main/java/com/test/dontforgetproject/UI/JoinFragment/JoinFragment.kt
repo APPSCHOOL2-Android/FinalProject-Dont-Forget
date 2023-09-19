@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +29,9 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.Util.FirebaseUtil
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentJoinBinding
 
 
@@ -122,16 +125,19 @@ class JoinFragment : Fragment() {
                                 }
                             }
                             // 이미 등록된 이메일일 경우
-                            else if(firebaseCheck == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."){
-                                if (currentUser != null) {
-                                    if(currentUser.providerId == GoogleAuthProvider.PROVIDER_ID){
-                                        Toast.makeText(requireContext(),"구글로 이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
-                                    }else{
-                                        Toast.makeText(requireContext(),"이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
-                                    }
+                            else if(firebaseCheck.contains( "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.")) {
+                                val dialogNormalBinding =
+                                    DialogNormalBinding.inflate(layoutInflater)
+                                val builder = MaterialAlertDialogBuilder(mainActivity)
+                                dialogNormalBinding.textViewDialogNormalTitle.text = "중복확인"
+                                dialogNormalBinding.textViewDialogNormalContent.text = "이미 존재하는 이메일 입니다"
+                                builder.setView(dialogNormalBinding.root)
+                                mainActivity.hideKeyboard()
+                                builder.setPositiveButton("확인") { dialog, which ->
+                                    textInputEditTextJoinEmail.requestFocus()
                                 }
+                                builder.show()
                             }
-                            else Toast.makeText(requireContext(), "이미 존재하는 계정입니다.", Toast.LENGTH_SHORT).show()
                         }
 
                     } else {
@@ -198,7 +204,7 @@ class JoinFragment : Fragment() {
                 if(check.length < 6){
                     textInputLayout.error = "6자리이상 입력해주세요."
                 }else if(!check.matches(passwordPattern)){
-                    textInputLayout.error = "영문자와 숫자가 포함된 비밀번호입니다."
+                    textInputLayout.error = "6~16자의 영문 대/소문자, 숫자를 사용해 주세요."
                 }
                 else{
                     textInputLayout.error = null

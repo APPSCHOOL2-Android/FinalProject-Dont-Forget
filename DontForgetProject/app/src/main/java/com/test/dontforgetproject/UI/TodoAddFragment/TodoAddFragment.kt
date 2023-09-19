@@ -3,6 +3,7 @@ package com.test.dontforgetproject.UI.TodoAddFragment
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -61,6 +62,18 @@ class TodoAddFragment : Fragment() {
 
     lateinit var alarmFunctions: AlarmFunctions
 
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
+        intent.action = "com.example.ACTION_GEOFENCE_EVENT"
+        PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
+    }
+
+
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -81,7 +94,6 @@ class TodoAddFragment : Fragment() {
 
                     // Show 위치 데이터
                     var temp2 = placeDetail + " , "+ placeName
-                    Log.d("Lim log","${placeDetail}")
 
                     //Send 위치 데이터 저장
                     MyApplication.locationName = temp
@@ -121,7 +133,8 @@ class TodoAddFragment : Fragment() {
         todoAddBinding = FragmentTodoAddBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(mainActivity).get(TodoAddFragmentViewModel::class.java)
         geofenceManager = GeofenceManager(requireContext())
-        geofenceBroadcastReceiver = GeofenceBroadcastReceiver()
+
+
         viewModel.run {
             viewModel.name.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
@@ -186,6 +199,7 @@ class TodoAddFragment : Fragment() {
                         val dateformatter = SimpleDateFormat("yyyy년 MM월 dd일")
                         val dates = dateformatter.format(Date(it))
                         myDate = dates
+
                         //보내는 DateFormat
                         val sendDateFormats = SimpleDateFormat("yyyy-MM-dd")
                         val dateOne = sendDateFormats.format(Date(it))
@@ -193,6 +207,7 @@ class TodoAddFragment : Fragment() {
 
                         Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
                        textViewTodoAddDate.setText(dates)
+
                         viewModel.date.value = dates
                     }
 
@@ -272,6 +287,8 @@ class TodoAddFragment : Fragment() {
                             .setHint("주소를 입력해주세요")
                             .build(mainActivity)
                         startAutocomplete.launch(intent)
+
+
                     } else {
                         // 권한을 요청
                         ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
@@ -294,9 +311,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("할일을 입력해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -314,9 +328,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "카데고리를 선택해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("카데고리를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -334,9 +345,6 @@ class TodoAddFragment : Fragment() {
                         dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
 
                         builder.setView(dialogNormalBinding.root)
-//                        val builder= AlertDialog.Builder(mainActivity)
-//                        builder.setTitle("경고")
-//                        builder.setMessage("날짜를 선택해주세요")
                         builder.setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
 
                         }
@@ -362,7 +370,7 @@ class TodoAddFragment : Fragment() {
                         var fontColor = MyApplication.categoryFontColor
                         var dates = newDate
 
-                        //알림, 장소 이름,위도,경도 없을시 None으로 변경
+                        //알림, 장소 이름,위도,경도 없을시
                         var time = newTime
                         if(time==""){
                             time = "알림 없음"
@@ -426,7 +434,6 @@ class TodoAddFragment : Fragment() {
                                     var ownerName = MyApplication.loginedUserInfo.userName
                                     var categoryIsPublic = c1.child("categoryIsPublic").value as Long
                                     var newPublicdata = categoryIsPublic.toInt()
-                                    Log.d("Lim log","${categoryIsPublic}")
 
                                     //개인 카테고리 추가시
                                     if(newPublicdata == 0){
@@ -479,11 +486,10 @@ class TodoAddFragment : Fragment() {
         }
         return  todoAddBinding.root
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        viewModel.resetList()
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.resetList()
+    }
 
     private fun setAlarm(alarmCode : Int, content : String, time : String){
         alarmFunctions = AlarmFunctions(mainActivity)

@@ -69,7 +69,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                     var categoryColors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoBackgroundColor.toString()
                     var fontcolors = viewModel.categoryInfo.value?.get(adapterPosition)?.todoFontColor.toString()
 
-                   MyApplication.categoryname = names
+                    MyApplication.categoryname = names
                     MyApplication.categoryColor = categoryColors
                     MyApplication.categoryFontColor = fontcolors
 

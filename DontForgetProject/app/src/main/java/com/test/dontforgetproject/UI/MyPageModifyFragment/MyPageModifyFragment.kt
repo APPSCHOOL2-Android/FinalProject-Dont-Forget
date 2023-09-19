@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.auth.data.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.test.dontforgetproject.DAO.Friend
@@ -72,12 +73,6 @@ class MyPageModifyFragment : Fragment() {
                 }
             }
 
-            UserRepository.getProfile(MyApplication.loginedUserInfo.userImage){
-                if(it.isSuccessful){
-                    val fileUri = it.result
-                    Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
-                }
-            }
             myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
             myPageModifyViewModel.run {
                 userIdx.observe(mainActivity){
@@ -92,14 +87,17 @@ class MyPageModifyFragment : Fragment() {
                     fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
                 }
                 userImage.observe(mainActivity){
-                    GlobalScope.launch {
+                    if(MyApplication.loginedUserInfo.userImage != "None"){
                         UserRepository.getProfile(it.toString()){
                             if(it.isSuccessful){
                                 val fileUri = it.result
-                                Glide.with(mainActivity).load(fileUri).into(imageViewMyPageModifyProfile)
+                                Glide.with(mainActivity).load(fileUri).diskCacheStrategy(
+                                    DiskCacheStrategy.ALL).into(imageViewMyPageModifyProfile)
                                 MyApplication.loginedUserProfile = fileUri.toString()
                             }
                         }
+                    }else{
+                        imageViewMyPageModifyProfile.setImageResource(R.drawable.ic_person_24px)
                     }
                     loadingDialog.dismiss()
 
