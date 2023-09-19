@@ -332,20 +332,24 @@ class TodoDetailPersonalFragment : Fragment() {
                 }
 
 
-                val now = Calendar.getInstance()
-                var alarmTime = "${date} $time:00" // 알람이 울리는 시간
-                var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss") .parse(alarmTime)
-                var calculateDate = (alarmDate.time - now.time.time)
-                Log.d("lion", "time : $alarmTime")
+                if(time == "알림 없음") {
 
-//                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
-                var alarmCode = todoIdx.toInt()
-                Log.d("lion", "code : $alarmCode")
-//                deleteAlarm(alarmCode)
-                if(calculateDate < 0) {
-                    Log.d("lion", "현재보다 이전 시간으로 알림 설정")
                 } else {
-                    setAlarm(alarmCode, content, alarmTime)
+                    val now = Calendar.getInstance()
+                    var alarmTime = "${date} $time:00" // 알람이 울리는 시간
+                    var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
+                    var calculateDate = (alarmDate.time - now.time.time)
+                    Log.d("lion", "time : $alarmTime")
+
+                    //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
+                    var alarmCode = todoIdx.toInt()
+                    Log.d("lion", "code : $alarmCode")
+                    //                deleteAlarm(alarmCode)
+                    if (calculateDate < 0) {
+                        Log.d("lion", "현재보다 이전 시간으로 알림 설정")
+                    } else {
+                        setAlarm(alarmCode, content, alarmTime)
+                    }
                 }
 
                 mainActivity.removeFragment(TODO_DETAIL_PERSONAL_FRAGMENT)
