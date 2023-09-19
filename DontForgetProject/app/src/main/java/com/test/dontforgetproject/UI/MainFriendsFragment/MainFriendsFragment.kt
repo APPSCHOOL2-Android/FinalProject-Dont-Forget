@@ -54,14 +54,6 @@ class MainFriendsFragment : Fragment() {
 
         binding.run {
 
-            var input = arguments?.getString("oldFragment", "default")
-
-            if(input == "Alert") {
-                viewPagerMainFriends.currentItem = 1
-            } else {
-                viewPagerMainFriends.currentItem = 0
-            }
-
             // 툴바
             toolbarMainFriends.run {
                 title = "친구목록"

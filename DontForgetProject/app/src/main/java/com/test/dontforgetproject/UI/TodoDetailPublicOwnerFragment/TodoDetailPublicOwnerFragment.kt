@@ -54,6 +54,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
     var placeAddress = ""
     var latitude = ""
     var longitude = ""
+    var time = ""
 
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
@@ -109,7 +110,14 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerDate.text = it.toString()
             }
             todoAlertTime.observe(mainActivity) {
-                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = it.toString()
+                time = it.toString()
+                var alertTime = it.toString().split(":")
+                if(alertTime.get(0).toInt()>=12) {
+                    var hours = alertTime.get(0).toInt()-12
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오후 ${hours}시 ${alertTime.get(1)}분"
+                } else {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                }
             }
             todoLocationName.observe(mainActivity) {
                 fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString().split("@").get(0)
@@ -233,7 +241,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
                 var content = textInputEditTextTodoDetailPublicOwner.text.toString()
                 var date = textViewTodoDetailPublicOwnerDate.text.toString()
-                var time = textViewTodoDetailPublicOwnerAlert.text.toString()
+                var time = time
                 var locationName = placeAddress
                 var locationLatitude = latitude
                 var locationLongitude = longitude

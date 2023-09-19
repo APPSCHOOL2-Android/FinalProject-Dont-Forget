@@ -44,11 +44,9 @@ class MainAlertViewModel : ViewModel() {
 
                 val a1 = AlertClass(alertIdx, alertContent, alertReceiverIdx, alertType)
                 tempList.add(a1)
-                Log.d("lion", "temp : $tempList")
             }
 
             alertList.value = tempList
-            Log.d("lion","alert list : $alertList")
         }
     }
 }
