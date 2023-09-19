@@ -59,5 +59,18 @@ class AlertRepository {
                 }
             }
         }
+
+        // 해당 유저의 알림 정보 삭제
+        fun removeAlertByUserIdx(userIdx:Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val testDataRef = database.getReference("alertInfo")
+
+            testDataRef.orderByChild("alertReceiverIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener {
+                for(a1 in it.result.children) {
+                    // 해당 데이터 삭제
+                    a1.ref.removeValue().addOnCompleteListener(callback1)
+                }
+            }
+        }
     }
 }
