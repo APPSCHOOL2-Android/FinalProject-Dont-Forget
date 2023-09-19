@@ -70,6 +70,7 @@ class MainHomeFragment : Fragment() {
             }
 
             todoList2.observe(mainActivity) {
+                memoList = mainHomeViewModel.getTodo()
                 binding.recyclerViewMainHomeFragmentMemoSearch.adapter?.notifyDataSetChanged()
             }
         }
@@ -94,7 +95,6 @@ class MainHomeFragment : Fragment() {
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
                             mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
-                            memoList = mainHomeViewModel.getTodo()
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
                                 setEndIconDrawable(R.drawable.ic_close_24px)
@@ -382,7 +382,17 @@ class MainHomeFragment : Fragment() {
                 }
             }
             holder.textViewTodoMaker.text = "by ${todo.todoOwnerName}"
-            holder.textViewRowTodoLocation.text = todo.todoLocationName
+            holder.textViewRowTodoLocation.text = if (todo.todoLocationName == "위치 없음") {
+                todo.todoLocationName
+            } else {
+                val parts = todo.todoLocationName.split("@")
+                if (parts.size > 1) {
+                    parts[1]
+                } else {
+                    todo.todoLocationName
+                }
+            }
+
             if (todo.todoIsChecked == 0L) {
                 holder.checkBoxTodo.isChecked = false
                 holder.textViewTodo.paintFlags =
@@ -462,7 +472,7 @@ class MainHomeFragment : Fragment() {
                 )
             )
 
-        override fun getItemCount(): Int = mainHomeViewModel.todoList2.value?.size!!
+        override fun getItemCount(): Int = memoList.size
 
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
             Log.d(
@@ -470,13 +480,23 @@ class MainHomeFragment : Fragment() {
                 "내용 : ${mainHomeViewModel.todoList2.value?.get(position)?.todoContent}"
             )
 
-            val todo = mainHomeViewModel.todoList2.value?.get(position)!!
+            val todo = memoList[position]
             val isCategoryPublic = mainHomeViewModel.getCategoryByCategoryIdx(todo.todoCategoryIdx).categoryIsPublic
 
             holder.textViewDate.text = todo.todoDate
             holder.textViewCategory.text = todo.todoCategoryName
             holder.textViewRowMemoSearchMaker.text = "by ${todo.todoOwnerName}"
-            holder.textViewLocation.text = "by ${todo.todoLocationName }"
+            holder.textViewLocation.text = if (todo.todoLocationName == "위치 없음") {
+                todo.todoLocationName
+            } else {
+                val parts = todo.todoLocationName.split("@")
+                if (parts.size > 1) {
+                    parts[1]
+                } else {
+                    todo.todoLocationName
+                }
+            }
+
             holder.textViewRowMemoSearch.run {
                 text = todo.todoContent
                 setOnClickListener {

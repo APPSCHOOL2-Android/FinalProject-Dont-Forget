@@ -90,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_size_normal"
-                android:paddingBottom="50dp"
+                android:paddingBottom="60dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -120,12 +120,13 @@
             android:id="@+id/recyclerView_mainHomeFragment_memo_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="70dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
 
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/row_home_memo_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
