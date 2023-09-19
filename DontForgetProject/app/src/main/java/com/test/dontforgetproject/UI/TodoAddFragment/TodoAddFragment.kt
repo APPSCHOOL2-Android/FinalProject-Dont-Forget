@@ -446,10 +446,9 @@ class TodoAddFragment : Fragment() {
         }
         return  todoAddBinding.root
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        viewModel.resetList()
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.resetList()
+    }
 
 }
