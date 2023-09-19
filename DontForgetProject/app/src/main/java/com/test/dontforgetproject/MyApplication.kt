@@ -47,6 +47,9 @@ class MyApplication :Application(){
         var locationLatitude=""
         var locationLongitude =""
 
+        //저장할 위치 이름
+        var locationStoredName = ""
+
         //변경된 카데고리 색상,이름
         var categoryname = ""
         var categoryColor = ""

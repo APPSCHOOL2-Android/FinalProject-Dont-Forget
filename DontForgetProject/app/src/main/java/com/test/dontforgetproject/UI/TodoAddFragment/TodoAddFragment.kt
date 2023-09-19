@@ -66,15 +66,24 @@ class TodoAddFragment : Fragment() {
 
                     var placeName = place.name
                     // ㅎㅎ포차
+
                     var placeDetail = place.address
                     // 대한민국 서울특별시 중랑구 상봉동 번지 1층 88-48
 
+                    // Send 위치 데이터
                     var temp = placeDetail + "@" + placeName
+
+                    // Show 위치 데이터
+                    var temp2 = placeDetail + " , "+ placeName
                     Log.d("Lim log","${placeDetail}")
 
+                    //Send 위치 데이터 저장
                     MyApplication.locationName = temp
 
-                    viewModel.locate.value = MyApplication.locationName
+                    //Show 위치 데이터 저장
+                    MyApplication.locationStoredName = temp2
+
+                    viewModel.locate.value = MyApplication.locationStoredName
 
                     //장소 위도
                     var latitude = place.latLng.latitude
