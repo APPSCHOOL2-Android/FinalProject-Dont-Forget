@@ -94,6 +94,20 @@ class TodoRepository {
             databaseRef.orderByChild("todoDate").get().addOnCompleteListener(callback1)
         }
 
+        // 해당 유저의 할일 삭제
+        fun removeTodoByUserIdx(userIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val testDataRef = database.getReference("todoInfo")
+
+            testDataRef.orderByChild("todoOwnerIdx").equalTo(userIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        // 해당 데이터 삭제
+                        a1.ref.removeValue().addOnCompleteListener(callback1)
+                    }
+                }
+        }
+
     }
 
 }
