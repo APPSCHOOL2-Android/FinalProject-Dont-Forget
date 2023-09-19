@@ -1,24 +1,18 @@
 package com.test.dontforgetproject
 
+import android.Manifest
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.MainActivity.Companion.LOGIN_FRAGMENT
 import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
 import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
 import com.test.dontforgetproject.UI.CategoryOptionPersonalFragment.CategoryOptionPersonalFragment
@@ -28,12 +22,7 @@ import com.test.dontforgetproject.UI.FriendsDetailFragment.FriendsDetailFragment
 import com.test.dontforgetproject.UI.JoinFragment.JoinFragment
 import com.test.dontforgetproject.UI.LoginFindPwFragment.LoginFindPwFragment
 import com.test.dontforgetproject.UI.LoginFragment.LoginFragment
-import com.test.dontforgetproject.UI.MainAlertFragment.MainAlertFragment
-import com.test.dontforgetproject.UI.MainCategoryFragment.MainCategoryFragment
 import com.test.dontforgetproject.UI.MainFragment.MainFragment
-import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsFragment
-import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
-import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.UI.MyPageModifyFragment.MyPageModifyFragment
 import com.test.dontforgetproject.UI.MyPageThemeFragment.MyPageThemeFragment
 import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
@@ -48,6 +37,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     var newFragment:Fragment? = null
     var oldFragment:Fragment? = null
+
+    // 확인할 권한 목록
+    val permissionList = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
     
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +54,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        requestPermissions(permissionList,0)
+
         // 테마 설정 적용
 
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
