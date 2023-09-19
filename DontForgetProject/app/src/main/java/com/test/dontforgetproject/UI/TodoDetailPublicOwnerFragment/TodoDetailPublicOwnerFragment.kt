@@ -111,16 +111,27 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
             todoAlertTime.observe(mainActivity) {
                 time = it.toString()
-                var alertTime = it.toString().split(":")
-                if(alertTime.get(0).toInt()>=12) {
-                    var hours = alertTime.get(0).toInt()-12
-                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오후 ${hours}시 ${alertTime.get(1)}분"
+                if(time == "알림 없음") {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "알림 없음"
                 } else {
-                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    var alertTime = it.toString().split(":")
+                    if (alertTime.get(0).toInt() >= 12) {
+                        var hours = alertTime.get(0).toInt() - 12
+                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
+                            "오후 ${hours}시 ${alertTime.get(1)}분"
+                    } else {
+                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
+                            "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    }
                 }
             }
             todoLocationName.observe(mainActivity) {
-                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString().split("@").get(0)
+                if(it.toString() == "위치 없음") {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString()
+                } else {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text =
+                        it.toString().split("@").get(0)
+                }
                 placeAddress = todoDetailPersonalViewModel.todoLocationName.value.toString()
             }
             todoLocationLatitude.observe(mainActivity) {
