@@ -211,8 +211,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     .build().apply {
                         addOnPositiveButtonClickListener {
 
-                            var time = ""
-
                             //시간
                             time = "${hour}:${minute}"
 
@@ -266,7 +264,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
                 var content = textInputEditTextTodoDetailPublicOwner.text.toString()
                 var date = textViewTodoDetailPublicOwnerDate.text.toString()
-                var time = time
+                var todoTime = time
                 var locationName = placeAddress
                 var locationLatitude = latitude
                 var locationLongitude = longitude
@@ -317,7 +315,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     todoDetailPersonalViewModel.todoFontColor.value!!.toLong(),
                     todoDetailPersonalViewModel.todoBackgroundColor.value!!.toLong(),
                     date,
-                    time,
+                    todoTime,
                     locationName,
                     locationLatitude,
                     locationLongitude,
@@ -341,11 +339,11 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     }
 
 
-                    if(time == "알림 없음") {
+                    if(todoTime == "알림 없음") {
 
                     } else {
                         val now = Calendar.getInstance()
-                        var alarmTime = "${date} $time:00" // 알람이 울리는 시간
+                        var alarmTime = "${date} $todoTime:00" // 알람이 울리는 시간
                         var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
                         var calculateDate = (alarmDate.time - now.time.time)
                         Log.d("lion", "time : $alarmTime")
