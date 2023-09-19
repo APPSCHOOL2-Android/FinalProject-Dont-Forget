@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.MainMyPageFragment
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -10,28 +11,20 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.test.dontforgetproject.DAO.Friend
-import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.Util.LoadingDialog
-import com.test.dontforgetproject.databinding.DialogMypageLogoutBinding
-import com.test.dontforgetproject.databinding.DialogMypageWithdrawBinding
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.ArrayList
 
 
 class MainMyPageFragment : Fragment() {
@@ -60,7 +53,7 @@ class MainMyPageFragment : Fragment() {
                     fragmentMainMyPageBinding.textViewMainMyPageName.setText(it.toString())
                 }
                 userImage.observe(mainActivity){
-                    GlobalScope.launch {
+                    if(MyApplication.loginedUserInfo.userImage != "None"){
                         UserRepository.getProfile(it.toString()){
                             if(it.isSuccessful){
                                 val fileUri = it.result
@@ -68,10 +61,11 @@ class MainMyPageFragment : Fragment() {
                                     DiskCacheStrategy.ALL).into(imageViewMyPageProfile)
                                 MyApplication.loginedUserProfile = fileUri.toString()
                             }
-                            loadingDialog.dismiss()
                         }
-
+                    }else{
+                        imageViewMyPageProfile.setImageResource(R.drawable.ic_person_24px)
                     }
+                    loadingDialog.dismiss()
 
                 }
                 userEmail.observe(mainActivity){
@@ -81,7 +75,6 @@ class MainMyPageFragment : Fragment() {
                     fragmentMainMyPageBinding.textViewMainMyPageIntroduce.setText(it.toString())
                 }
             }
-            Glide.with(requireActivity()).load(MyApplication.loginedUserProfile).into(imageViewMyPageProfile)
 
             mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
 
@@ -92,9 +85,6 @@ class MainMyPageFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_THEME_FRAGMENT,true,null)
             }
             cardViewMainMyPageLogout.setOnClickListener {
-//                val dialogMypageLogoutBinding = DialogMypageLogoutBinding.inflate(layoutInflater)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setView(dialogMypageLogoutBinding.root)
                 var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 
@@ -124,9 +114,6 @@ class MainMyPageFragment : Fragment() {
 
             }
             cardViewMainMyPageWithDraw.setOnClickListener {
-//                val dialogMypageWithdrawBinding = DialogMypageWithdrawBinding.inflate(layoutInflater)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setView(dialogMypageWithdrawBinding.root)
                 var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 
@@ -135,27 +122,33 @@ class MainMyPageFragment : Fragment() {
 
                 builder.setView(dialogNormalBinding.root)
                 builder.setNegativeButton("회원탈퇴") { dialog, which ->
-                    UserRepository.deleteUserInfo(MyApplication.loginedUserInfo.userIdx){
-                        if(it.isSuccessful){
-                            var currentUser = firebaseAuth.currentUser!!
-                            currentUser.delete().addOnCompleteListener {task ->
-                                if(task.isSuccessful) {
-                                    val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-                                    val editor = sharedPreferences.edit()
-                                    editor.remove("isLoggedIn")
-                                    editor.remove("isLoggedUser")
-                                    editor.apply()
-                                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                    googleSignInClient.signOut().addOnCompleteListener {}
-                                    mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT,false,null)
-                                }
+                    // 사용자가 이미 로그아웃 상태일 수 있으므로 FirebaseAuth의 currentUser를 사용할 때 null 여부를 확인합니다.
+                    val currentUser = firebaseAuth.currentUser
+                    if (currentUser != null) {
+                        // FirebaseAuth를 사용하여 사용자 삭제 시도
+                        currentUser.delete().addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // 사용자 삭제가 성공하면 SharedPreferences에서 로그인 정보를 삭제합니다.
+                                val sharedPreferences = requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                                val editor = sharedPreferences.edit()
+                                editor.remove("isLoggedIn")
+                                editor.remove("isLoggedUser")
+                                editor.apply()
+
+                                // Google 로그인 클라이언트에서 로그아웃도 시도합니다.
+                                val googleSignInClient = GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                googleSignInClient.signOut().addOnCompleteListener {}
+
+                                // 로그인 화면으로 이동
+                                mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
                             }
                         }
                     }
                 }
-                builder.setPositiveButton("취소",null)
+                builder.setPositiveButton("취소", null)
                 builder.show()
             }
+
         }
 
         return fragmentMainMyPageBinding.root
