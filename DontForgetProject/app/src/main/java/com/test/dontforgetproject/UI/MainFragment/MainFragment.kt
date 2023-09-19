@@ -110,13 +110,13 @@ class MainFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_home
-        when(oldBottom){
+        when(oldBottom) {
             "myPage" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_myPage
             "category" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_category
             "friend" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_friend
             "home" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_home
             "alert" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_alert
+            else -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_home
         }
 
     }

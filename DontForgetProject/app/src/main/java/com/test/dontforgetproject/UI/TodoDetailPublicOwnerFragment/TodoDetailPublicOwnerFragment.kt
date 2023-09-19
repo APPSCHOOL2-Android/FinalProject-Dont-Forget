@@ -30,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.test.dontforgetproject.AlarmFunctions
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT
@@ -48,6 +49,8 @@ class TodoDetailPublicOwnerFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+
+    lateinit var alarmFunctions: AlarmFunctions
 
     var todoIdx = 0L
 
@@ -80,6 +83,17 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     longitude = place.latLng.longitude.toString()
                     Log.d("lion","${longitude}")
 
+                    val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
+                    val requestCode = 123 // 요청 코드 (임의의 숫자)
+
+                    if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
+                        // 이미 위치 권한이 허용되어 있음
+                        // 권한이 필요한 기능 수행
+                    } else {
+                        // 권한을 요청
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                    }
+
                 }
             }
             else if(it.resultCode == Activity.RESULT_CANCELED) {
@@ -111,16 +125,27 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
             todoAlertTime.observe(mainActivity) {
                 time = it.toString()
-                var alertTime = it.toString().split(":")
-                if(alertTime.get(0).toInt()>=12) {
-                    var hours = alertTime.get(0).toInt()-12
-                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오후 ${hours}시 ${alertTime.get(1)}분"
+                if(time == "알림 없음") {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "알림 없음"
                 } else {
-                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    var alertTime = it.toString().split(":")
+                    if (alertTime.get(0).toInt() >= 12) {
+                        var hours = alertTime.get(0).toInt() - 12
+                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
+                            "오후 ${hours}시 ${alertTime.get(1)}분"
+                    } else {
+                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
+                            "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    }
                 }
             }
             todoLocationName.observe(mainActivity) {
-                fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString().split("@").get(0)
+                if(it.toString() == "위치 없음") {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = it.toString()
+                } else {
+                    fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text =
+                        it.toString().split("@").get(0)
+                }
                 placeAddress = todoDetailPersonalViewModel.todoLocationName.value.toString()
             }
             todoLocationLatitude.observe(mainActivity) {
@@ -315,15 +340,25 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     TodoRepository.modifyTodo(todoDataClass) {
                     }
 
-                    val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
-                    val requestCode = 123 // 요청 코드 (임의의 숫자)
 
-                    if (ContextCompat.checkSelfPermission(requireContext(), locationPermission) == PackageManager.PERMISSION_GRANTED) {
-                        // 이미 위치 권한이 허용되어 있음
-                        // 권한이 필요한 기능 수행
+                    if(time == "알림 없음") {
+
                     } else {
-                        // 권한을 요청
-                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(locationPermission), requestCode)
+                        val now = Calendar.getInstance()
+                        var alarmTime = "${date} $time:00" // 알람이 울리는 시간
+                        var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
+                        var calculateDate = (alarmDate.time - now.time.time)
+                        Log.d("lion", "time : $alarmTime")
+
+                        //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
+                        var alarmCode = todoIdx.toInt()
+                        Log.d("lion", "code : $alarmCode")
+                        //                deleteAlarm(alarmCode)
+                        if (calculateDate < 0) {
+                            Log.d("lion", "현재보다 이전 시간으로 알림 설정")
+                        } else {
+                            setAlarm(alarmCode, content, alarmTime)
+                        }
                     }
 
                     Toast.makeText(mainActivity, "수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
@@ -356,5 +391,10 @@ class TodoDetailPublicOwnerFragment : Fragment() {
             }
         }
         return fragmentTodoDetailPublicOwnerBinding.root
+    }
+
+    private fun setAlarm(alarmCode : Int, content : String, time : String){
+        alarmFunctions = AlarmFunctions(mainActivity)
+        alarmFunctions.callAlarm(time, alarmCode, content)
     }
 }

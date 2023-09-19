@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.test.dontforgetproject.AlarmFunctions
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.GeofenceBroadcastReceiver
@@ -46,6 +48,7 @@ import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 
@@ -56,6 +59,8 @@ class TodoAddFragment : Fragment() {
     lateinit var viewModel: TodoAddFragmentViewModel
     lateinit var geofenceManager: GeofenceManager
     lateinit var geofenceBroadcastReceiver: GeofenceBroadcastReceiver
+
+    lateinit var alarmFunctions: AlarmFunctions
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
@@ -135,7 +140,11 @@ class TodoAddFragment : Fragment() {
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
             }
             viewModel.categoryColor.observe(mainActivity){
-                todoAddBinding.cardviewTodoAddCategory.setCardBackgroundColor(it.toInt())
+                todoAddBinding.run {
+                    cardviewTodoAddCategory.setCardBackgroundColor(it.toInt())
+                    textInputLayoutTodoAdd.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoAdd.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
             }
             viewModel.fontColor.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.setTextColor(it.toInt())
@@ -209,12 +218,15 @@ class TodoAddFragment : Fragment() {
             //시간
             linearlayoutTodoAddAlert.run {
                 setOnClickListener {
+                    var today = Calendar.getInstance()
+                    var currentHour = today.get(Calendar.HOUR)
+                    var currentMinute = today.get(Calendar.MINUTE)
                     var materialTimePicker = MaterialTimePicker.Builder()
                     materialTimePicker
                         .setTimeFormat(TimeFormat.CLOCK_12H)
                         .setTitleText("Select Time")
-                        .setHour(12)
-                        .setMinute(30)
+                        .setHour(currentHour)
+                        .setMinute(currentMinute)
                         .setInputMode(INPUT_MODE_KEYBOARD)
                         .build().apply {
                             addOnPositiveButtonClickListener {
@@ -388,6 +400,26 @@ class TodoAddFragment : Fragment() {
 
                         }
 
+                        if(time == "알림 없음") {
+
+                        } else {
+                            val now = Calendar.getInstance()
+                            var alarmTime = "${dates} $time:00" // 알람이 울리는 시간
+                            var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
+                            var calculateDate = (alarmDate.time - now.time.time)
+                            Log.d("lion", "time : $alarmTime")
+
+                            //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
+                            var alarmCode = idx.toInt()
+                            Log.d("lion", "code : $alarmCode")
+                            //                deleteAlarm(alarmCode)
+                            if (calculateDate < 0) {
+                                Log.d("lion", "현재보다 이전 시간으로 알림 설정")
+                            } else {
+                                setAlarm(alarmCode, content, alarmTime)
+                            }
+                        }
+
                         CategoryRepository.getAllCategory {
                             for (c1 in it.result.children){
                                 val categoryJoinUserIdxList =
@@ -457,6 +489,11 @@ class TodoAddFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.resetList()
+    }
+
+    private fun setAlarm(alarmCode : Int, content : String, time : String){
+        alarmFunctions = AlarmFunctions(mainActivity)
+        alarmFunctions.callAlarm(time, alarmCode, content)
     }
 
 }
