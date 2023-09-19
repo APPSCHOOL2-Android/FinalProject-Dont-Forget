@@ -46,6 +46,7 @@ class MainAlertViewModel : ViewModel() {
                 tempList.add(a1)
             }
 
+            tempList.reverse()
             alertList.value = tempList
         }
     }
