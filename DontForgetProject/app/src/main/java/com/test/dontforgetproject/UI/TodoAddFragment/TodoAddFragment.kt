@@ -30,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.test.dontforgetproject.AlarmFunctions
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.GeofenceBroadcastReceiver
@@ -45,6 +46,7 @@ import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 
@@ -55,6 +57,9 @@ class TodoAddFragment : Fragment() {
     lateinit var viewModel: TodoAddFragmentViewModel
     lateinit var geofenceManager: GeofenceManager
     lateinit var geofenceBroadcastReceiver: GeofenceBroadcastReceiver
+
+    lateinit var alarmFunctions: AlarmFunctions
+
     //이름,위도,경도 결과 받아옴
     private val startAutocomplete =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -193,12 +198,15 @@ class TodoAddFragment : Fragment() {
             //시간
             linearlayoutTodoAddAlert.run {
                 setOnClickListener {
+                    var today = Calendar.getInstance()
+                    var currentHour = today.get(Calendar.HOUR)
+                    var currentMinute = today.get(Calendar.MINUTE)
                     var materialTimePicker = MaterialTimePicker.Builder()
                     materialTimePicker
                         .setTimeFormat(TimeFormat.CLOCK_12H)
                         .setTitleText("Select Time")
-                        .setHour(12)
-                        .setMinute(30)
+                        .setHour(currentHour)
+                        .setMinute(currentMinute)
                         .setInputMode(INPUT_MODE_KEYBOARD)
                         .build().apply {
                             addOnPositiveButtonClickListener {
@@ -349,6 +357,22 @@ class TodoAddFragment : Fragment() {
                         var fontColor = MyApplication.categoryFontColor
                         var dates = newDate
 
+                        val now = Calendar.getInstance()
+                        var alarmTime = "${date} $time:00" // 알람이 울리는 시간
+                        var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss") .parse(alarmTime)
+                        var calculateDate = (alarmDate.time - now.time.time)
+                        Log.d("lion", "time : $alarmTime")
+
+//                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
+                        var alarmCode = idx.toInt()
+                        Log.d("lion", "code : $alarmCode")
+//                deleteAlarm(alarmCode)
+                        if(calculateDate < 0) {
+                            Log.d("lion", "현재보다 이전 시간으로 알림 설정")
+                        } else {
+                            setAlarm(alarmCode, content, alarmTime)
+                        }
+
                         //알림, 장소 이름,위도,경도 없을시 None으로 변경
                         var time = newTime
                         if(time==""){
@@ -451,5 +475,10 @@ class TodoAddFragment : Fragment() {
 //        super.onDestroy()
 //        viewModel.resetList()
 //    }
+
+    private fun setAlarm(alarmCode : Int, content : String, time : String){
+        alarmFunctions = AlarmFunctions(mainActivity)
+        alarmFunctions.callAlarm(time, alarmCode, content)
+    }
 
 }
