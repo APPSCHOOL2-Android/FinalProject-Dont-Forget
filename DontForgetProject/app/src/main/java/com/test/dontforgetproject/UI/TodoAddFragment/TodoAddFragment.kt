@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -126,7 +127,11 @@ class TodoAddFragment : Fragment() {
                 todoAddBinding.textViewTodoAddCategory.text = String.format("%s",it)
             }
             viewModel.categoryColor.observe(mainActivity){
-                todoAddBinding.cardviewTodoAddCategory.setCardBackgroundColor(it.toInt())
+                todoAddBinding.run {
+                    cardviewTodoAddCategory.setCardBackgroundColor(it.toInt())
+                    textInputLayoutTodoAdd.boxStrokeColor = it.toInt()
+                    textInputLayoutTodoAdd.hintTextColor = ColorStateList.valueOf(it.toInt())
+                }
             }
             viewModel.fontColor.observe(mainActivity){
                 todoAddBinding.textViewTodoAddCategory.setTextColor(it.toInt())

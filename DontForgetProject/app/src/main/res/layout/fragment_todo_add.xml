@@ -22,8 +22,10 @@
         android:padding="@dimen/padding_size_normal">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_todoAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/todo_add_hint"
             app:boxBackgroundMode="filled">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -34,7 +36,6 @@
                 android:layout_marginBottom="@dimen/margin_vertical_big3"
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/scdream_regular"
-                android:hint="@string/todo_add_hint"
                 android:inputType="text|textMultiLine"
                 android:scrollHorizontally="true"
                 android:textSize="@dimen/font_size_big" />
