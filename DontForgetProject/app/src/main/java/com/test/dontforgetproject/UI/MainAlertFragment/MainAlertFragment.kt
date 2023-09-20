@@ -98,12 +98,11 @@ class MainAlertFragment : Fragment() {
                     for(position in 0 until userAlertList.size) {
 //                        Log.d("lion","position : ${userAlertList.get(position).alertContent}")
                         AlertRepository.removeAlert(userAlertList.get(position).alertIdx) {
-
+                            mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                            fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                         }
                     }
                     Toast.makeText(mainActivity, "모든 알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                    mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                    fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                 }
                 builder.show()
             }
@@ -130,11 +129,10 @@ class MainAlertFragment : Fragment() {
 
                 rowBinding.root.setOnClickListener {
                     AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
-
+                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
                     Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                    mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                    fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                 }
             }
         }
