@@ -193,7 +193,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
             linearLayoutTodoDetailPublicOwnerAlert.setOnClickListener {
                 var today = Calendar.getInstance()
-                var currentHour = today.get(Calendar.HOUR)
+                var currentHour = today.get(Calendar.HOUR_OF_DAY)
                 var currentMinute = today.get(Calendar.MINUTE)
                 var materialTimePicker = MaterialTimePicker.Builder()
                 materialTimePicker
