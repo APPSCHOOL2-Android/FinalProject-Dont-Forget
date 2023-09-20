@@ -123,13 +123,26 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text = "알림 없음"
                 } else {
                     var alertTime = it.toString().split(":")
-                    if (alertTime.get(0).toInt() >= 12) {
-                        var hours = alertTime.get(0).toInt() - 12
-                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
-                            "오후 ${hours}시 ${alertTime.get(1)}분"
-                    } else {
-                        fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerAlert.text =
-                            "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    var newhour = "${alertTime.get(0)}".toInt()
+
+                    fragmentTodoDetailPublicOwnerBinding.run {
+                        if(newhour in 1..11){
+                            textViewTodoDetailPublicOwnerAlert.text= "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour in 13..23){
+                            var hours = "${alertTime.get(0)}".toInt()-12
+                            textViewTodoDetailPublicOwnerAlert.text= "오후 ${hours}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 12){
+                            textViewTodoDetailPublicOwnerAlert.text= "오후 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 0){
+                            var hours = newhour+12
+                            textViewTodoDetailPublicOwnerAlert.text= "오전 ${hours}시 ${alertTime.get(1)}분"
+                        }
                     }
                 }
             }
@@ -221,12 +234,24 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                                 time = "0${hour}:0${minute}"
                             }
 
-                            //오전,오후 분기
-                            if ("${hour}".toInt()>=12){
+                            var newhour = "${hour}".toInt()
+
+                            if(newhour in 1..11){
+                                textViewTodoDetailPublicOwnerAlert.text= "오전 ${hour}시 ${minute}분"
+                            }
+
+                            if(newhour in 13..23){
                                 var hours = "${hour}".toInt()-12
-                                textViewTodoDetailPublicOwnerAlert.text=  " 오후 ${hours}시 ${minute}분"
-                            }else{
-                                textViewTodoDetailPublicOwnerAlert.text= " 오전 ${hour}시 ${minute}분"
+                                textViewTodoDetailPublicOwnerAlert.text= "오후 ${hours}시 ${minute}분"
+                            }
+
+                            if(newhour == 12){
+                                textViewTodoDetailPublicOwnerAlert.text= "오후 ${hour}시 ${minute}분"
+                            }
+
+                            if(newhour == 0){
+                                var hours = newhour+12
+                                textViewTodoDetailPublicOwnerAlert.text= "오전 ${hours}시 ${minute}분"
                             }
                         }
                     }

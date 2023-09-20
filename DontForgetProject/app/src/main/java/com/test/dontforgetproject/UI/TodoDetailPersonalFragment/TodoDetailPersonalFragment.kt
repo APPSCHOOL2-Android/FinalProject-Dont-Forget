@@ -125,13 +125,26 @@ class TodoDetailPersonalFragment : Fragment() {
                     fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text = "알림 없음"
                 } else {
                     var alertTime = it.toString().split(":")
-                    if (alertTime.get(0).toInt() >= 12) {
-                        var hours = alertTime.get(0).toInt() - 12
-                        fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text =
-                            "오후 ${hours}시 ${alertTime.get(1)}분"
-                    } else {
-                        fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalAlert.text =
-                            "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    var newhour = "${alertTime.get(0)}".toInt()
+
+                    fragmentTodoDetailPersonalBinding.run {
+                        if(newhour in 1..11){
+                            textViewTodoDetailPersonalAlert.text= "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour in 13..23){
+                            var hours = "${alertTime.get(0)}".toInt()-12
+                            textViewTodoDetailPersonalAlert.text= "오후 ${hours}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 12){
+                            textViewTodoDetailPersonalAlert.text= "오후 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 0){
+                            var hours = newhour+12
+                            textViewTodoDetailPersonalAlert.text= "오전 ${hours}시 ${alertTime.get(1)}분"
+                        }
                     }
                 }
             }
@@ -223,12 +236,24 @@ class TodoDetailPersonalFragment : Fragment() {
                                 time = "0${hour}:0${minute}"
                             }
 
-                            //오전,오후 분기
-                            if ("${hour}".toInt()>=12){
-                                var hours = "${hour}".toInt()-12
-                                textViewTodoDetailPersonalAlert.text=  "오후 ${hours}시 ${minute}분"
-                            }else{
+                            var newhour = "${hour}".toInt()
+
+                            if(newhour in 1..11){
                                 textViewTodoDetailPersonalAlert.text= "오전 ${hour}시 ${minute}분"
+                            }
+
+                            if(newhour in 13..23){
+                                var hours = "${hour}".toInt()-12
+                                textViewTodoDetailPersonalAlert.text= "오후 ${hours}시 ${minute}분"
+                            }
+
+                            if(newhour == 12){
+                                textViewTodoDetailPersonalAlert.text= "오후 ${hour}시 ${minute}분"
+                            }
+
+                            if(newhour == 0){
+                                var hours = newhour+12
+                                textViewTodoDetailPersonalAlert.text= "오전 ${hours}시 ${minute}분"
                             }
                         }
                     }
