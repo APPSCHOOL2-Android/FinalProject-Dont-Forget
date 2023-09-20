@@ -75,7 +75,7 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
 
                     saveAction()
 
-                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName} 입니다",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName} 입니다",Toast.LENGTH_SHORT).show()
 
                 }
             }

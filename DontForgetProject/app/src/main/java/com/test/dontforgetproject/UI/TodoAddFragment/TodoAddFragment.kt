@@ -272,12 +272,7 @@ class TodoAddFragment : Fragment() {
                                     var hours = newhour+12
                                     textViewTodoAddAlert.text= " 오전 ${hours}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
-
                                 }
-
-
-
-
                             }
                         }
                         .show(mainActivity.supportFragmentManager,"Time")
