@@ -40,7 +40,7 @@ class MyApplication :Application(){
         var chosedFriendName = ""
 
         // 테마설정
-        var selectedTheme: String = ThemeUtil.DEFAULT_MODE
+        var selectedTheme: String = ThemeUtil.LIGHT_MODE
 
         //위치 이름,위도,경도
         var locationName=""
