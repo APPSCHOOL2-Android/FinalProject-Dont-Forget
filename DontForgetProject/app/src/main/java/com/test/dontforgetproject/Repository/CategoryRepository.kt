@@ -113,5 +113,23 @@ class CategoryRepository {
             val databaseRef = database.getReference("userInfo")
             databaseRef.orderByChild("userIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener(callback1)
         }
+
+        // 특정 카테고리에서 유저 idx를 통해 할일 삭제
+        fun removeTodoInPublicCategory(categoryIdx: Long, userIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("todoInfo")
+
+            todoDataRef.orderByChild("todoCategoryIdx").equalTo(categoryIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        val idx = a1.child("todoOwnerIdx").value as Long
+
+                        if (idx == userIdx) {
+                            // 해당 데이터 삭제
+                            a1.ref.removeValue().addOnCompleteListener(callback1)
+                        }
+                    }
+                }
+        }
     }
 }
