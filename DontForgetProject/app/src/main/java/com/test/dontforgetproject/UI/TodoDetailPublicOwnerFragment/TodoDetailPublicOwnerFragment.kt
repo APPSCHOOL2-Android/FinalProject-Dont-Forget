@@ -5,11 +5,6 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -27,7 +22,6 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.test.dontforgetproject.AlarmFunctions
@@ -36,7 +30,7 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MainActivity.Companion.TODO_DETAIL_PUBLIC_OWNER_FRAGMENT
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.TodoRepository
-import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailViewModel
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicOwnerBinding
 import java.text.SimpleDateFormat
@@ -48,7 +42,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
     lateinit var fragmentTodoDetailPublicOwnerBinding: FragmentTodoDetailPublicOwnerBinding
     lateinit var mainActivity: MainActivity
 
-    lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+    lateinit var todoDetailViewModel: TodoDetailViewModel
 
     lateinit var alarmFunctions: AlarmFunctions
 
@@ -111,8 +105,8 @@ class TodoDetailPublicOwnerFragment : Fragment() {
 
         todoIdx = arguments?.getLong("todoIdx",0)!!
 
-        todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
-        todoDetailPersonalViewModel.run {
+        todoDetailViewModel = ViewModelProvider(mainActivity)[TodoDetailViewModel::class.java]
+        todoDetailViewModel.run {
 
             todoContent.observe(mainActivity) {
                 fragmentTodoDetailPublicOwnerBinding.textInputEditTextTodoDetailPublicOwner.setText(it.toString())
@@ -146,7 +140,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text =
                         it.toString().split("@").get(0)
                 }
-                placeAddress = todoDetailPersonalViewModel.todoLocationName.value.toString()
+                placeAddress = todoDetailViewModel.todoLocationName.value.toString()
             }
             todoLocationLatitude.observe(mainActivity) {
                 latitude = it.toString()
@@ -165,7 +159,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 }
             }
         }
-        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+        todoDetailViewModel.getTodoInfo(todoIdx)
 
         fragmentTodoDetailPublicOwnerBinding.run {
 
@@ -309,18 +303,18 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 val todoDataClass = TodoClass(
                     todoIdx,
                     content,
-                    todoDetailPersonalViewModel.todoIsChecked.value!!.toLong(),
-                    todoDetailPersonalViewModel.todoCategoryIdx.value!!.toLong(),
-                    todoDetailPersonalViewModel.todoCategoryName.value.toString(),
-                    todoDetailPersonalViewModel.todoFontColor.value!!.toLong(),
-                    todoDetailPersonalViewModel.todoBackgroundColor.value!!.toLong(),
+                    todoDetailViewModel.todoIsChecked.value!!.toLong(),
+                    todoDetailViewModel.todoCategoryIdx.value!!.toLong(),
+                    todoDetailViewModel.todoCategoryName.value.toString(),
+                    todoDetailViewModel.todoFontColor.value!!.toLong(),
+                    todoDetailViewModel.todoBackgroundColor.value!!.toLong(),
                     date,
                     todoTime,
                     locationName,
                     locationLatitude,
                     locationLongitude,
-                    todoDetailPersonalViewModel.todoOwnerIdx.value!!.toLong(),
-                    todoDetailPersonalViewModel.todoOwnerName.value!!.toString()
+                    todoDetailViewModel.todoOwnerIdx.value!!.toLong(),
+                    todoDetailViewModel.todoOwnerName.value!!.toString()
                 )
 
                 var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
@@ -360,7 +354,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     }
 
                     Toast.makeText(mainActivity, "수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+                    todoDetailViewModel.getTodoInfo(todoIdx)
                     mainActivity.removeFragment(TODO_DETAIL_PUBLIC_OWNER_FRAGMENT)
                 }
                 builder.show()
