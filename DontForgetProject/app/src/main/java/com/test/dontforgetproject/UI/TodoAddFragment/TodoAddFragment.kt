@@ -205,7 +205,7 @@ class TodoAddFragment : Fragment() {
                         val dateOne = sendDateFormats.format(Date(it))
                         date = dateOne
 
-                        Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
                        textViewTodoAddDate.setText(dates)
 
                         viewModel.date.value = dates
@@ -219,7 +219,7 @@ class TodoAddFragment : Fragment() {
             linearlayoutTodoAddAlert.run {
                 setOnClickListener {
                     var today = Calendar.getInstance()
-                    var currentHour = today.get(Calendar.HOUR)
+                    var currentHour = today.get(Calendar.HOUR_OF_DAY)
                     var currentMinute = today.get(Calendar.MINUTE)
                     var materialTimePicker = MaterialTimePicker.Builder()
                     materialTimePicker
@@ -260,6 +260,7 @@ class TodoAddFragment : Fragment() {
                                     var hours = "${hour}".toInt()-12
                                     textViewTodoAddAlert.text= " 오후 ${hours}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
+
                                 }
 
                                 if(newhour == 12){
@@ -271,6 +272,7 @@ class TodoAddFragment : Fragment() {
                                     var hours = newhour+12
                                     textViewTodoAddAlert.text= " 오전 ${hours}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
+
                                 }
 
 

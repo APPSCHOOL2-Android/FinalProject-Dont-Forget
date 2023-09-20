@@ -16,6 +16,18 @@
         android:paddingTop="@dimen/padding_size_normal"
         android:paddingEnd="@dimen/padding_size_normal">
 
+        <TextView
+            android:id="@+id/textView_mainFriendRequest_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_size_normal"
+            android:layout_marginRight="@dimen/padding_size_normal"
+            android:layout_marginTop="25dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/scdream_regular"
+            android:text="받은 친구 요청이 없습니다."
+            android:textColor="@color/textGray"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_mainFriendsRequest"
             android:layout_width="match_parent"

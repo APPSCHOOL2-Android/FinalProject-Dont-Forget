@@ -1,11 +1,6 @@
 package com.test.dontforgetproject.UI.TodoDetailPublicFragment
 
 import android.content.res.ColorStateList
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.R
-import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalViewModel
+import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailViewModel
 import com.test.dontforgetproject.databinding.FragmentTodoDetailPublicBinding
 
 class TodoDetailPublicFragment : Fragment() {
@@ -22,7 +17,7 @@ class TodoDetailPublicFragment : Fragment() {
     lateinit var fragmentTodoDetailPublicBinding: FragmentTodoDetailPublicBinding
     lateinit var mainActivity: MainActivity
 
-    lateinit var todoDetailPersonalViewModel: TodoDetailPersonalViewModel
+    lateinit var todoDetailViewModel: TodoDetailViewModel
 
     var todoIdx = 0L
 
@@ -38,8 +33,8 @@ class TodoDetailPublicFragment : Fragment() {
 
         todoIdx = arguments?.getLong("todoIdx",0)!!
 
-        todoDetailPersonalViewModel = ViewModelProvider(mainActivity)[TodoDetailPersonalViewModel::class.java]
-        todoDetailPersonalViewModel.run {
+        todoDetailViewModel = ViewModelProvider(mainActivity)[TodoDetailViewModel::class.java]
+        todoDetailViewModel.run {
 
             todoContent.observe(mainActivity) {
                 fragmentTodoDetailPublicBinding.textInputEditTextTodoDetailPublic.setText(it.toString())
@@ -88,7 +83,7 @@ class TodoDetailPublicFragment : Fragment() {
                 }
             }
         }
-        todoDetailPersonalViewModel.getTodoInfo(todoIdx)
+        todoDetailViewModel.getTodoInfo(todoIdx)
 
         fragmentTodoDetailPublicBinding.run {
 

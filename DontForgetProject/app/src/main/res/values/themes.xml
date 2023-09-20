@@ -9,6 +9,9 @@
         <item name="colorError">@color/accentRed</item>
         <item name="statusBarBackground">@color/colorPrimary</item>
 
+        <!-- 툴바 테마 스타일 설정 -->
+        <item name="toolbarStyle">@style/Theme.DontForgetProject.Toolbar</item>
+
     </style>
 
     <style name="Theme.DontForgetProject.Toolbar" parent="ThemeOverlay.Material3.Toolbar.Surface">
@@ -16,7 +19,8 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/scdream_regular</item>
         <item name="android:textSize">@dimen/font_size_medium</item>
-
+        <item name="android:gravity">center</item>
+        <item name="titleCentered">true</item>
     </style>
     <style name="Theme.DontForgetProject.Button" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/black</item>

@@ -36,6 +36,18 @@ class MainFriendsMyRequestFragment : Fragment() {
         viewModel.run{
             myRequestList.observe(mainActivity){
                 MRL = it
+
+                binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
+
+                if(MRL.size == 0) {
+                    binding.run {
+                        textViewMainFriendMyRequestZero.visibility = View.VISIBLE
+                    }
+                } else {
+                    binding.run {
+                        textViewMainFriendMyRequestZero.visibility = View.GONE
+                    }
+                }
             }
         }
         viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
@@ -50,6 +62,16 @@ class MainFriendsMyRequestFragment : Fragment() {
                     myRequestList.observe(mainActivity){
                         MRL = it
                         binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
+
+                        if(MRL.size == 0) {
+                            binding.run {
+                                textViewMainFriendMyRequestZero.visibility = View.VISIBLE
+                            }
+                        } else {
+                            binding.run {
+                                textViewMainFriendMyRequestZero.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }

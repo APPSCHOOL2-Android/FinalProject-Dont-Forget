@@ -57,6 +57,15 @@ class MainFriendsListFragment : Fragment() {
                 }
 
                 binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+                if(searchUFL.size == 0) {
+                    binding.run {
+                        textViewMainFriendListZero.visibility = View.VISIBLE
+                    }
+                } else {
+                    binding.run {
+                        textViewMainFriendListZero.visibility = View.GONE
+                    }
+                }
             }
         }
         viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
@@ -82,6 +91,15 @@ class MainFriendsListFragment : Fragment() {
                         }
 
                         binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+                        if(searchUFL.size == 0) {
+                            binding.run {
+                                textViewMainFriendListZero.visibility = View.VISIBLE
+                            }
+                        } else {
+                            binding.run {
+                                textViewMainFriendListZero.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }

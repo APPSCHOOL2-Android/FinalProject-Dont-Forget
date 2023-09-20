@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.Repository.TodoRepository
 
-class TodoDetailPersonalViewModel : ViewModel() {
+class TodoDetailViewModel : ViewModel() {
 
 
 
