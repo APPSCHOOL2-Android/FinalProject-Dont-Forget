@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.MyPageThemeFragment.MyPageThemeFragment">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_myPageWithDraw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_size_normal"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView_myPageWithDraw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scdream_bold"
+            android:text="비밀번호를 한번더 입력해주세요.\n\n비밀번호를 입력하시면 회원탈퇴가 완료됩니다." />
+        <TextView
+            android:layout_marginTop="@dimen/margin_vertical_small1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_small"
+            android:id="@+id/textView_myPageWithDraw_findPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scdream_regular"
+            android:text="비밀번호 수정" />
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_vertical_big2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textView_myPageWithDraw_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:text="로그인한 이메일 : " />
+
+            <TextView
+                android:id="@+id/textView_myPageWithDraw_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:text="이메일" />
+        </LinearLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_myPageWithDraw_password"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호"
+            app:boxBackgroundMode="filled">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_myPageWithDraw_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
+                android:fontFamily="@font/scdream_regular"
+                android:inputType="textPassword"
+                android:textSize="@dimen/font_size_medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:layout_marginTop="@dimen/margin_vertical_small2"
+            android:layout_gravity="end"
+            android:id="@+id/button_myPageWithDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accentRed"
+            android:text="탈퇴하기"
+            android:textSize="@dimen/font_size_big"
+            style="@style/Theme.DontForgetProject.Button"/>
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

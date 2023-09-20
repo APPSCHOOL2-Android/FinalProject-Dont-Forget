@@ -70,6 +70,7 @@ class MyPageModifyFragment : Fragment() {
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
+                    Glide.with(mainActivity).clear(imageViewMyPageModifyProfile)
                 }
             }
 
@@ -161,7 +162,7 @@ class MyPageModifyFragment : Fragment() {
                     UserRepository.modifyUserInfo(modifyUser) { result ->
                         if (result.isSuccessful) {
                             MyApplication.loginedUserInfo = modifyUser
-                            Glide.with(mainActivity).clear(requireView())
+                            Glide.with(requireContext()).clear(imageViewMyPageModifyProfile)
                         } else {
                             Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
                         }
