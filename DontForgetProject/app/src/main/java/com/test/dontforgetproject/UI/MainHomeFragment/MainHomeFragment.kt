@@ -495,6 +495,7 @@ class MainHomeFragment : Fragment() {
             for (i in categories) {
                 if (todo.todoCategoryIdx == i.categoryIdx) {
                     isCategoryPublic = i.categoryIsPublic
+                    holder.textViewCategory.setTextColor(i.categoryColor.toInt())
                 }
             }
 //            Log.d(
