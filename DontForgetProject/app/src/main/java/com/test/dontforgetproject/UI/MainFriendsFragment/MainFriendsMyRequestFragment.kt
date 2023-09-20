@@ -66,6 +66,12 @@ class MainFriendsMyRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        viewModel.run{
+            myRequestList.observe(mainActivity){
+                MRL = it
+            }
+        }
+        viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
         binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
     }
 

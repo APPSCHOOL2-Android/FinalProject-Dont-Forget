@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ class MainFriendsListFragment : Fragment() {
 
     // 현재 내가 보여줄 리스트
     var searchUFL = mutableListOf<Friend>()
+//    var searchUFL = MutableLiveData<MutableList<Friend>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,7 @@ class MainFriendsListFragment : Fragment() {
                 MyApplication.loginedUserInfo.userFriendList
 
                 // 자기자신은 제거
-                for((index,friend) in searchUFL.withIndex()){
+                for((index,friend) in UFL.withIndex()){
                     if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
                         searchUFL.removeAt(index)
                     }
@@ -125,6 +127,23 @@ class MainFriendsListFragment : Fragment() {
         super.onResume()
         binding.root.requestLayout()
         binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+        viewModel.run{
+            this.myFriendList.observe(mainActivity){
+                UFL = it as ArrayList<Friend>
+                searchUFL = UFL
+                MyApplication.loginedUserInfo.userFriendList
+
+                // 자기자신은 제거
+                for((index,friend) in searchUFL.withIndex()){
+                    if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
+                        searchUFL.removeAt(index)
+                    }
+                }
+
+                binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+            }
+        }
+        viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
     }
 
     inner class RecyclerAdapterFL : RecyclerView.Adapter<RecyclerAdapterFL.ViewHolderFL>(){

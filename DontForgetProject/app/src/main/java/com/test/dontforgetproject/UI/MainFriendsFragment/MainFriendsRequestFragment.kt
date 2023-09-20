@@ -80,6 +80,13 @@ class MainFriendsRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
+        viewModel.run {
+            joinFriendList.observe(mainActivity) {
+                requestList = it
+                binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+            }
+        }
         binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
     }
 
