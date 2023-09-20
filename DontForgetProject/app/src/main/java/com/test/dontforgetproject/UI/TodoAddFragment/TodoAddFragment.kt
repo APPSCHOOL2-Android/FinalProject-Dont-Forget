@@ -249,17 +249,32 @@ class TodoAddFragment : Fragment() {
                                     time = "0${hour}:0${minute}"
                                 }
 
-                                //오전,오후 분기
-                                if ("${hour}".toInt()>=12){
-                                    var hours = "${hour}".toInt()-12
-                                    textViewTodoAddAlert.text=  " 오후 ${hours}시 ${minute}분"
-                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
-                                    Toast.makeText(mainActivity,"선택한 시간은 오후 ${hours}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
-                                }else{
+                                var newhour = "${hour}".toInt()
+
+                                if(newhour in 1..11){
                                     textViewTodoAddAlert.text= " 오전 ${hour}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
-                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }
+
+                                if(newhour in 13..23){
+                                    var hours = "${hour}".toInt()-12
+                                    textViewTodoAddAlert.text= " 오후 ${hours}시 ${minute}분"
+                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
+                                }
+
+                                if(newhour == 12){
+                                    textViewTodoAddAlert.text= " 오후 ${hour}시 ${minute}분"
+                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
+                                }
+
+                                if(newhour == 0){
+                                    var hours = newhour+12
+                                    textViewTodoAddAlert.text= " 오전 ${hours}시 ${minute}분"
+                                    viewModel.time.value = textViewTodoAddAlert.text.toString()
+                                }
+
+
+
 
                             }
                         }
