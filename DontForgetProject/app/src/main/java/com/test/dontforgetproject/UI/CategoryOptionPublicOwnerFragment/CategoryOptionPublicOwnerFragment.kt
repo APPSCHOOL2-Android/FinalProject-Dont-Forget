@@ -29,11 +29,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
+import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
+import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicViewModel
 import com.test.dontforgetproject.databinding.DialogCategoryAddPeopleBinding
 import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
@@ -51,6 +53,7 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
     lateinit var categoryOptionPublicViewModel: CategoryOptionPublicViewModel
 
     var userInfo = MyApplication.loginedUserInfo
+    var categoryTodoList = mutableListOf<TodoClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,10 +91,15 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
             joinUserNameList.observe(mainActivity) {
                 categoryOptionPublicOwnerBinding.recyclerViewCategoryOptionPublicOwner.adapter?.notifyDataSetChanged()
             }
+
+            todoList.observe(mainActivity) {
+                categoryTodoList = it
+            }
         }
 
         categoryOptionPublicOwnerBinding.run {
             val categoryIdx = arguments?.getLong("categoryIdx")!!
+            categoryOptionPublicViewModel.getTodoByCategory(categoryIdx)
 
             toolbarCategoryOptionPublicOwner.run {
                 title = "카테고리 관리"
@@ -273,10 +281,36 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                 }
 
                 CategoryRepository.modifyCategory(categoryClass) {
-                    Toast.makeText(mainActivity, "카테고리 수정 완료", Toast.LENGTH_SHORT)
-                        .show()
-                    mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
+
                 }
+
+                for (i in 0 until categoryTodoList.size) {
+//                    Log.d("lion","change todo color")
+                    val todoClass = TodoClass(
+                        categoryTodoList.get(i).todoIdx,
+                        categoryTodoList.get(i).todoContent,
+                        categoryTodoList.get(i).todoIsChecked,
+                        categoryTodoList.get(i).todoCategoryIdx,
+                        categoryName,
+                        categoryFontColor.toLong(),
+                        categoryColor.toLong(),
+                        categoryTodoList.get(i).todoDate,
+                        categoryTodoList.get(i).todoAlertTime,
+                        categoryTodoList.get(i).todoLocationName,
+                        categoryTodoList.get(i).todoLocationLatitude,
+                        categoryTodoList.get(i).todoLocationLongitude,
+                        categoryTodoList.get(i).todoOwnerIdx,
+                        categoryTodoList.get(i).todoOwnerName
+                    )
+//                    Log.d("lion", "class : $todoClass")
+                    TodoRepository.modifyTodoByCategory(todoClass) {
+
+                    }
+                }
+
+                Toast.makeText(mainActivity, "카테고리 수정 완료", Toast.LENGTH_SHORT)
+                    .show()
+                mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_OWNER_FRAGMENT)
             }
 
             // 삭제하기
