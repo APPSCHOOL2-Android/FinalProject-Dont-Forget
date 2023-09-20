@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
+import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
 import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
@@ -204,6 +205,23 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
+    // 친구목록 최신화
+    fun updateLoginedUserInfo() {
+        CategoryRepository.getUserInfoByIdx(MyApplication.loginedUserInfo.userIdx) {
+            var newFriendList = ArrayList<Friend>()
+            for (u1 in it.result.children) {
+                var friendListHashMap = u1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
 
+                for (f in friendListHashMap) {
+                    var idx = f["friendIdx"] as Long
+                    var name = f["friendName"] as String
+                    var email = f["friendEmail"] as String
 
+                    val friend = Friend(idx, name, email)
+                    newFriendList.add(friend)
+                }
+            }
+            MyApplication.loginedUserInfo.userFriendList = newFriendList
+        }
+    }
 }
