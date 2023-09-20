@@ -106,5 +106,12 @@ class CategoryRepository {
                     }
                 }
         }
+
+        // 인덱스를 통해 사용자 정보를 가져옴
+        fun getUserInfoByIdx(userIdx : Long, callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val databaseRef = database.getReference("userInfo")
+            databaseRef.orderByChild("userIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener(callback1)
+        }
     }
 }
