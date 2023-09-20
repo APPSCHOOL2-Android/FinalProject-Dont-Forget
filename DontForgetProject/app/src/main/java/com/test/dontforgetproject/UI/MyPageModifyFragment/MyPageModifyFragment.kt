@@ -80,7 +80,6 @@ class MyPageModifyFragment : Fragment() {
                 }
                 userName.observe(mainActivity){
                     user.userName = it.toString()
-                    textInputEditTextMyPageModifyName.setText(it.toString())
                 }
                 userIntoduce.observe(mainActivity){
                     user.userIntroduce = it.toString()
@@ -128,7 +127,6 @@ class MyPageModifyFragment : Fragment() {
                 albumLauncher.launch(newIntent)
             }
             buttonMyPageModifyModifyComplete.setOnClickListener {
-                val newUser = fragmentMyPageModifyBinding.textInputLayoutMyPageModifyName.editText?.text.toString()
                 val newIntroduce = fragmentMyPageModifyBinding.textInputLayoutMyPageModifyIntroduce.editText?.text.toString()
 
                 // 이미지를 변경하지 않을 경우 "None"으로 설정
@@ -150,10 +148,10 @@ class MyPageModifyFragment : Fragment() {
                     }
                 }
 
-                if (newUser.isNotEmpty() && newIntroduce.isNotEmpty()) {
+                if (newIntroduce.isNotEmpty()) {
                     val modifyUser = UserClass(
                         user.userIdx,
-                        newUser,
+                        user.userName,
                         user.userEmail,
                         newImage,
                         newIntroduce,
