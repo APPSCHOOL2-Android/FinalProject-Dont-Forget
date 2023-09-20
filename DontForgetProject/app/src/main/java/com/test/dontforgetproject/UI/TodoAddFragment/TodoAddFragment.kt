@@ -205,7 +205,7 @@ class TodoAddFragment : Fragment() {
                         val dateOne = sendDateFormats.format(Date(it))
                         date = dateOne
 
-                        Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
                        textViewTodoAddDate.setText(dates)
 
                         viewModel.date.value = dates
@@ -254,11 +254,11 @@ class TodoAddFragment : Fragment() {
                                     var hours = "${hour}".toInt()-12
                                     textViewTodoAddAlert.text=  " 오후 ${hours}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
-                                    Toast.makeText(mainActivity,"선택한 시간은 오후 ${hours}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
+//                                    Toast.makeText(mainActivity,"선택한 시간은 오후 ${hours}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }else{
                                     textViewTodoAddAlert.text= " 오전 ${hour}시 ${minute}분"
                                     viewModel.time.value = textViewTodoAddAlert.text.toString()
-                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
+//                                    Toast.makeText(mainActivity,"선택한 시간은 오전 ${hour}시 ${minute}분 입니다",Toast.LENGTH_SHORT).show()
                                 }
 
                             }
