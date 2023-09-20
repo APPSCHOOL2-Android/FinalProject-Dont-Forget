@@ -45,14 +45,6 @@
                 android:text="@string/myPage_theme_dark"
                 android:textSize="@dimen/font_size_medium" />
 
-            <RadioButton
-                android:id="@+id/radioButton_myPageTheme_system"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical_small1"
-                android:fontFamily="@font/scdream_regular"
-                android:text="@string/myPage_theme_system"
-                android:textSize="@dimen/font_size_medium" />
 
         </RadioGroup>
 

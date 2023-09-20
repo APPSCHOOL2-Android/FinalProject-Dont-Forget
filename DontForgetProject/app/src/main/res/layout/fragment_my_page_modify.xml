@@ -47,24 +47,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_vertical_big2"/>
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_myPageModify_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="이름"
-                app:boxBackgroundMode="filled">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditText_myPageModify_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:fontFamily="@font/scdream_regular"
-                    android:text="이름!"
-                    android:textSize="@dimen/font_size_medium"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout_myPageModify_introduce"
                 android:layout_marginTop="@dimen/margin_vertical_small3"

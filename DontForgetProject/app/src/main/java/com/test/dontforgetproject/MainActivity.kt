@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-        val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
+        val themeName = sharedPreferences.getString("theme", ThemeUtil.LIGHT_MODE)
         if (themeName != null) {
             ThemeUtil.applyTheme(themeName)
             MyApplication.selectedTheme = themeName
