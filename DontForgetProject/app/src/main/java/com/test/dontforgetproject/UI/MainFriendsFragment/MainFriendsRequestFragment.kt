@@ -48,6 +48,16 @@ class MainFriendsRequestFragment : Fragment() {
             joinFriendList.observe(mainActivity) {
                 requestList = it
                 binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+
+                if(requestList.size == 0) {
+                    binding.run {
+                        textViewMainFriendRequestZero.visibility = View.VISIBLE
+                    }
+                } else {
+                    binding.run {
+                        textViewMainFriendRequestZero.visibility = View.GONE
+                    }
+                }
             }
         }
         viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
@@ -63,6 +73,16 @@ class MainFriendsRequestFragment : Fragment() {
                     joinFriendList.observe(mainActivity) {
                         requestList = it
                         binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+
+                        if(requestList.size == 0) {
+                            binding.run {
+                                textViewMainFriendRequestZero.visibility = View.VISIBLE
+                            }
+                        } else {
+                            binding.run {
+                                textViewMainFriendRequestZero.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }

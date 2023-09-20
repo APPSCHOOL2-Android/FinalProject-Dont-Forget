@@ -40,6 +40,16 @@ class MainCategoryFragment : Fragment() {
         mainCategoryViewModel.run {
             categoryList.observe(mainActivity) {
                 fragmentMainCategoryBinding.recyclerViewMainCategory.adapter?.notifyDataSetChanged()
+
+                if(it.size == 0) {
+                    fragmentMainCategoryBinding.run {
+                        textViewMainCategoryZero.visibility = View.VISIBLE
+                    }
+                } else {
+                    fragmentMainCategoryBinding.run {
+                        textViewMainCategoryZero.visibility = View.GONE
+                    }
+                }
             }
         }
 
@@ -147,5 +157,14 @@ class MainCategoryFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainCategoryViewModel.reset()
+        if(mainCategoryViewModel.categoryList.value?.size == 0) {
+            fragmentMainCategoryBinding.run {
+                textViewMainCategoryZero.visibility = View.VISIBLE
+            }
+        } else {
+            fragmentMainCategoryBinding.run {
+                textViewMainCategoryZero.visibility = View.GONE
+            }
+        }
     }
 }

@@ -49,8 +49,20 @@ class MainAlertFragment : Fragment() {
             alertList.observe(mainActivity) {
                 userAlertList = it
                 fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
+                if(userAlertList.size == 0) {
+                    fragmentMainAlertBinding.run {
+                        textViewMainAlertZero.visibility = View.VISIBLE
+                        buttonMainAlert.visibility = View.GONE
+                    }
+                } else {
+                    fragmentMainAlertBinding.run {
+                        textViewMainAlertZero.visibility = View.GONE
+                        buttonMainAlert.visibility = View.VISIBLE
+                    }
+                }
             }
         }
+
         mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
 
         fragmentMainAlertBinding.run {
@@ -63,6 +75,7 @@ class MainAlertFragment : Fragment() {
             toolbarMainAlert.run {
                 title = "알림"
             }
+
             recyclerViewMainAlert.run {
                 adapter = RecyclerViewAdapter()
 
@@ -116,34 +129,12 @@ class MainAlertFragment : Fragment() {
                 rowAlertLogo = rowBinding.imageView
 
                 rowBinding.root.setOnClickListener {
-                    // 친구 알림
-                    if(userAlertList.get(position).alertType.toInt() == 0) {
-                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
+                    AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
 
-                        }
-                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                     }
-                    // 카테고리 알림
-                    else if(userAlertList.get(position).alertType.toInt() == 1) {
-                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
-
-                        }
-                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
-                    }
-
-                    // 할일 알림
-                    else if(userAlertList.get(position).alertType.toInt() == 2) {
-                        AlertRepository.removeAlert(userAlertList.get(adapterPosition).alertIdx) {
-
-                        }
-                        Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                        fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
-                    }
+                    Toast.makeText(mainActivity, "알림이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                    fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()
                 }
             }
         }
