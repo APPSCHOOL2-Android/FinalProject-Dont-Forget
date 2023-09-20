@@ -134,7 +134,9 @@ class CategoryOptionPublicFragment : Fragment() {
 
 
                     CategoryRepository.modifyCategory(categoryClass) {
-                        mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT)
+                        CategoryRepository.removeTodoInPublicCategory(categoryIdx, userInfo.userIdx) {
+                            mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PUBLIC_FRAGMENT)
+                        }
                     }
                 }
                 builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->

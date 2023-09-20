@@ -113,5 +113,47 @@ class CategoryRepository {
             val databaseRef = database.getReference("userInfo")
             databaseRef.orderByChild("userIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener(callback1)
         }
+
+        // 특정 카테고리에서 유저 idx를 통해 할일 삭제
+        fun removeTodoInPublicCategory(categoryIdx: Long, userIdx: Long, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("todoInfo")
+
+            todoDataRef.orderByChild("todoCategoryIdx").equalTo(categoryIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        val idx = a1.child("todoOwnerIdx").value as Long
+
+                        if (idx == userIdx) {
+                            // 해당 데이터 삭제
+                            a1.ref.removeValue().addOnCompleteListener(callback1)
+                        }
+                    }
+                }
+        }
+
+        // 내가 참여인원으로 참여중인 카테고리에서 나를 삭제
+        fun removeUserInPublicCategory(userIdx: Long) {
+            val database = FirebaseDatabase.getInstance()
+            val categoryDataRef = database.getReference("categoryInfo")
+
+            categoryDataRef.orderByChild("categoryIdx").get().addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        val joinUserIdxList = a1.child("categoryJoinUserIdxList").value as ArrayList<Long>
+                        val joinUserNameList = a1.child("categoryJoinUserNameList").value as ArrayList<String>
+
+                        if (joinUserIdxList.contains(userIdx)) {
+                            val idx = joinUserIdxList.indexOf(userIdx)
+                            joinUserIdxList.removeAt(idx)
+                            joinUserNameList.removeAt(idx)
+
+                            a1.ref.child("categoryJoinUserIdxList")
+                                .setValue(joinUserIdxList)
+                            a1.ref.child("categoryJoinUserNameList")
+                                .setValue(joinUserNameList)
+                        }
+                    }
+                }
+        }
     }
 }
