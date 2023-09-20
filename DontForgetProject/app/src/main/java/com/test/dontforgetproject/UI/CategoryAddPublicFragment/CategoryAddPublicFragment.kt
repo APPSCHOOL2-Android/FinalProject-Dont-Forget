@@ -50,7 +50,7 @@ class CategoryAddPublicFragment : Fragment() {
 
     lateinit var categoryAddPublicViewModel: CategoryAddPublicViewModel
 
-    val userInfo = MyApplication.loginedUserInfo
+    var userInfo = MyApplication.loginedUserInfo
 
     companion object {
         private const val COLOR_SELECTED = "selectedColor"
@@ -441,5 +441,7 @@ class CategoryAddPublicFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         categoryAddPublicViewModel.reset()
+        mainActivity.updateLoginedUserInfo()
+        userInfo = MyApplication.loginedUserInfo
     }
 }

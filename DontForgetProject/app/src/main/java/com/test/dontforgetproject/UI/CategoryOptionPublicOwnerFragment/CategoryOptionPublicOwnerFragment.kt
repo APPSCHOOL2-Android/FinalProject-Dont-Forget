@@ -502,30 +502,10 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
         }
     }
 
-    fun updateLoginedUserInfo() {
-        CategoryRepository.getUserInfoByIdx(userInfo.userIdx) {
-            var newFriendList = ArrayList<Friend>()
-            for (u1 in it.result.children) {
-                var friendListHashMap = u1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
-
-                for (f in friendListHashMap) {
-                    var idx = f["friendIdx"] as Long
-                    var name = f["friendName"] as String
-                    var email = f["friendEmail"] as String
-
-                    val friend = Friend(idx, name, email)
-                    newFriendList.add(friend)
-                }
-            }
-            MyApplication.loginedUserInfo.userFriendList = newFriendList
-            userInfo = MyApplication.loginedUserInfo
-        }
-    }
-
-
     override fun onResume() {
         super.onResume()
         categoryOptionPublicViewModel.reset()
-        updateLoginedUserInfo()
+        mainActivity.updateLoginedUserInfo()
+        userInfo = MyApplication.loginedUserInfo
     }
 }
