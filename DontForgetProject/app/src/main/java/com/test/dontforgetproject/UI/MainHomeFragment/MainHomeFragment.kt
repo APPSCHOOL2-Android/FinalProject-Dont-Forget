@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +38,7 @@ class MainHomeFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var mainHomeViewModel: MainHomeViewModel
     lateinit var loadingDialog: LoadingDialog
+    lateinit var categoryIdxList: List<Long>
 
     var selectedCategoryPosition = 0
     lateinit var memoList: List<TodoClass>
@@ -75,16 +75,19 @@ class MainHomeFragment : Fragment() {
             }
         }
 
-        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+        categoryIdxList =
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         setTodoData()
-        mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
+        mainHomeViewModel.getTodo(
+            categoryIdxList
+        )
 
         binding.run {
             textInputEditTextMainHomeFragment.run {
                 doOnTextChanged { text, start, before, count ->
                     val newText = text.toString()
                     memoList = mainHomeViewModel.todoList2.value?.filter {
-                        it.todoContent.contains(newText, ignoreCase = true)
+                        it.todoContent.contains(newText)
                     }!!
 
                     binding.recyclerViewMainHomeFragmentMemoSearch.adapter?.notifyDataSetChanged()
@@ -94,7 +97,9 @@ class MainHomeFragment : Fragment() {
                     View.OnFocusChangeListener { _, hasFocus ->
                         if (hasFocus) {
                             Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
-                            mainHomeViewModel.getTodo(mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog))
+                            mainHomeViewModel.getTodo(
+                                categoryIdxList
+                            )
                             textInputLayoutMainHomeFragment.run {
                                 endIconMode = TextInputLayout.END_ICON_CUSTOM
                                 setEndIconDrawable(R.drawable.ic_close_24px)
@@ -116,7 +121,8 @@ class MainHomeFragment : Fragment() {
                                 selectedDate,
                                 mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
                             )
-                            textInputLayoutMainHomeFragment.endIconMode = TextInputLayout.END_ICON_NONE
+                            textInputLayoutMainHomeFragment.endIconMode =
+                                TextInputLayout.END_ICON_NONE
                             scrollViewMainHomeFragment.visibility = View.VISIBLE
                             constraintLayoutMainHomeFragment.visibility = View.GONE
                         }
@@ -198,7 +204,10 @@ class MainHomeFragment : Fragment() {
 
                     } else {
                         // 전체 카테고리
-                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+                        mainHomeViewModel.getCategoryAll(
+                            MyApplication.loginedUserInfo.userIdx,
+                            loadingDialog
+                        )
                     }
                     val position = adapterPosition
 
@@ -312,9 +321,8 @@ class MainHomeFragment : Fragment() {
                 val todoListForCategory = mainHomeViewModel.getTodoListForCategory(categoryIdx)
                 val isCategoryPublic =
                     mainHomeViewModel.categories2.value?.get(position)?.categoryIsPublic
-                val ownerIdx = mainHomeViewModel.categories2.value?.get(position)?.categoryOwnerIdx
                 adapter =
-                    TodoRecyclerViewAdapter(todoListForCategory, isCategoryPublic!!, ownerIdx!!)
+                    TodoRecyclerViewAdapter(todoListForCategory, isCategoryPublic!!)
                 layoutManager = LinearLayoutManager(context)
             }
         }
@@ -323,8 +331,7 @@ class MainHomeFragment : Fragment() {
     // 할 일
     inner class TodoRecyclerViewAdapter(
         private val todoList: List<TodoClass>,
-        private val isCategoryPublic: Long,
-        private val ownerIdx: Long
+        private val isCategoryPublic: Long
     ) :
         RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
 
@@ -408,6 +415,7 @@ class MainHomeFragment : Fragment() {
                     holder.textViewTodo.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 holder.textViewTodo.setTextColor(resources.getColor(R.color.accentGray))
             }
+
             holder.checkBoxTodo.setOnCheckedChangeListener { buttonView, isChecked ->
                 val newTodoIsChecked: Long = if (isChecked) 1 else 0
 
@@ -429,7 +437,8 @@ class MainHomeFragment : Fragment() {
                 )
 
                 TodoRepository.modifyTodo(todoDataClass) { task ->
-
+                    memoList = mainHomeViewModel.getTodo()
+                    Log.d("asdasdasd", "todo idx : ${todo.todoIdx}")
                 }
 
                 if (isChecked) {
@@ -475,13 +484,23 @@ class MainHomeFragment : Fragment() {
         override fun getItemCount(): Int = memoList.size
 
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
-            Log.d(
-                "asdasdasd",
-                "내용 : ${mainHomeViewModel.todoList2.value?.get(position)?.todoContent}"
-            )
-
+//            Log.d(
+//                "asdasdasd",
+//                "내용 : ${mainHomeViewModel.todoList2.value?.get(position)?.todoContent}"
+//            )
+//            val todo = mainHomeViewModel.getTodo().get(position)
             val todo = memoList[position]
-            val isCategoryPublic = mainHomeViewModel.getCategoryByCategoryIdx(todo.todoCategoryIdx).categoryIsPublic
+            val categories = mainHomeViewModel.getCategories()
+            var isCategoryPublic: Long = 0
+            for (i in categories) {
+                if (todo.todoCategoryIdx == i.categoryIdx) {
+                    isCategoryPublic = i.categoryIsPublic
+                }
+            }
+//            Log.d(
+//                "asdasdasd",
+//                "개인0 공용1 : ${isCategoryPublic}"
+//            )
 
             holder.textViewDate.text = todo.todoDate
             holder.textViewCategory.text = todo.todoCategoryName
@@ -525,21 +544,7 @@ class MainHomeFragment : Fragment() {
                     }
                 }
             }
-            if (todo.todoIsChecked == 0L) {
-                holder.checkBoxRowMemoSearch.isChecked = false
-                holder.textViewRowMemoSearch.paintFlags =
-                    holder.textViewRowMemoSearch.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
-                    holder.textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.white))
-                } else {
-                    holder.textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.black))
-                }
-            } else {
-                holder.checkBoxRowMemoSearch.isChecked = true
-                holder.textViewRowMemoSearch.paintFlags =
-                    holder.textViewRowMemoSearch.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.textViewRowMemoSearch.setTextColor(resources.getColor(R.color.accentGray))
-            }
+
             holder.checkBoxRowMemoSearch.setOnCheckedChangeListener { buttonView, isChecked ->
                 val newTodoIsChecked: Long = if (isChecked) 1 else 0
 
@@ -560,9 +565,9 @@ class MainHomeFragment : Fragment() {
                     todoOwnerName = todo.todoOwnerName
                 )
 
-//                TodoRepository.modifyTodo(todoDataClass) { task ->
-//
-//                }
+                TodoRepository.modifyTodo(todoDataClass) { task ->
+                    Log.d("asdasdasd", "memo idx : ${todo.todoIdx}")
+                }
 
                 if (isChecked) {
                     holder.textViewRowMemoSearch.paintFlags =
@@ -578,6 +583,22 @@ class MainHomeFragment : Fragment() {
                     }
                 }
             }
+
+            if (todo.todoIsChecked == 0L) {
+                holder.checkBoxRowMemoSearch.isChecked = false
+                holder.textViewRowMemoSearch.paintFlags =
+                    holder.textViewRowMemoSearch.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                if (MyApplication.selectedTheme == ThemeUtil.DARK_MODE) {
+                    holder.textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.white))
+                } else {
+                    holder.textViewRowMemoSearch.setTextColor(resources.getColor(android.R.color.black))
+                }
+            } else {
+                holder.checkBoxRowMemoSearch.isChecked = true
+                holder.textViewRowMemoSearch.paintFlags =
+                    holder.textViewRowMemoSearch.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                holder.textViewRowMemoSearch.setTextColor(resources.getColor(R.color.accentGray))
+            }
         }
     }
 
@@ -585,5 +606,20 @@ class MainHomeFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = Date()
         return dateFormat.format(currentDate)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 데이터를 다시 로드하고 어댑터에 설정
+        categoryIdxList =
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+        setTodoData()
+        mainHomeViewModel.getTodo(categoryIdxList)
+        setCalendar()
+
+        // 리사이클러뷰의 어댑터 초기화
+        binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
+        binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
+        binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
     }
 }

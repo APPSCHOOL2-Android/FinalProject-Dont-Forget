@@ -29,6 +29,10 @@ class MainHomeViewModel : ViewModel() {
         return todoList2.value!!
     }
 
+    fun getCategories(): List<CategoryClass> {
+        return categories.value!!
+    }
+
     private fun closeLoadingDialog() {
         // 로딩 다이얼로그가 null이 아니면 닫습니다.
         loadingDialog?.dismiss()
@@ -83,10 +87,8 @@ class MainHomeViewModel : ViewModel() {
     }
 
     // 해당 카테고리
-    fun getCategoryByCategoryIdx(categoryIdx: Long): CategoryClass {
+    fun getCategoryByCategoryIdx(categoryIdx: Long) {
         val categoryList = mutableListOf<CategoryClass>()
-        var category: CategoryClass =
-            CategoryClass(0L, "", 0L, 0L, arrayListOf(), arrayListOf(), 0L, 0L, "")
 
         CategoryRepository.getCategoryByIdx(categoryIdx) {
             for (c1 in it.result.children) {
@@ -114,11 +116,9 @@ class MainHomeViewModel : ViewModel() {
                     categoryOwnerName
                 )
                 categoryList.add(categoryTemp)
-                category = categoryTemp
             }
             categories2.value = categoryList
         }
-        return category
     }
 
     // 해당 날짜의 할 일 목록
