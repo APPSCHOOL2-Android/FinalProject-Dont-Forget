@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_rowMemoSearch_date" />
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Theme.DontForgetProject.CardView_Padding8"
+        style="@style/Theme.DontForgetProject.CardView_noPadding"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small2"
@@ -42,7 +42,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <CheckBox
                 android:id="@+id/checkBox_rowMemoSearch"
@@ -59,13 +59,14 @@
                 style="@style/Theme.DontForgetProject.CardView_noPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_vertical_small2"
+                android:layout_marginEnd="@dimen/margin_vertical_small1"
                 android:layout_marginBottom="@dimen/margin_vertical_small1"
                 android:visibility="visible"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/textView_rowMemoSearch"
-                app:layout_constraintEnd_toEndOf="@id/textView_rowMemoSearch">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_rowMemoSearch">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -88,7 +89,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/scdream_regular"
+                        android:maxLines="1"
                         android:text="이마트"
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,29 +106,27 @@
                 style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical_small1"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
                 android:layout_marginEnd="@dimen/margin_vertical_small2"
                 android:fontFamily="@font/scdream_regular"
                 android:text="by 누구"
                 android:textSize="@dimen/font_size_medium"
                 app:layout_constraintEnd_toEndOf="@id/textView_rowMemoSearch"
-                app:layout_constraintTop_toTopOf="@id/textView_rowMemoSearch" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_rowMemoSearch"
                 style="@style/Theme.DontForgetProject.Text"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/scdream_regular"
                 android:gravity="center|left"
                 android:text="3시 강사님과 미팅"
                 android:textSize="@dimen/font_size_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/checkBox_rowMemoSearch"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
