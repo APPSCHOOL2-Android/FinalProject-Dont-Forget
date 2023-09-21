@@ -86,18 +86,6 @@ class MainMyPageFragment : Fragment() {
                     fragmentMainMyPageBinding.textViewMainMyPageIntroduce.setText(it.toString())
                 }
             }
-            FirebaseDatabase.getInstance().reference
-                .child("userInfo")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                        Log.d("lion", "실시간 탐지 에러 : $p0")
-                    }
-
-                    override fun onDataChange(p0: DataSnapshot) {
-                        mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
-                        Log.d("lion", "실시간 탐지 성공 : $p0")
-                    }
-                })
 
             mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
 
@@ -255,6 +243,22 @@ class MainMyPageFragment : Fragment() {
         }
 
         return fragmentMainMyPageBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseDatabase.getInstance().reference
+            .child("userInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
     }
 
 

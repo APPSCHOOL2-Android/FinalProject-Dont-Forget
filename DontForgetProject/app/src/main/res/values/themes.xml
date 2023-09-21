@@ -5,7 +5,6 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="colorPrimaryDark">@color/accentSemiGray</item>
         <item name="colorError">@color/accentRed</item>
         <item name="statusBarBackground">@color/colorPrimary</item>
 
