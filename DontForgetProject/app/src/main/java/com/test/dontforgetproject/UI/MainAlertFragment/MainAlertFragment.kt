@@ -15,6 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -63,7 +67,18 @@ class MainAlertFragment : Fragment() {
             }
         }
 
-        mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+        FirebaseDatabase.getInstance().reference
+            .child("alertInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
 
         fragmentMainAlertBinding.run {
 
