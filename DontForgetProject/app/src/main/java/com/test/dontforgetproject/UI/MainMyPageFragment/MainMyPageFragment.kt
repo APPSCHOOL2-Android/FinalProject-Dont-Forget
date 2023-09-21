@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.Friend
+import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -157,6 +158,57 @@ class MainMyPageFragment : Fragment() {
                         currentUser.delete().addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // 사용자 삭제가 성공하면 SharedPreferences에서 로그인 정보를 삭제합니다.
+                                var myFriendList = MyApplication.loginedUserInfo.userFriendList
+                                var myIdx = MyApplication.loginedUserInfo.userIdx
+
+                                // 사용자의 친구들의 계정을 모두 불러와서 안에들어있는 내정보 삭제
+                                for(friend in myFriendList){
+                                    JoinFriendRepository.getUserInfoByIdx(friend.friendIdx){
+                                        for (c1 in it.result.children) {
+                                            var userIdx = c1.child("userIdx").value as Long
+                                            var userName = c1.child("userName").value as String
+                                            var userEmail = c1.child("userEmail").value as String
+                                            var userImage = c1.child("userImage").value as String
+                                            var userIntroduce = c1.child("userIntroduce").value as String
+                                            var userId = c1.child("userId").value as String
+                                            var userFriendList = mutableListOf<Friend>()
+
+                                            var userFriendListHashMap =
+                                                c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+
+                                            for (i in userFriendListHashMap) {
+                                                var idx = i["friendIdx"] as Long
+                                                var name = i["friendName"] as String
+                                                var email = i["friendEmail"] as String
+
+                                                var friend = Friend(idx, name, email)
+                                                userFriendList.add(friend)
+                                            }
+
+                                            var temp = mutableListOf<Friend>()
+                                            for(v in userFriendList){
+                                                if(v.friendIdx == myIdx){
+                                                    temp.add(v)
+                                                }
+                                            }
+                                            userFriendList.removeAll(temp)
+
+                                            var friendUserClass = UserClass(
+                                                userIdx,
+                                                userName,
+                                                userEmail,
+                                                userImage,
+                                                userIntroduce,
+                                                userId,
+                                                userFriendList as ArrayList<Friend>
+                                            )
+
+                                            // 수정된 친구정보 반영
+                                            UserRepository.modifyUserInfo(friendUserClass){}
+                                        }
+                                    }
+                                }
+
                                 UserRepository.deleteUserInfo(MyApplication.loginedUserInfo.userIdx) {}
                                 AlertRepository.removeAlertByUserIdx(MyApplication.loginedUserInfo.userIdx) {}
                                 TodoRepository.removeTodoByUserIdx(MyApplication.loginedUserInfo.userIdx) {}
@@ -165,6 +217,7 @@ class MainMyPageFragment : Fragment() {
                                     MyApplication.loginedUserInfo.userIdx,
                                     MyApplication.loginedUserInfo.userEmail
                                 )
+
                                 val sharedPreferences = requireActivity().getSharedPreferences(
                                     "MyAppPreferences",
                                     Context.MODE_PRIVATE
