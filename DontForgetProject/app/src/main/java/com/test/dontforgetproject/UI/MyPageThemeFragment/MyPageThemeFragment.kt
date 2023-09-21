@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
-import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.Util.ThemeUtil.DARK_MODE
-import com.test.dontforgetproject.Util.ThemeUtil.DEFAULT_MODE
 import com.test.dontforgetproject.Util.ThemeUtil.LIGHT_MODE
 import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
 import com.test.dontforgetproject.databinding.FragmentMyPageThemeBinding
@@ -40,11 +38,8 @@ class MyPageThemeFragment : Fragment() {
                 }
             }
             val sharedPreferences =  requireActivity().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-            val themeName = sharedPreferences.getString("theme", DEFAULT_MODE)
+            val themeName = sharedPreferences.getString("theme", LIGHT_MODE)
             when(themeName){
-                DEFAULT_MODE -> {
-                    radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_system)
-                }
                 LIGHT_MODE ->{
                     radioGroupMyPageTheme.check(R.id.radioButton_myPageTheme_white)
                 }
@@ -60,9 +55,6 @@ class MyPageThemeFragment : Fragment() {
                     }
                     R.id.radioButton_myPageTheme_dark -> {
                         whatsTheme = DARK_MODE
-                    }
-                    R.id.radioButton_myPageTheme_system -> {
-                        whatsTheme = DEFAULT_MODE
                     }
                 }
             }

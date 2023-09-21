@@ -27,6 +27,18 @@
 
         </SearchView>
 
+        <TextView
+            android:id="@+id/textView_mainFriendList_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_size_normal"
+            android:layout_marginRight="@dimen/padding_size_normal"
+            android:layout_marginTop="25dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/scdream_regular"
+            android:text="추가된 친구가 없습니다."
+            android:textColor="@color/textGray"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_mainFriendsList"
             android:layout_width="match_parent"

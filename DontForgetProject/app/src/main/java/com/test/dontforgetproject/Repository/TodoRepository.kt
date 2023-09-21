@@ -94,6 +94,14 @@ class TodoRepository {
             databaseRef.orderByChild("todoDate").get().addOnCompleteListener(callback1)
         }
 
+        // 해당 카테고리의 할일 정보 가져오기
+        fun getTodoInfoByCategory(todoCategoryIdx: Long, callback1: (Task<DataSnapshot>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("todoInfo")
+            todoDataRef.orderByChild("todoCategoryIdx").equalTo(todoCategoryIdx.toDouble()).get()
+                .addOnCompleteListener(callback1)
+        }
+
         // 해당 유저의 할일 삭제
         fun removeTodoByUserIdx(userIdx: Long, callback1: (Task<Void>) -> Unit) {
             val database = FirebaseDatabase.getInstance()
@@ -108,6 +116,20 @@ class TodoRepository {
                 }
         }
 
-    }
+        // 해당 카테고리의 할일 정보 수정
+        fun modifyTodoByCategory(todoDataClass: TodoClass, callback1: (Task<Void>) -> Unit) {
+            val database = FirebaseDatabase.getInstance()
+            val todoDataRef = database.getReference("todoInfo")
 
+            todoDataRef.orderByChild("todoIdx").equalTo(todoDataClass.todoIdx.toDouble()).get()
+                .addOnCompleteListener {
+                    for (a1 in it.result.children) {
+                        a1.ref.child("todoCategoryName").setValue(todoDataClass.todoCategoryName)
+                        a1.ref.child("todoBackgroundColor").setValue(todoDataClass.todoBackgroundColor)
+                        a1.ref.child("todoFontColor").setValue(todoDataClass.todoFontColor).addOnCompleteListener(callback1)
+                    }
+                }
+        }
+
+    }
 }

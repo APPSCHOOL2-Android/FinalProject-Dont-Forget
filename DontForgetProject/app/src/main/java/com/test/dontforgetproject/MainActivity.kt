@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
+import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment
 import com.test.dontforgetproject.UI.CategoryAddPublicFragment.CategoryAddPublicFragment
@@ -29,6 +30,7 @@ import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicFragment.TodoDetailPublicFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment.TodoDetailPublicOwnerFragment
+import com.test.dontforgetproject.UI.MyPageWithDrawFragment.MyPageWithDrawFragment
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
-        val themeName = sharedPreferences.getString("theme", ThemeUtil.DEFAULT_MODE)
+        val themeName = sharedPreferences.getString("theme", ThemeUtil.LIGHT_MODE)
         if (themeName != null) {
             ThemeUtil.applyTheme(themeName)
             MyApplication.selectedTheme = themeName
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         val MAIN_FRAGMENT = "MainFragment"
         val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
+        val MY_PAGE_WITH_DRAW_FRAGMENT = "MyPageWithDrawFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
         val TODO_DETAIL_PERSONAL_FRAGMENT = "TodoDetailPersonalFragment"
         val TODO_DETAIL_PUBLIC_FRAGMENT = "TodoDetailPublicFragment"
@@ -145,6 +148,7 @@ class MainActivity : AppCompatActivity() {
             MAIN_FRAGMENT -> MainFragment()
             MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
+            MY_PAGE_WITH_DRAW_FRAGMENT -> MyPageWithDrawFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
             TODO_DETAIL_PERSONAL_FRAGMENT -> TodoDetailPersonalFragment()
             TODO_DETAIL_PUBLIC_FRAGMENT -> TodoDetailPublicFragment()
@@ -204,6 +208,23 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
+    // 친구목록 최신화
+    fun updateLoginedUserInfo() {
+        CategoryRepository.getUserInfoByIdx(MyApplication.loginedUserInfo.userIdx) {
+            var newFriendList = ArrayList<Friend>()
+            for (u1 in it.result.children) {
+                var friendListHashMap = u1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
 
+                for (f in friendListHashMap) {
+                    var idx = f["friendIdx"] as Long
+                    var name = f["friendName"] as String
+                    var email = f["friendEmail"] as String
 
+                    val friend = Friend(idx, name, email)
+                    newFriendList.add(friend)
+                }
+            }
+            MyApplication.loginedUserInfo.userFriendList = newFriendList
+        }
+    }
 }

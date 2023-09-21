@@ -2,6 +2,7 @@ package com.test.dontforgetproject.UI.MainCategoryFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -40,8 +46,31 @@ class MainCategoryFragment : Fragment() {
         mainCategoryViewModel.run {
             categoryList.observe(mainActivity) {
                 fragmentMainCategoryBinding.recyclerViewMainCategory.adapter?.notifyDataSetChanged()
+
+                if(it.size == 0) {
+                    fragmentMainCategoryBinding.run {
+                        textViewMainCategoryZero.visibility = View.VISIBLE
+                    }
+                } else {
+                    fragmentMainCategoryBinding.run {
+                        textViewMainCategoryZero.visibility = View.GONE
+                    }
+                }
             }
         }
+
+        FirebaseDatabase.getInstance().reference
+            .child("categoryInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    mainCategoryViewModel.getMyCategory(userIdx)
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
 
         fragmentMainCategoryBinding.run {
             toolbarMainCategory.run {
@@ -147,5 +176,14 @@ class MainCategoryFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainCategoryViewModel.reset()
+        if(mainCategoryViewModel.categoryList.value?.size == 0) {
+            fragmentMainCategoryBinding.run {
+                textViewMainCategoryZero.visibility = View.VISIBLE
+            }
+        } else {
+            fragmentMainCategoryBinding.run {
+                textViewMainCategoryZero.visibility = View.GONE
+            }
+        }
     }
 }
