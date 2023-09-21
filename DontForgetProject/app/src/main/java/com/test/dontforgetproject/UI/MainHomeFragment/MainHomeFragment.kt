@@ -16,6 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.TodoClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -611,16 +615,51 @@ class MainHomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // 데이터를 다시 로드하고 어댑터에 설정
-        categoryIdxList =
-            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
-        setTodoData()
-        mainHomeViewModel.getTodo(categoryIdxList)
-        setCalendar()
 
-        // 리사이클러뷰의 어댑터 초기화
-        binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
-        binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
-        binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
+        FirebaseDatabase.getInstance().reference
+            .child("categoryInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    // 데이터를 다시 로드하고 어댑터에 설정
+                    categoryIdxList =
+                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+                    setTodoData()
+                    mainHomeViewModel.getTodo(categoryIdxList)
+                    setCalendar()
+
+                    // 리사이클러뷰의 어댑터 초기화
+                    binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
+                    binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
+                    binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
+
+        FirebaseDatabase.getInstance().reference
+            .child("todoInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    // 데이터를 다시 로드하고 어댑터에 설정
+                    categoryIdxList =
+                        mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+                    setTodoData()
+                    mainHomeViewModel.getTodo(categoryIdxList)
+                    setCalendar()
+
+                    // 리사이클러뷰의 어댑터 초기화
+                    binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
+                    binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
+                    binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
     }
 }
