@@ -43,9 +43,6 @@ class MainHomeViewModel : ViewModel() {
         val categoryList = mutableListOf<CategoryClass>()
         val categoryIdxList = mutableListOf<Long>()
 
-        this.loadingDialog = loadingDialog
-        loadingDialog.show()
-
         viewModelScope.launch {
             CategoryRepository.getAllCategory {
                 for (c1 in it.result.children) {
@@ -79,8 +76,6 @@ class MainHomeViewModel : ViewModel() {
                 }
                 categories.value = categoryList
                 categories2.value = categoryList
-
-                closeLoadingDialog()
             }
         }
         return categoryIdxList
