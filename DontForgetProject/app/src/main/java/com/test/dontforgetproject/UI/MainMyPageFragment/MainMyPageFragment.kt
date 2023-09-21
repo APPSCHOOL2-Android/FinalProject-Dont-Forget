@@ -133,6 +133,7 @@ class MainMyPageFragment : Fragment() {
                     firebaseAuth.signOut()
                     Glide.with(requireActivity()).clear(imageViewMyPageProfile)
                     MyApplication.isLogined = false
+                    MyApplication.loginedUserProfile = ""
                     mainActivity.removeFragment(MainActivity.MAIN_FRAGMENT)
                     mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, null)
 
@@ -142,19 +143,17 @@ class MainMyPageFragment : Fragment() {
 
             }
             cardViewMainMyPageWithDraw.setOnClickListener {
-                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
-                val builder = MaterialAlertDialogBuilder(mainActivity)
+                val currentUser = firebaseAuth.currentUser
+                if (currentUser != null) {
+                    var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                    val builder = MaterialAlertDialogBuilder(mainActivity)
 
-                dialogNormalBinding.textViewDialogNormalTitle.text = "회원탈퇴"
-                dialogNormalBinding.textViewDialogNormalContent.text =
-                    "회원 탈퇴 후에는 계정과 관련된 모든 정보가 삭제됩니다."
+                    dialogNormalBinding.textViewDialogNormalTitle.text = "회원탈퇴"
+                    dialogNormalBinding.textViewDialogNormalContent.text =
+                        "회원 탈퇴 후에는 계정과 관련된 모든 정보가 삭제됩니다."
 
-                builder.setView(dialogNormalBinding.root)
-                builder.setNegativeButton("회원탈퇴") { dialog, which ->
-                    // 사용자가 이미 로그아웃 상태일 수 있으므로 FirebaseAuth의 currentUser를 사용할 때 null 여부를 확인
-                    val currentUser = firebaseAuth.currentUser
-                    if (currentUser != null) {
-                        // FirebaseAuth를 사용하여 사용자 삭제 시도
+                    builder.setView(dialogNormalBinding.root)
+                    builder.setNegativeButton("회원탈퇴") { dialog, which ->
                         currentUser.delete().addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // 사용자 삭제가 성공하면 SharedPreferences에서 로그인 정보를 삭제합니다.
@@ -190,10 +189,14 @@ class MainMyPageFragment : Fragment() {
                                 )
                             }
                         }
+
                     }
+                    builder.setPositiveButton("취소", null)
+                    builder.show()
                 }
-                builder.setPositiveButton("취소", null)
-                builder.show()
+                else{
+                    mainActivity.replaceFragment(MainActivity.MY_PAGE_WITH_DRAW_FRAGMENT,true,null)
+                }
             }
 
         }

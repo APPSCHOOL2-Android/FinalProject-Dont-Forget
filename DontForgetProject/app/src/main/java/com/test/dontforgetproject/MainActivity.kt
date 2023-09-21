@@ -30,6 +30,7 @@ import com.test.dontforgetproject.UI.TodoAddFragment.TodoAddFragment
 import com.test.dontforgetproject.UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicFragment.TodoDetailPublicFragment
 import com.test.dontforgetproject.UI.TodoDetailPublicOwnerFragment.TodoDetailPublicOwnerFragment
+import com.test.dontforgetproject.UI.MyPageWithDrawFragment.MyPageWithDrawFragment
 import com.test.dontforgetproject.Util.ThemeUtil
 import com.test.dontforgetproject.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         val MAIN_FRAGMENT = "MainFragment"
         val MY_PAGE_MODIFY_FRAGMENT = "MyPageModifyFragment"
         val MY_PAGE_THEME_FRAGMENT = "MyPageThemeFragment"
+        val MY_PAGE_WITH_DRAW_FRAGMENT = "MyPageWithDrawFragment"
         val TODO_ADD_FRAGMENT = "TodoAddFragment"
         val TODO_DETAIL_PERSONAL_FRAGMENT = "TodoDetailPersonalFragment"
         val TODO_DETAIL_PUBLIC_FRAGMENT = "TodoDetailPublicFragment"
@@ -146,6 +148,7 @@ class MainActivity : AppCompatActivity() {
             MAIN_FRAGMENT -> MainFragment()
             MY_PAGE_MODIFY_FRAGMENT -> MyPageModifyFragment()
             MY_PAGE_THEME_FRAGMENT -> MyPageThemeFragment()
+            MY_PAGE_WITH_DRAW_FRAGMENT -> MyPageWithDrawFragment()
             TODO_ADD_FRAGMENT -> TodoAddFragment()
             TODO_DETAIL_PERSONAL_FRAGMENT -> TodoDetailPersonalFragment()
             TODO_DETAIL_PUBLIC_FRAGMENT -> TodoDetailPublicFragment()
