@@ -29,7 +29,6 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.Util.FirebaseUtil
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentJoinBinding
