@@ -126,35 +126,33 @@ class CategoryOptionPersonalFragment : Fragment() {
 
 
                 CategoryRepository.modifyCategory(categoryClass) {
-
-                }
-
-                for (i in 0 until categoryTodoList.size) {
+                    for (i in 0 until categoryTodoList.size) {
 //                    Log.d("lion","change todo color")
-                    val todoClass = TodoClass(
-                        categoryTodoList.get(i).todoIdx,
-                        categoryTodoList.get(i).todoContent,
-                        categoryTodoList.get(i).todoIsChecked,
-                        categoryTodoList.get(i).todoCategoryIdx,
-                        categoryName,
-                        categoryFontColor.toLong(),
-                        categoryColor.toLong(),
-                        categoryTodoList.get(i).todoDate,
-                        categoryTodoList.get(i).todoAlertTime,
-                        categoryTodoList.get(i).todoLocationName,
-                        categoryTodoList.get(i).todoLocationLatitude,
-                        categoryTodoList.get(i).todoLocationLongitude,
-                        categoryTodoList.get(i).todoOwnerIdx,
-                        categoryTodoList.get(i).todoOwnerName
-                    )
+                        val todoClass = TodoClass(
+                            categoryTodoList.get(i).todoIdx,
+                            categoryTodoList.get(i).todoContent,
+                            categoryTodoList.get(i).todoIsChecked,
+                            categoryTodoList.get(i).todoCategoryIdx,
+                            categoryName,
+                            categoryFontColor.toLong(),
+                            categoryColor.toLong(),
+                            categoryTodoList.get(i).todoDate,
+                            categoryTodoList.get(i).todoAlertTime,
+                            categoryTodoList.get(i).todoLocationName,
+                            categoryTodoList.get(i).todoLocationLatitude,
+                            categoryTodoList.get(i).todoLocationLongitude,
+                            categoryTodoList.get(i).todoOwnerIdx,
+                            categoryTodoList.get(i).todoOwnerName
+                        )
 //                    Log.d("lion", "class : $todoClass")
-                    TodoRepository.modifyTodoByCategory(todoClass) {
+                        TodoRepository.modifyTodoByCategory(todoClass) {
 
+                        }
                     }
+                    Toast.makeText(mainActivity, "카테고리 수정 완료", Toast.LENGTH_SHORT)
+                        .show()
+                    mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
                 }
-                Toast.makeText(mainActivity, "카테고리 수정 완료", Toast.LENGTH_SHORT)
-                    .show()
-                mainActivity.removeFragment(MainActivity.CATEGORY_OPTION_PERSONAL_FRAGMENT)
             }
 
             // 삭제하기

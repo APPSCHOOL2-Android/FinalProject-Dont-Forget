@@ -175,7 +175,6 @@ class MainCategoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        mainCategoryViewModel.reset()
         if(mainCategoryViewModel.categoryList.value?.size == 0) {
             fragmentMainCategoryBinding.run {
                 textViewMainCategoryZero.visibility = View.VISIBLE
