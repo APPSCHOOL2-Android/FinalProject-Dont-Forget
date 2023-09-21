@@ -39,6 +39,7 @@ import com.test.dontforgetproject.GeofenceBroadcastReceiver
 import com.test.dontforgetproject.GeofenceManager
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
+import com.test.dontforgetproject.MyApplication.Companion.locationLatitude
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
@@ -388,19 +389,18 @@ class TodoAddFragment : Fragment() {
                             time = "알림 없음"
                         }
 
-                        var locationName = MyApplication.locationName
-                        if(locationName == ""){
+                        var locationName = ""
+                        var locationLongtitude = ""
+                        var locationLatitude = ""
+
+                        if(textViewTodoAddLocation.text == "위치 없음"){
                             locationName = "위치 없음"
-                        }
-
-                        var locationLongtitude = MyApplication.locationLongitude
-                        if(locationLongtitude == ""){
                             locationLongtitude = "None"
-                        }
-
-                        var locationLatitude = MyApplication.locationLatitude
-                        if(locationLatitude == ""){
                             locationLatitude = "None"
+                        }else{
+                            locationName = MyApplication.locationName
+                            locationLongtitude = MyApplication.locationLongitude
+                            locationLatitude = MyApplication.locationLatitude
                         }
 
                         if(locationLatitude !="None" && locationLongtitude != "None"){
@@ -451,7 +451,6 @@ class TodoAddFragment : Fragment() {
                                     if(newPublicdata == 0){
                                         var newclass = TodoClass(idx, content, 0, catgoryIdx, name, fontColor.toLong(), backgroundColor.toLong(), dates,
                                             time, locationName, locationLatitude, locationLongtitude, owneridx, ownerName)
-
                                         TodoRepository.setTodoAddInfo(newclass){
                                             TodoRepository.setTodoIdx(idx){
                                                 Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
