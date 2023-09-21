@@ -38,7 +38,10 @@ import com.test.dontforgetproject.UI.MainMyPageFragment.MyPageModifyViewModel
 import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import com.test.dontforgetproject.databinding.FragmentMyPageModifyBinding
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
@@ -52,6 +55,7 @@ class MyPageModifyFragment : Fragment() {
     var uploadUri: Uri? = null
     lateinit var user : UserClass
     lateinit var loadingDialog : LoadingDialog
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -159,13 +163,19 @@ class MyPageModifyFragment : Fragment() {
                     UserRepository.modifyUserInfo(modifyUser) { result ->
                         if (result.isSuccessful) {
                             MyApplication.loginedUserInfo = modifyUser
-                            Glide.with(requireContext()).clear(imageViewMyPageModifyProfile)
                         } else {
                             Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
                         }
                     }
-                    Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
-                    mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
+
+                    loadingDialog.show()
+                    GlobalScope.launch {
+                        delay(1000)
+                        loadingDialog.dismiss()
+                        Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
+                        mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
+                    }
+
 
                 } else {
                     Snackbar.make(fragmentMyPageModifyBinding.root, "빈 칸을 채워주세요.", Snackbar.LENGTH_SHORT).show()

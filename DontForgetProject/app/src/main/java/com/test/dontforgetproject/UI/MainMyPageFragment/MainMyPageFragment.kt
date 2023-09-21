@@ -26,6 +26,8 @@ import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageViewModel
 import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -36,6 +38,7 @@ class MainMyPageFragment : Fragment() {
     lateinit var mainMyPageViewModel: MainMyPageViewModel
     lateinit var firebaseAuth : FirebaseAuth
     lateinit var loadingDialog: LoadingDialog
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +50,7 @@ class MainMyPageFragment : Fragment() {
             loadingDialog = LoadingDialog(requireContext())
             loadingDialog.show()
             toolbarMainMyPage.run {
-                setTitle(getString(R.string.myPage))
+                title = getString(R.string.myPage)
             }
             mainMyPageViewModel = ViewModelProvider(mainActivity)[MainMyPageViewModel::class.java]
             mainMyPageViewModel.run {
@@ -77,7 +80,6 @@ class MainMyPageFragment : Fragment() {
                 }
 
             }
-
             mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
             cardViewMainMyPageModify.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT, true, null)
@@ -86,7 +88,7 @@ class MainMyPageFragment : Fragment() {
                 mainActivity.replaceFragment(MainActivity.MY_PAGE_THEME_FRAGMENT, true, null)
             }
             cardViewMainMyPageLogout.setOnClickListener {
-                var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
+                val dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 
                 dialogNormalBinding.textViewDialogNormalTitle.text = "로그아웃"
@@ -122,7 +124,6 @@ class MainMyPageFragment : Fragment() {
 
             }
             cardViewMainMyPageWithDraw.setOnClickListener {
-
                 val currentUser = firebaseAuth.currentUser
                 val bundle = Bundle()
                 // 사용자가 로그인한 제공업체(Provider) 목록 가져오기
@@ -155,7 +156,6 @@ class MainMyPageFragment : Fragment() {
                     mainMyPageViewModel.getUserInfo(MyApplication.loginedUserInfo)
                 }
             })
-
     }
 
 
