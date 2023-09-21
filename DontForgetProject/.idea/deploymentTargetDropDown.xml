@@ -6,6 +6,8 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\jcy\.android\avd\Pixel_6_Pro_API_33.avd" />
             <type value="SERIAL_NUMBER" />
             <value value="R3CTC05B2WV" />
           </Key>

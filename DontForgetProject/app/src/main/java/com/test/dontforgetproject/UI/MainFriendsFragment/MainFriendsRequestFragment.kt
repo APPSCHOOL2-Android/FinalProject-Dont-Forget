@@ -2,6 +2,7 @@ package com.test.dontforgetproject.UI.MainFriendsFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,7 +66,6 @@ class MainFriendsRequestFragment : Fragment() {
         binding.run {
             // 드래그시 새로고침
             swipeMainFriendsRequest.setOnRefreshListener {
-                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
                 binding.swipeMainFriendsRequest.isRefreshing = false
 
                 viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
@@ -100,6 +100,13 @@ class MainFriendsRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        viewModel.getRequestList(MyApplication.loginedUserInfo.userEmail)
+        viewModel.run {
+            joinFriendList.observe(mainActivity) {
+                requestList = it
+                binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
+            }
+        }
         binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
     }
 
@@ -146,7 +153,7 @@ class MainFriendsRequestFragment : Fragment() {
             holder.buttonRowMainFriendsRequestAccept.setOnClickListener {
                 // 수락시, 삭제시 해당 joinFriend 객체 Firebase 에서 삭제
                 var deleteIdx = requestList[position].joinFriendIdx
-                JoinFriendRepository.deleteJoinFriend(deleteIdx){
+                JoinFriendRepository.deleteJoinFriend(deleteIdx) {
                     requestList.removeAt(position)
                     binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
 
@@ -166,56 +173,95 @@ class MainFriendsRequestFragment : Fragment() {
                 var myUserName = MyApplication.loginedUserInfo.userName
                 var myUserEmail = MyApplication.loginedUserInfo.userEmail
 
-                // 나의 친구리스트에 친구넣기
+                var badum = Friend(myUserIdx, myUserName, myUserEmail)
+
+                // 김받음(나) 에 김보냄(친구) 추가
                 JoinFriendRepository.getUserInfoByIdx(newFriendIdx) {
                     for (c1 in it.result.children) {
-                        var userEmail = c1.child("userEmail").value as String
-                        newFriendEmail = userEmail
+                        newFriendEmail = c1.child("userEmail").value as String
 
-                        var newFriend = Friend(newFriendIdx, newFriendName, newFriendEmail)
+                        var bonem = Friend(newFriendIdx, newFriendName, newFriendEmail)
 
-                        var updatedUserInfo = MyApplication.loginedUserInfo
-                        updatedUserInfo.userFriendList.add(newFriend)
+                        // 김받음(나) 전체 데이터 호출
+                        JoinFriendRepository.getUserInfoByIdx(myUserIdx) {
+                            for (c1 in it.result.children) {
+                                var userIdx = c1.child("userIdx").value as Long
+                                var userName = c1.child("userName").value as String
+                                var userEmail = c1.child("userEmail").value as String
+                                var userImage = c1.child("userImage").value as String
+                                var userIntroduce = c1.child("userIntroduce").value as String
+                                var userId = c1.child("userId").value as String
+                                var userFriendList = mutableListOf<Friend>()
 
-                        // 나의 로그인 유저정보 업데이트
-                        MyApplication.loginedUserInfo = updatedUserInfo
+                                var userFriendListHashMap =
+                                    c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
 
-                        UserRepository.modifyUserInfo(updatedUserInfo) {
-                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT)
-                                .show()
+                                for (i in userFriendListHashMap) {
+                                    var idx = i["friendIdx"] as Long
+                                    var name = i["friendName"] as String
+                                    var email = i["friendEmail"] as String
+
+                                    var friend = Friend(idx, name, email)
+                                    userFriendList.add(friend)
+                                }
+
+                                var badumInfo = UserClass(
+                                    userIdx,
+                                    userName,
+                                    userEmail,
+                                    userImage,
+                                    userIntroduce,
+                                    userId,
+                                    userFriendList as ArrayList<Friend>
+                                )
+
+                                badumInfo.userFriendList.add(bonem)
+
+                                UserRepository.modifyUserInfo(badumInfo){
+                                    Toast.makeText(mainActivity, "친구 추가 완료", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 }
 
-                // 친구의 친구리스트에 나 넣기
+                // 김보냄(친구) 에 김받음(나) 추가
                 JoinFriendRepository.getUserInfoByIdx(newFriendIdx) {
-                    for (c1 in it.result.children) {
-                        val userIdx = c1.child("userIdx").value as Long
+                    for(c1 in it.result.children){
+                        var userIdx = c1.child("userIdx").value as Long
                         var userName = c1.child("userName").value as String
                         var userEmail = c1.child("userEmail").value as String
                         var userImage = c1.child("userImage").value as String
                         var userIntroduce = c1.child("userIntroduce").value as String
                         var userId = c1.child("userId").value as String
-                        var userFriendList = c1.child("userFriendList").value as ArrayList<Friend>
+                        var userFriendList = mutableListOf<Friend>()
 
-                        var newFriend = Friend(myUserIdx, myUserName, myUserEmail)
+                        var userFriendListHashMap =
+                            c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
 
-                        var userInfo = UserClass(
+                        for (i in userFriendListHashMap) {
+                            var idx = i["friendIdx"] as Long
+                            var name = i["friendName"] as String
+                            var email = i["friendEmail"] as String
+
+                            var friend = Friend(idx, name, email)
+                            userFriendList.add(friend)
+                        }
+
+                        var bonemInfo = UserClass(
                             userIdx,
                             userName,
                             userEmail,
                             userImage,
                             userIntroduce,
                             userId,
-                            userFriendList
+                            userFriendList as ArrayList<Friend>
                         )
-                        userInfo.userFriendList.add(newFriend)
 
-                        UserRepository.modifyUserInfo(userInfo) {
-                            Toast.makeText(mainActivity, "친구 요청이 수락되었습니다", Toast.LENGTH_SHORT).show()
-                            // Todo MainFriendsListFragment notify
-                            mainFriendsListFragment.UFL.add(newFriend)
-                            mainFriendsListFragment.binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+                        bonemInfo.userFriendList.add(badum)
+
+                        UserRepository.modifyUserInfo(bonemInfo){
+                            Toast.makeText(mainActivity, "친구 추가 완료", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -237,7 +283,7 @@ class MainFriendsRequestFragment : Fragment() {
                     true
                     // 수락시, 삭제시 해당 joinFriend 객체 Firebase 에서 삭제
                     var deleteIdx = requestList[position].joinFriendIdx
-                    JoinFriendRepository.deleteJoinFriend(deleteIdx){
+                    JoinFriendRepository.deleteJoinFriend(deleteIdx) {
                         requestList.removeAt(position)
                         binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
                         Toast.makeText(mainActivity, "친구 요청을 삭제합니다", Toast.LENGTH_SHORT).show()

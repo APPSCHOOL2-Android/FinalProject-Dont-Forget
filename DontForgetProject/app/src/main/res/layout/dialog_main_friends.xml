@@ -22,13 +22,13 @@
         android:orientation="horizontal">
 
         <EditText
-            android:fontFamily="@font/scdream_light"
             android:id="@+id/editText_dialogMainFriends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/scdream_light"
             android:hint="친구의 이메일을 입력해주세요"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textSize="@dimen/font_size_big" />
     </LinearLayout>
 </LinearLayout>

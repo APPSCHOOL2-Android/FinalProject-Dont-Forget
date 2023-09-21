@@ -9,10 +9,15 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
@@ -32,6 +37,7 @@ class MainFriendsListFragment : Fragment() {
 
     // 현재 내가 보여줄 리스트
     var searchUFL = mutableListOf<Friend>()
+//    var searchUFL = MutableLiveData<MutableList<Friend>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,11 +52,12 @@ class MainFriendsListFragment : Fragment() {
         viewModel.run{
             this.myFriendList.observe(mainActivity){
                 UFL = it as ArrayList<Friend>
+                UFL.distinctBy { it.friendEmail }
                 searchUFL = UFL
-                MyApplication.loginedUserInfo.userFriendList
+                MyApplication.loginedUserInfo.userFriendList = UFL as ArrayList<Friend>
 
                 // 자기자신은 제거
-                for((index,friend) in searchUFL.withIndex()){
+                for((index,friend) in UFL.withIndex()){
                     if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
                         searchUFL.removeAt(index)
                     }
@@ -73,7 +80,6 @@ class MainFriendsListFragment : Fragment() {
         binding.run{
             // 아래로 드래그 새로고침
             swipeMainFriendList.setOnRefreshListener {
-                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
                 binding.swipeMainFriendList.isRefreshing = false
 
                 viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
@@ -141,8 +147,54 @@ class MainFriendsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("AAAAAAAAAAAAAAAAAAAAA","onResume")
+        viewModel.run{
+            this.myFriendList.observe(mainActivity){
+                UFL = it as ArrayList<Friend>
+                searchUFL = UFL
+                MyApplication.loginedUserInfo.userFriendList
+
+                // 자기자신은 제거
+                for((index,friend) in searchUFL.withIndex()){
+                    if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
+                        searchUFL.removeAt(index)
+                    }
+                }
+
+                binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+            }
+        }
+
+        FirebaseDatabase.getInstance().reference
+            .child("userInfo")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.d("lion", "실시간 탐지 에러 : $p0")
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    viewModel.getMyFriendListByIdx(MyApplication.loginedUserInfo.userIdx)
+                    viewModel.run{
+                        this.myFriendList.observe(mainActivity){
+                            UFL = it as ArrayList<Friend>
+                            UFL.distinctBy { it.friendEmail }
+                            searchUFL = UFL
+                            MyApplication.loginedUserInfo.userFriendList = UFL as ArrayList<Friend>
+
+                            // 자기자신은 제거
+                            for((index,friend) in UFL.withIndex()){
+                                if(friend.friendIdx == MyApplication.loginedUserInfo.userIdx){
+                                    searchUFL.removeAt(index)
+                                }
+                            }
+
+                            binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
+                        }
+                    }
+                    Log.d("lion", "실시간 탐지 성공 : $p0")
+                }
+            })
         binding.root.requestLayout()
-        binding.recyclerMainFriendsList.adapter?.notifyDataSetChanged()
     }
 
     inner class RecyclerAdapterFL : RecyclerView.Adapter<RecyclerAdapterFL.ViewHolderFL>(){

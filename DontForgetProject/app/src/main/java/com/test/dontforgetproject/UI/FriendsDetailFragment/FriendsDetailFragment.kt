@@ -8,19 +8,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
+import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsListFragment
 import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogFriendsDetailBinding
 import com.test.dontforgetproject.databinding.DialogFriendsDetailDeleteBinding
@@ -36,11 +43,12 @@ class FriendsDetailFragment : Fragment() {
     lateinit var loadingDialog: LoadingDialog
 
     // 친구 이메일
-    lateinit var _FEmail : String
-    lateinit var _FImage : String
-    lateinit var _FIntroduce : String
-    lateinit var _FId : String
-    lateinit var _FFL : ArrayList<Friend>
+    lateinit var _FName : String
+    lateinit var _FEmail: String
+    lateinit var _FImage: String
+    lateinit var _FIntroduce: String
+    lateinit var _FId: String
+    lateinit var _FFL: ArrayList<Friend>
 
     var MCL = mutableListOf<CategoryClass>()
 
@@ -55,6 +63,7 @@ class FriendsDetailFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity)[FriendsDetailViewModel::class.java]
         viewModel.run {
             friendUserName.observe(mainActivity) {
+                _FName = it
                 binding.textViewFriendsDetailName.text = it
             }
             friendUserEmail.observe(mainActivity) {
@@ -79,10 +88,10 @@ class FriendsDetailFragment : Fragment() {
 //                    }
 //                }
 //            }
-            friendUserId.observe(mainActivity){
+            friendUserId.observe(mainActivity) {
                 _FId = it
             }
-            friendUserFriendList.observe(mainActivity){
+            friendUserFriendList.observe(mainActivity) {
                 _FFL = it as ArrayList<Friend>
             }
             categoryList.observe(mainActivity) {
@@ -90,7 +99,10 @@ class FriendsDetailFragment : Fragment() {
                 var tempList = it
                 // 데이터 정제, 공유 카테고리만 골라내기
                 for ((index, category) in tempList.withIndex()) {
-                    if (category.categoryJoinUserIdxList?.contains(MyApplication.loginedUserInfo.userIdx)!! && category.categoryJoinUserIdxList?.contains(MyApplication.chosedFriendIdx)!!) {
+                    if (category.categoryJoinUserIdxList?.contains(MyApplication.loginedUserInfo.userIdx)!! && category.categoryJoinUserIdxList?.contains(
+                            MyApplication.chosedFriendIdx
+                        )!!
+                    ) {
                         MCL.add(category)
                     }
                 }
@@ -106,7 +118,7 @@ class FriendsDetailFragment : Fragment() {
         binding.run {
             loadingDialog = LoadingDialog(requireContext())
             loadingDialog.show()
-            viewModel.friendUserImage.observe(mainActivity){
+            viewModel.friendUserImage.observe(mainActivity) {
                 _FImage = it
                 // 프로필 사진
                 UserRepository.getProfile(it) {
@@ -114,8 +126,7 @@ class FriendsDetailFragment : Fragment() {
                         val fileUri = it.result
                         Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
                         loadingDialog.dismiss()
-                    }
-                    else{
+                    } else {
 //                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
                         binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
                         loadingDialog.dismiss()
@@ -150,7 +161,8 @@ class FriendsDetailFragment : Fragment() {
                     val builder = MaterialAlertDialogBuilder(mainActivity)
 
                     dialogNormalBinding.textViewDialogNormalTitle.text = "친구 삭제"
-                    dialogNormalBinding.textViewDialogNormalContent.text = "공유 하고 있는 카테고리가 있으면 삭제할 수 없습니다."
+                    dialogNormalBinding.textViewDialogNormalContent.text =
+                        "공유 하고 있는 카테고리가 있으면 삭제할 수 없습니다."
 
                     builder.setView(dialogNormalBinding.root)
                     builder.setPositiveButton("확인", null)
@@ -166,60 +178,117 @@ class FriendsDetailFragment : Fragment() {
                     builder.setView(dialogNormalBinding.root)
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                        // Todo
-                        // 1. MyApplication userInfo 에서 친구삭제
-                        // 2. modify 해서 내info, 삭제된 친구info 저장
-                        // 3. 화면 종료
+                        // 김받음(나) -> 김보냄(친구) 삭제
 
-                        /* 1. */
-                        var temp = MyApplication.loginedUserInfo.userFriendList
-                        var buff = ArrayList<Friend>()
-                        for (v in temp) {
-                            if (MyApplication.chosedFriendIdx == v.friendIdx) {
-                                buff.add(v)
+                        var badumIdx = MyApplication.loginedUserInfo.userIdx
+                        var badumName = MyApplication.loginedUserInfo.userName
+                        var badumEmail = MyApplication.loginedUserInfo.userEmail
+
+                        var bonemIdx = MyApplication.chosedFriendIdx
+                        var bonemName = _FName
+                        var bonemEmail = _FEmail
+
+                        var badumFriend = Friend(badumIdx, badumName, badumEmail)
+                        var bonemFriend = Friend(bonemIdx, bonemName, bonemEmail)
+
+                        // 김받음 정보
+                        JoinFriendRepository.getUserInfoByIdx(badumIdx){
+                            for (c1 in it.result.children) {
+                                var userIdx = c1.child("userIdx").value as Long
+                                var userName = c1.child("userName").value as String
+                                var userEmail = c1.child("userEmail").value as String
+                                var userImage = c1.child("userImage").value as String
+                                var userIntroduce = c1.child("userIntroduce").value as String
+                                var userId = c1.child("userId").value as String
+                                var userFriendList = mutableListOf<Friend>()
+
+                                var userFriendListHashMap =
+                                    c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+
+                                for (i in userFriendListHashMap) {
+                                    var idx = i["friendIdx"] as Long
+                                    var name = i["friendName"] as String
+                                    var email = i["friendEmail"] as String
+
+                                    var friend = Friend(idx, name, email)
+                                    userFriendList.add(friend)
+                                }
+
+                                var badumInfo = UserClass(
+                                    userIdx,
+                                    userName,
+                                    userEmail,
+                                    userImage,
+                                    userIntroduce,
+                                    userId,
+                                    userFriendList as ArrayList<Friend>
+                                )
+
+                                // 김받음에서 김보냄 삭제
+                                var temp = badumInfo.userFriendList
+                                var buff = ArrayList<Friend>()
+                                for(i in temp){
+                                    if(i.friendIdx == bonemIdx){
+                                        buff.add(i)
+                                    }
+                                }
+                                badumInfo.userFriendList.removeAll(buff)
+
+                                UserRepository.modifyUserInfo(badumInfo){
+                                    Toast.makeText(mainActivity, "친구 삭제 완료", Toast.LENGTH_SHORT).show()
+                                    MyApplication.loginedUserInfo = badumInfo
+                                }
                             }
                         }
-                        temp.remove(buff[0])
-                        MyApplication.loginedUserInfo.userFriendList = temp
 
-                        /* 2. */
-                        // 내정보
-                        var MIdx = MyApplication.loginedUserInfo.userIdx
-                        var MName = MyApplication.loginedUserInfo.userName
-                        var MEmail = MyApplication.loginedUserInfo.userEmail
+                        // 김보냄 정보
+                        JoinFriendRepository.getUserInfoByIdx(bonemIdx){
+                            for (c1 in it.result.children) {
+                                var userIdx = c1.child("userIdx").value as Long
+                                var userName = c1.child("userName").value as String
+                                var userEmail = c1.child("userEmail").value as String
+                                var userImage = c1.child("userImage").value as String
+                                var userIntroduce = c1.child("userIntroduce").value as String
+                                var userId = c1.child("userId").value as String
+                                var userFriendList = mutableListOf<Friend>()
 
-                        var MInfo = MyApplication.loginedUserInfo
+                                var userFriendListHashMap =
+                                    c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
 
+                                for (i in userFriendListHashMap) {
+                                    var idx = i["friendIdx"] as Long
+                                    var name = i["friendName"] as String
+                                    var email = i["friendEmail"] as String
 
-                        // 친구정보
-                        var FIdx = MyApplication.chosedFriendIdx
-                        var FName = MyApplication.chosedFriendName
-                        var FEmail = _FEmail
+                                    var friend = Friend(idx, name, email)
+                                    userFriendList.add(friend)
+                                }
 
-                        var FInfo = UserClass(
-                            FIdx,
-                            FName,
-                            FEmail,
-                            _FImage,
-                            _FIntroduce,
-                            _FId,
-                            _FFL
-                        )
+                                var bonemInfo = UserClass(
+                                    userIdx,
+                                    userName,
+                                    userEmail,
+                                    userImage,
+                                    userIntroduce,
+                                    userId,
+                                    userFriendList as ArrayList<Friend>
+                                )
 
-                        // 친구 목록에서 내정보 삭제
-                        var temp2 = _FFL
-                        var buff2 = mutableListOf<Friend>()
-                        for((i,v) in _FFL.withIndex()){
-                            if(v.friendIdx == MIdx){
-                               buff2.add(v)
+                                // 김보냄(친구)에서 김받음(나) 삭제
+                                var temp = bonemInfo.userFriendList
+                                var buff = ArrayList<Friend>()
+                                for(i in temp){
+                                    if(i.friendIdx == badumIdx){
+                                        buff.add(i)
+                                    }
+                                }
+                                bonemInfo.userFriendList.removeAll(buff)
+
+                                UserRepository.modifyUserInfo(bonemInfo){
+                                    Toast.makeText(mainActivity, "친구 삭제 완료", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
-                        temp2.remove(buff2[0])
-                        _FFL = temp2
-
-//                        // modify
-                        UserRepository.modifyUserInfo(MInfo){}
-                        UserRepository.modifyUserInfo(FInfo){}
 
                         /* 3. */
                         mainActivity.removeFragment(MainActivity.FRIENDS_DETAIL_FRAGMENT)
@@ -242,8 +311,7 @@ class FriendsDetailFragment : Fragment() {
                 if (it.isSuccessful) {
                     val fileUri = it.result
                     Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
-                }
-                else{
+                } else {
 //                    Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
                     binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
                 }

@@ -55,7 +55,6 @@ class MainFriendsMyRequestFragment : Fragment() {
         binding.run{
             swipeMainFriendsMyRequest.setOnRefreshListener {
                 binding.swipeMainFriendsMyRequest.isRefreshing = false
-                Toast.makeText(mainActivity, "새로고침 완료", Toast.LENGTH_SHORT).show()
 
                 viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
                 viewModel.run{
@@ -88,6 +87,12 @@ class MainFriendsMyRequestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+        viewModel.run{
+            myRequestList.observe(mainActivity){
+                MRL = it
+            }
+        }
+        viewModel.getMyRequest(MyApplication.loginedUserInfo.userIdx)
         binding.recyclerMainFriendsMyRequest.adapter?.notifyDataSetChanged()
     }
 
