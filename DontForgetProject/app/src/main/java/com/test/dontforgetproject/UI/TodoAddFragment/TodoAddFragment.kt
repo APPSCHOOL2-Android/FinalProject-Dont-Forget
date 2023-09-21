@@ -333,7 +333,7 @@ class TodoAddFragment : Fragment() {
                         builder.show()
                         return@setOnClickListener
                     }
-                    if(textViewTodoAddCategory.text == "카데고리 없음"){
+                    if(textViewTodoAddCategory.text.toString() == "카테고리 없음"){
                         var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                         val builder = MaterialAlertDialogBuilder(mainActivity)
 
@@ -350,7 +350,7 @@ class TodoAddFragment : Fragment() {
                         builder.show()
                         return@setOnClickListener
                     }
-                    if(textViewTodoAddDate.text == "날짜 없음"){
+                    if(textViewTodoAddDate.text.toString() == "날짜 없음"){
                         var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                         val builder = MaterialAlertDialogBuilder(mainActivity)
 
