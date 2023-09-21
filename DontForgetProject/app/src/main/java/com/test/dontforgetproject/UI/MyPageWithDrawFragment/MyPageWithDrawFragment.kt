@@ -2,6 +2,7 @@ package com.test.dontforgetproject.UI.MyPageWithDrawFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +22,7 @@ import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMyPageWithDrawBinding
 
 class MyPageWithDrawFragment : Fragment() {
@@ -43,6 +46,8 @@ class MyPageWithDrawFragment : Fragment() {
             val userType = arguments?.getInt("UserType")
             if(userType == MyApplication.GOOGLE_LOGIN){
                 textInputLayoutMyPageWithDrawPassword.visibility = View.GONE
+                textViewMyPageWithDraw.visibility = View.GONE
+                textViewMyPageWithDrawFindPassword.visibility = View.GONE
             }
             buttonMyPageWithDraw.setOnClickListener {
 
@@ -63,6 +68,14 @@ class MyPageWithDrawFragment : Fragment() {
                         textInputEditTextMyPageWithDrawPassword.requestFocus()
                     }
                 }else{
+                    val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                        .requestEmail() // 이메일 권한 요청 (선택 사항)
+                        .build()
+
+                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+                    val signInIntent = googleSignInClient.signInIntent
+                    startActivityForResult(signInIntent, 9001)
                     withDraw()
                 }
             }
@@ -95,12 +108,12 @@ class MyPageWithDrawFragment : Fragment() {
                     editor.remove("isLoggedUser")
                     editor.apply()
 
-                    // Google 로그인 클라이언트에서 로그아웃도 시도합니다.
                     val googleSignInClient = GoogleSignIn.getClient(
                         requireActivity(),
                         GoogleSignInOptions.DEFAULT_SIGN_IN
                     )
-                    googleSignInClient.signOut().addOnCompleteListener {}
+                    googleSignInClient.signOut()
+
                     Snackbar.make(fragmentMyPageWithDrawBinding.root, "회원탈퇴되었습니다.", Snackbar.LENGTH_SHORT).show()
                     // 로그인 화면으로 이동
                     mainActivity.replaceFragment(
@@ -109,6 +122,7 @@ class MyPageWithDrawFragment : Fragment() {
                         null
                     )
                 }
+
             }
         }
 
