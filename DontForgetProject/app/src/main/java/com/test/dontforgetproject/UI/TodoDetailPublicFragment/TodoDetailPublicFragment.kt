@@ -51,13 +51,26 @@ class TodoDetailPublicFragment : Fragment() {
                     fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text = "알림 없음"
                 } else {
                     var alertTime = it.toString().split(":")
-                    if (alertTime.get(0).toInt() >= 12) {
-                        var hours = alertTime.get(0).toInt() - 12
-                        fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text =
-                            "오후 ${hours}시 ${alertTime.get(1)}분"
-                    } else {
-                        fragmentTodoDetailPublicBinding.textViewTodoDetailPublicAlert.text =
-                            "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                    var newhour = "${alertTime.get(0)}".toInt()
+
+                    fragmentTodoDetailPublicBinding.run {
+                        if(newhour in 1..11){
+                            textViewTodoDetailPublicAlert.text= "오전 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour in 13..23){
+                            var hours = "${alertTime.get(0)}".toInt()-12
+                            textViewTodoDetailPublicAlert.text= "오후 ${hours}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 12){
+                            textViewTodoDetailPublicAlert.text= "오후 ${alertTime.get(0)}시 ${alertTime.get(1)}분"
+                        }
+
+                        if(newhour == 0){
+                            var hours = newhour+12
+                            textViewTodoDetailPublicAlert.text= "오전 ${hours}시 ${alertTime.get(1)}분"
+                        }
                     }
                 }
             }
