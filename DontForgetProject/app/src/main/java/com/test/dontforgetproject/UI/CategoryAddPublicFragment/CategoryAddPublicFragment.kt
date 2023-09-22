@@ -139,6 +139,15 @@ class CategoryAddPublicFragment : Fragment() {
                 val aAdapter = AddPeopleRecyclerViewAdpater(friendsNotInList, mainActivity)
 
                 dialogCategoryAddPeopleBinding.run {
+                    if (friendsNotInList.isEmpty()) {
+                        textViewDialogCategoryAddPeopleNoFriends.visibility = View.VISIBLE
+                        recyclerViewDialogCategoryAddPeople.visibility = View.GONE
+                    } else {
+                        textViewDialogCategoryAddPeopleNoFriends.visibility = View.GONE
+                        recyclerViewDialogCategoryAddPeople.visibility = View.VISIBLE
+                    }
+
+                    // 텍스트 입력하면 검색되도록 설정
                     editTextDialogCategoryAddPeople.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
                             s: CharSequence?,
