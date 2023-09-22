@@ -31,6 +31,7 @@
                 android:layout_gravity="center"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_person_24px" />
             <Button
                 android:id="@+id/button_join_Photo"
