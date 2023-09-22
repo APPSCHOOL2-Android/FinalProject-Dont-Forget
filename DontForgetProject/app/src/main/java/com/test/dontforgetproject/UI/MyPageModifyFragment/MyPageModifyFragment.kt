@@ -22,22 +22,32 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.auth.data.model.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
+import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
 import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageViewModel
 import com.test.dontforgetproject.UI.MainMyPageFragment.MyPageModifyViewModel
 import com.test.dontforgetproject.Util.LoadingDialog
+import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import com.test.dontforgetproject.databinding.FragmentMyPageModifyBinding
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 class MyPageModifyFragment : Fragment() {
     lateinit var fragmentMyPageModifyBinding: FragmentMyPageModifyBinding
+    lateinit var MainHomeFragment : MainHomeFragment
     lateinit var mainActivity: MainActivity
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
     lateinit var myPageModifyViewModel : MyPageModifyViewModel
@@ -45,6 +55,7 @@ class MyPageModifyFragment : Fragment() {
     var uploadUri: Uri? = null
     lateinit var user : UserClass
     lateinit var loadingDialog : LoadingDialog
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,34 +67,25 @@ class MyPageModifyFragment : Fragment() {
         loadingDialog = LoadingDialog(requireContext())
         loadingDialog.show()
         fragmentMyPageModifyBinding.run {
-            user = UserClass(
-                userIdx = 0,
-                userName = "",
-                userEmail = "",
-                userImage = "",
-                userIntroduce = "",
-                userId = "",
-                userFriendList = ArrayList<Friend>()
-            )
+            user = MyApplication.loginedUserInfo
             toolbarMyPageModify.run {
                 title = getString(R.string.myPage_modify)
                 setNavigationIcon(R.drawable.ic_arrow_back_24px)
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
-                    Glide.with(mainActivity).clear(imageViewMyPageModifyProfile)
                 }
             }
 
             myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
             myPageModifyViewModel.run {
                 userIdx.observe(mainActivity){
-                    user.userIdx = it.toLong()
+                    user.userIdx = it
                 }
                 userName.observe(mainActivity){
-                    user.userName = it.toString()
+                    user.userName = it
                 }
                 userIntoduce.observe(mainActivity){
-                    user.userIntroduce = it.toString()
+                    user.userIntroduce = it
                     fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
                 }
                 userImage.observe(mainActivity){
@@ -139,7 +141,6 @@ class MyPageModifyFragment : Fragment() {
 
                 // 이미지가 변경되지 않으면 업로드하지 않고 이전 이미지를 사용
                 if (newImage != user.userImage) {
-                    UserRepository.deleteProfile(user.userImage)
                     UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
                         if (result.isSuccessful) {
                             Log.e("이미지 성공", "$uploadUri")
@@ -162,13 +163,20 @@ class MyPageModifyFragment : Fragment() {
                     UserRepository.modifyUserInfo(modifyUser) { result ->
                         if (result.isSuccessful) {
                             MyApplication.loginedUserInfo = modifyUser
-                            Glide.with(requireContext()).clear(imageViewMyPageModifyProfile)
                         } else {
                             Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
                         }
                     }
-                    Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
-                    mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
+
+                    loadingDialog.show()
+                    GlobalScope.launch {
+                        delay(1000)
+                        loadingDialog.dismiss()
+                        Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
+                        mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
+                    }
+
+
                 } else {
                     Snackbar.make(fragmentMyPageModifyBinding.root, "빈 칸을 채워주세요.", Snackbar.LENGTH_SHORT).show()
                 }

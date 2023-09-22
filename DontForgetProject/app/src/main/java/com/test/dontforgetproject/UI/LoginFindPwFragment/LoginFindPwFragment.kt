@@ -34,6 +34,11 @@ class LoginFindPwFragment : Fragment() {
                 setTitle("비밀번호 찾기")
 
             }
+            var userEmail = arguments?.getString("UserEmail")
+            if(userEmail!=null){
+                textInputEditTextLoginFindPwEmail.setText(userEmail)
+                //Log.e("테스트","$userEmail")
+            }
             textInputLayoutLoginFindPwEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 if (!hasFocus) {
                     val emailCheck = textInputLayoutLoginFindPwEmail.editText?.text.toString()

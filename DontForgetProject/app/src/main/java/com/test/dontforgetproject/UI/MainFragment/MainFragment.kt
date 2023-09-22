@@ -1,5 +1,6 @@
 package com.test.dontforgetproject.UI.MainFragment
 
+import MainMyPageFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import com.test.dontforgetproject.UI.MainAlertFragment.MainAlertFragment
 import com.test.dontforgetproject.UI.MainCategoryFragment.MainCategoryFragment
 import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsFragment
 import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
-import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageFragment
 import com.test.dontforgetproject.databinding.FragmentMainBinding
 
 

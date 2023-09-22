@@ -101,6 +101,8 @@ class LoginFragment : Fragment() {
              }
             // 비밀번호 찾기 텍스트
             textviewLoginFindPassword.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("UserEmail", null)
                 mainActivity.replaceFragment(MainActivity.LOGIN_FIND_PW_FRAGMENT,true,null)
             }
             buttonLoginGoogleLogin.setOnClickListener {
