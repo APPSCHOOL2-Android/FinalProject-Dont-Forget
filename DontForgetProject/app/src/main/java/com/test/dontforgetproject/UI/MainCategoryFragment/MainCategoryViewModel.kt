@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.Repository.CategoryRepository
 
-class MainCategoryViewModel() : ViewModel() {
+class MainCategoryViewModel : ViewModel() {
     var categoryList = MutableLiveData<MutableList<CategoryClass>>()
 
     init {

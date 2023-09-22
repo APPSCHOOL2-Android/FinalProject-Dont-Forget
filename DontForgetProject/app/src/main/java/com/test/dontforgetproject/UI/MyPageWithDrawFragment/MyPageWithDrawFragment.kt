@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.test.dontforgetproject.DAO.Friend
+import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
@@ -66,7 +68,7 @@ class MyPageWithDrawFragment : Fragment() {
                     }
                 }else{
                     val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                        .requestIdToken("194726734690-sm7nu0e0cjr12r4cu39547d10l09rf0r.apps.googleusercontent.com") // 웹 클라이언트 ID
                         .requestEmail() // 이메일 권한 요청 (선택 사항)
                         .build()
 
@@ -86,7 +88,56 @@ class MyPageWithDrawFragment : Fragment() {
             // FirebaseAuth를 사용하여 사용자 삭제 시도
             currentUser.delete().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // 사용자 삭제가 성공하면 SharedPreferences에서 로그인 정보를 삭제합니다.
+                    var myFriendList = MyApplication.loginedUserInfo.userFriendList
+                    var myIdx = MyApplication.loginedUserInfo.userIdx
+
+                    // 사용자의 친구들의 계정을 모두 불러와서 안에들어있는 내정보 삭제
+                    for(friend in myFriendList){
+                        JoinFriendRepository.getUserInfoByIdx(friend.friendIdx){
+                            for (c1 in it.result.children) {
+                                var userIdx = c1.child("userIdx").value as Long
+                                var userName = c1.child("userName").value as String
+                                var userEmail = c1.child("userEmail").value as String
+                                var userImage = c1.child("userImage").value as String
+                                var userIntroduce = c1.child("userIntroduce").value as String
+                                var userId = c1.child("userId").value as String
+                                var userFriendList = mutableListOf<Friend>()
+
+                                var userFriendListHashMap =
+                                    c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+
+                                for (i in userFriendListHashMap) {
+                                    var idx = i["friendIdx"] as Long
+                                    var name = i["friendName"] as String
+                                    var email = i["friendEmail"] as String
+
+                                    var friend = Friend(idx, name, email)
+                                    userFriendList.add(friend)
+                                }
+
+                                var temp = mutableListOf<Friend>()
+                                for(v in userFriendList){
+                                    if(v.friendIdx == myIdx){
+                                        temp.add(v)
+                                    }
+                                }
+                                userFriendList.removeAll(temp)
+
+                                var friendUserClass = UserClass(
+                                    userIdx,
+                                    userName,
+                                    userEmail,
+                                    userImage,
+                                    userIntroduce,
+                                    userId,
+                                    userFriendList as ArrayList<Friend>
+                                )
+
+                                // 수정된 친구정보 반영
+                                UserRepository.modifyUserInfo(friendUserClass){}
+                            }
+                        }
+                    }
                     UserRepository.deleteUserInfo(MyApplication.loginedUserInfo.userIdx) {}
                     CategoryRepository.removeUserInPublicCategory(MyApplication.loginedUserInfo.userIdx)
                     AlertRepository.removeAlertByUserIdx(MyApplication.loginedUserInfo.userIdx) {}

@@ -45,6 +45,11 @@ class UserRepository {
             val userDataRef = database.getReference("userInfo")
             userDataRef.orderByChild("userId").equalTo(userId).get().addOnCompleteListener(callback1)
         }
+        fun getUserInfoByIdx(userIdx:Long,callback1: (Task<DataSnapshot>) -> Unit){
+            val database = FirebaseDatabase.getInstance()
+            val userDataRef = database.getReference("userInfo")
+            userDataRef.orderByChild("userIdx").equalTo(userIdx.toDouble()).get().addOnCompleteListener(callback1)
+        }
 
 
 

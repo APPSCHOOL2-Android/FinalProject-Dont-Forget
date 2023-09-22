@@ -66,12 +66,6 @@ class MyPageModifyFragment : Fragment() {
 
             myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
             myPageModifyViewModel.run {
-                userIdx.observe(mainActivity){
-                    user.userIdx = it
-                }
-                userName.observe(mainActivity){
-                    user.userName = it
-                }
                 userIntoduce.observe(mainActivity){
                     user.userIntroduce = it
                     fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
@@ -93,15 +87,6 @@ class MyPageModifyFragment : Fragment() {
 
                     user.userImage = it.toString()
                 }
-                userEmail.observe(mainActivity){
-                    user.userEmail = it.toString()
-                }
-                userId.observe(mainActivity){
-                    user.userId = it.toString()
-                }
-                userFriendList.observe(mainActivity){
-                    user.userFriendList = it as ArrayList<Friend>
-                }
             }
             myPageModifyViewModel.getUserInfo(MyApplication.loginedUserInfo)
             Glide.with(requireActivity()).load(MyApplication.loginedUserProfile).into(imageViewMyPageModifyProfile)
@@ -118,7 +103,8 @@ class MyPageModifyFragment : Fragment() {
                 albumLauncher.launch(newIntent)
             }
             buttonMyPageModifyModifyComplete.setOnClickListener {
-                val newIntroduce = fragmentMyPageModifyBinding.textInputLayoutMyPageModifyIntroduce.editText?.text.toString()
+                val newIntroduce =
+                    fragmentMyPageModifyBinding.textInputLayoutMyPageModifyIntroduce.editText?.text.toString()
 
                 // 이미지를 변경하지 않을 경우 "None"으로 설정
                 val newImage = if (uploadUri == null) {
@@ -129,42 +115,63 @@ class MyPageModifyFragment : Fragment() {
 
                 // 이미지가 변경되지 않으면 업로드하지 않고 이전 이미지를 사용
                 if (newImage != user.userImage) {
-                    UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
-                        if (result.isSuccessful) {
-                        } else {
-                        }
-                    }
+                    UserRepository.setUploadProfile(newImage, uploadUri!!) {}
                 }
 
                 if (newIntroduce.isNotEmpty()) {
-                    val modifyUser = UserClass(
-                        user.userIdx,
-                        user.userName,
-                        user.userEmail,
-                        newImage,
-                        newIntroduce,
-                        user.userId,
-                        user.userFriendList
-                    )
-                    UserRepository.modifyUserInfo(modifyUser) { result ->
-                        if (result.isSuccessful) {
-                            MyApplication.loginedUserInfo = modifyUser
-                        } else {
-                            Snackbar.make(fragmentMyPageModifyBinding.root, "오류 발생.", Snackbar.LENGTH_SHORT).show()
+                    UserRepository.getUserInfoByIdx(MyApplication.loginedUserInfo.userIdx) {
+                        for (c1 in it.result.children) {
+                            var userIdx = c1.child("userIdx").value as Long
+                            var userName = c1.child("userName").value as String
+                            var userEmail = c1.child("userEmail").value as String
+                            var userImage = c1.child("userImage").value as String
+                            var userIntroduce = c1.child("userIntroduce").value as String
+                            var userId = c1.child("userId").value as String
+                            var userFriendList = mutableListOf<Friend>()
+
+                            var userFriendListHashMap =
+                                c1.child("userFriendList").value as ArrayList<HashMap<String, Any>>
+
+                            for (i in userFriendListHashMap) {
+                                var idx = i["friendIdx"] as Long
+                                var name = i["friendName"] as String
+                                var email = i["friendEmail"] as String
+
+                                var friend = Friend(idx, name, email)
+                                userFriendList.add(friend)
+                            }
+
+                            var friendUserClass = UserClass(
+                                userIdx,
+                                userName,
+                                userEmail,
+                                newImage,
+                                newIntroduce,
+                                userId,
+                                userFriendList as ArrayList<Friend>
+                            )
+
+                            // 수정된 친구정보 반영
+                            UserRepository.modifyUserInfo(friendUserClass) {}
+                        }
+                        loadingDialog.show()
+                        GlobalScope.launch {
+                            delay(1050)
+                            loadingDialog.dismiss()
+                            Snackbar.make(
+                                fragmentMyPageModifyBinding.root,
+                                "수정되었습니다.",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
                         }
                     }
-
-                    loadingDialog.show()
-                    GlobalScope.launch {
-                        delay(1000)
-                        loadingDialog.dismiss()
-                        Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
-                        mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
-                    }
-
-
                 } else {
-                    Snackbar.make(fragmentMyPageModifyBinding.root, "빈 칸을 채워주세요.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        fragmentMyPageModifyBinding.root,
+                        "빈 칸을 채워주세요.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
 
