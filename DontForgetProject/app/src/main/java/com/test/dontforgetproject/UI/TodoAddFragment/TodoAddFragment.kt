@@ -479,6 +479,7 @@ class TodoAddFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.resetList()
+        mainActivity.replaceFragment(MainActivity.MAIN_FRAGMENT,false,null)
     }
 
     private fun setAlarm(alarmCode : Int, content : String, time : String){
