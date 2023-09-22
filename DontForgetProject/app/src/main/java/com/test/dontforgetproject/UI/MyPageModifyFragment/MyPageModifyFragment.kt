@@ -66,12 +66,6 @@ class MyPageModifyFragment : Fragment() {
 
             myPageModifyViewModel = ViewModelProvider(mainActivity)[MyPageModifyViewModel::class.java]
             myPageModifyViewModel.run {
-                userIdx.observe(mainActivity){
-                    user.userIdx = it
-                }
-                userName.observe(mainActivity){
-                    user.userName = it
-                }
                 userIntoduce.observe(mainActivity){
                     user.userIntroduce = it
                     fragmentMyPageModifyBinding.textInputEditTextMyPageModifyIntroduce.setText(it.toString())
@@ -92,15 +86,6 @@ class MyPageModifyFragment : Fragment() {
                     loadingDialog.dismiss()
 
                     user.userImage = it.toString()
-                }
-                userEmail.observe(mainActivity){
-                    user.userEmail = it.toString()
-                }
-                userId.observe(mainActivity){
-                    user.userId = it.toString()
-                }
-                userFriendList.observe(mainActivity){
-                    user.userFriendList = it as ArrayList<Friend>
                 }
             }
             myPageModifyViewModel.getUserInfo(MyApplication.loginedUserInfo)
@@ -129,11 +114,7 @@ class MyPageModifyFragment : Fragment() {
 
                 // 이미지가 변경되지 않으면 업로드하지 않고 이전 이미지를 사용
                 if (newImage != user.userImage) {
-                    UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
-                        if (result.isSuccessful) {
-                        } else {
-                        }
-                    }
+                    UserRepository.setUploadProfile(newImage, uploadUri!!) {}
                 }
 
                 if (newIntroduce.isNotEmpty()) {
@@ -156,7 +137,7 @@ class MyPageModifyFragment : Fragment() {
 
                     loadingDialog.show()
                     GlobalScope.launch {
-                        delay(1000)
+                        delay(1050)
                         loadingDialog.dismiss()
                         Snackbar.make(fragmentMyPageModifyBinding.root, "수정되었습니다.", Snackbar.LENGTH_SHORT).show()
                         mainActivity.removeFragment(MainActivity.MY_PAGE_MODIFY_FRAGMENT)
