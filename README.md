@@ -92,7 +92,7 @@
 ### 🙌 Team Members 
 | 이채연 <br/> [@dkin12](https://github.com/dkin12) | 임성욱 <br/> [@Seongwk](https://github.com/Seongwk) | 신승헌 <br/> [@ShShin98](https://github.com/ShShin98) | 이주형 <br/> [@dlwngud](https://github.com/dlwngud) | 정채윤 <br/> [@JUNGCHAEYOON](https://github.com/JUNGCHAEYOON) | 피유진 <br/> [@PIYUJIN](https://github.com/PIYUJIN) |
 |:--:|:--:|:--:|:--:|:--:|:--:|
-| <img src="https://avatars.githubusercontent.com/dkin12"  width=120> | <img src="https://avatars.githubusercontent.com/Seongwk"  width=120> | <img src="https://avatars.githubusercontent.com/ShShin98"  width=120> | <img src="https://avatars.githubusercontent.com/dlwngud"  width=120> | <img src="https://avatars.githubusercontent.com/JUNGCHAEYOON"  width=120> | <img src="https://avatars.githubusercontent.com/PIYUJIN"  width=120> |
+| <img src="https://avatars.githubusercontent.com/dkin12"  width=100> | <img src="https://avatars.githubusercontent.com/Seongwk"  width=100> | <img src="https://avatars.githubusercontent.com/ShShin98"  width=100> | <img src="https://avatars.githubusercontent.com/dlwngud"  width=100> | <img src="https://avatars.githubusercontent.com/JUNGCHAEYOON"  width=100> | <img src="https://avatars.githubusercontent.com/PIYUJIN"  width=100> |
 
 
 <br>
