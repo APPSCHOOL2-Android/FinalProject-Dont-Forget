@@ -1,8 +1,6 @@
 package com.test.dontforgetproject.UI.MyPageThemeFragment
 
-
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import com.test.dontforgetproject.Util.ThemeUtil.DARK_MODE
 import com.test.dontforgetproject.Util.ThemeUtil.LIGHT_MODE
 import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
 import com.test.dontforgetproject.databinding.FragmentMyPageThemeBinding
-
 
 class MyPageThemeFragment : Fragment() {
     lateinit var fragmentMyPageThemeBinding: FragmentMyPageThemeBinding
@@ -72,5 +69,4 @@ class MyPageThemeFragment : Fragment() {
         }
         return fragmentMyPageThemeBinding.root
     }
-
 }

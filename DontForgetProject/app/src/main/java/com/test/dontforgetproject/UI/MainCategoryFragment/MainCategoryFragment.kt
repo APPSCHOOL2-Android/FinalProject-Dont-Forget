@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.MainActivity
@@ -25,7 +22,6 @@ import com.test.dontforgetproject.R
 import com.test.dontforgetproject.databinding.DialogCategoryAddBinding
 import com.test.dontforgetproject.databinding.FragmentMainCategoryBinding
 import com.test.dontforgetproject.databinding.RowMainCategoryBinding
-import java.text.DecimalFormat
 
 class MainCategoryFragment : Fragment() {
     lateinit var fragmentMainCategoryBinding: FragmentMainCategoryBinding
@@ -63,12 +59,10 @@ class MainCategoryFragment : Fragment() {
             .child("categoryInfo")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    Log.d("lion", "실시간 탐지 에러 : $p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     mainCategoryViewModel.getMyCategory(userIdx)
-                    Log.d("lion", "실시간 탐지 성공 : $p0")
                 }
             })
 

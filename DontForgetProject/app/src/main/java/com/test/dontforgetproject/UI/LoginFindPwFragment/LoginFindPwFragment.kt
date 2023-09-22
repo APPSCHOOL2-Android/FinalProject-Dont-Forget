@@ -1,7 +1,6 @@
 package com.test.dontforgetproject.UI.LoginFindPwFragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +36,6 @@ class LoginFindPwFragment : Fragment() {
             var userEmail = arguments?.getString("UserEmail")
             if(userEmail!=null){
                 textInputEditTextLoginFindPwEmail.setText(userEmail)
-                //Log.e("테스트","$userEmail")
             }
             textInputLayoutLoginFindPwEmail.editText?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 if (!hasFocus) {

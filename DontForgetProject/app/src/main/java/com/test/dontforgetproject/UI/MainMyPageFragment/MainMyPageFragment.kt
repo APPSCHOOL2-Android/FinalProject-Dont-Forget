@@ -27,7 +27,6 @@ import com.test.dontforgetproject.Util.LoadingDialog
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -157,6 +156,4 @@ class MainMyPageFragment : Fragment() {
                 }
             })
     }
-
-
 }

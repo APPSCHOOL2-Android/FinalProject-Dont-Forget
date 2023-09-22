@@ -127,7 +127,6 @@ class CategoryOptionPersonalFragment : Fragment() {
 
                 CategoryRepository.modifyCategory(categoryClass) {
                     for (i in 0 until categoryTodoList.size) {
-//                    Log.d("lion","change todo color")
                         val todoClass = TodoClass(
                             categoryTodoList.get(i).todoIdx,
                             categoryTodoList.get(i).todoContent,
@@ -144,7 +143,6 @@ class CategoryOptionPersonalFragment : Fragment() {
                             categoryTodoList.get(i).todoOwnerIdx,
                             categoryTodoList.get(i).todoOwnerName
                         )
-//                    Log.d("lion", "class : $todoClass")
                         TodoRepository.modifyTodoByCategory(todoClass) {
 
                         }

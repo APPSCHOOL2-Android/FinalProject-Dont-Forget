@@ -1,18 +1,10 @@
 package com.test.dontforgetproject
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
-import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.Util.ThemeUtil
-import com.test.dontforgetproject.Util.ThemeUtil.applyTheme
 import java.util.ArrayList
-
 
 class MyApplication :Application(){
     var mainActivity = MainActivity
@@ -56,8 +48,4 @@ class MyApplication :Application(){
         var categoryFontColor = ""
 
     }
-
-
-
-
 }

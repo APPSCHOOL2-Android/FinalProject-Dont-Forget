@@ -46,12 +46,7 @@ class UserRepository {
             userDataRef.orderByChild("userId").equalTo(userId).get().addOnCompleteListener(callback1)
         }
 
-        // 사용자 email를 가지고 사용자 정보를 가져옴
-        fun getUserInfoByEmail(userEmail:String,callback1: (Task<DataSnapshot>) -> Unit){
-            val database = FirebaseDatabase.getInstance()
-            val userDataRef = database.getReference("userInfo")
-            userDataRef.orderByChild("userEmail").equalTo(userEmail).get().addOnCompleteListener(callback1)
-        }
+
 
         // 사용자 정보 수정
         fun modifyUserInfo(userInfo: UserClass,callback1: (Task<DataSnapshot>) -> Unit){
@@ -92,20 +87,5 @@ class UserRepository {
             val fileRef = storage.reference.child(fileName)
             fileRef.downloadUrl.addOnCompleteListener(callback1)
         }
-        // 프로필 이미지 변경될때 storage에 있는 값지우기
-        fun deleteProfile(fileName: String){
-            val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.reference
-
-            // 이전 이미지 삭제
-            val imageRef = storageRef.child(fileName)
-            imageRef.delete().addOnSuccessListener {
-            }.addOnFailureListener {
-            }
-
-        }
-
-
-
     }
 }

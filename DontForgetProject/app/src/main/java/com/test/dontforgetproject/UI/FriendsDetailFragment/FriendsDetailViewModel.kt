@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
-import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.JoinFriendRepository
-import com.test.dontforgetproject.Repository.UserRepository
 
 class FriendsDetailViewModel : ViewModel() {
     var friendUserName = MutableLiveData<String>()

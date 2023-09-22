@@ -2,7 +2,6 @@ package com.test.dontforgetproject.UI.FriendsDetailFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
@@ -27,10 +21,7 @@ import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.UI.MainFriendsFragment.MainFriendsListFragment
 import com.test.dontforgetproject.Util.LoadingDialog
-import com.test.dontforgetproject.databinding.DialogFriendsDetailBinding
-import com.test.dontforgetproject.databinding.DialogFriendsDetailDeleteBinding
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentFriendsDetailBinding
 import com.test.dontforgetproject.databinding.RowFriendsDetailBinding
@@ -74,20 +65,6 @@ class FriendsDetailFragment : Fragment() {
                 _FIntroduce = it
                 binding.textViewFriendsDetailIntroduce.text = it
             }
-//            friendUserImage.observe(mainActivity) {
-//                _FImage = it
-//                // 프로필 사진
-//                UserRepository.getProfile(it) {
-//                    if (it.isSuccessful) {
-//                        val fileUri = it.result
-//                        Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
-//                    }
-//                    else{
-////                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
-//                        binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
-//                    }
-//                }
-//            }
             friendUserId.observe(mainActivity) {
                 _FId = it
             }
@@ -127,7 +104,6 @@ class FriendsDetailFragment : Fragment() {
                         Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
                         loadingDialog.dismiss()
                     } else {
-//                        Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
                         binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
                         loadingDialog.dismiss()
                     }
@@ -147,16 +123,12 @@ class FriendsDetailFragment : Fragment() {
             recyclerFriendsDetail.run {
                 adapter = RecyclerAdapterFD()
                 layoutManager = LinearLayoutManager(mainActivity)
-//                addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL))
             }
 
             // 친구삭제
             buttonFriendsDetailDelete.setOnClickListener {
                 // 공유 카테고리가 있으면
                 if (MCL.size > 0) {
-//                    var dialogFriendsDetailBinding =
-//                        DialogFriendsDetailBinding.inflate(layoutInflater)
-//                    builder.setView(dialogFriendsDetailBinding.root)
                     var dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                     val builder = MaterialAlertDialogBuilder(mainActivity)
 
@@ -312,7 +284,6 @@ class FriendsDetailFragment : Fragment() {
                     val fileUri = it.result
                     Glide.with(mainActivity).load(fileUri).into(binding.imageViewFriendsDetail)
                 } else {
-//                    Glide.with(mainActivity).load(R.drawable.ic_person_24px).into(binding.imageViewFriendsDetail)
                     binding.imageViewFriendsDetail.setImageResource(R.drawable.ic_person_24px)
                 }
             }

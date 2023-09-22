@@ -118,8 +118,5 @@ class MainFragment : Fragment() {
             "alert" -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_alert
             else -> fragmentMainBinding.bottomNavigationViewMainFragment.selectedItemId = R.id.navigation_home
         }
-
     }
-
-
 }

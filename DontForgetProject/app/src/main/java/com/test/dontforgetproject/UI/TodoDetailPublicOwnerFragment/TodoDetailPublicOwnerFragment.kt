@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -66,16 +65,13 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     var placeDetail = place.address
 
                     placeAddress = placeDetail + "@" + placeName
-                    Log.d("lion","${placeAddress}")
                     fragmentTodoDetailPublicOwnerBinding.textViewTodoDetailPublicOwnerLocation.text = placeDetail
 
                     //장소 위도
                     latitude = place.latLng.latitude.toString()
-                    Log.d("lion","${latitude}")
 
                     //장소 경도
                     longitude = place.latLng.longitude.toString()
-                    Log.d("lion","${longitude}")
 
                     val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
                     val requestCode = 123 // 요청 코드 (임의의 숫자)
@@ -91,7 +87,6 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 }
             }
             else if(it.resultCode == Activity.RESULT_CANCELED) {
-                Log.d("lion", "Place Fail")
             }
         }
 
@@ -296,8 +291,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     dialogNormalBinding.textViewDialogNormalContent.text = "할일을 입력해주세요."
 
                     builder.setView(dialogNormalBinding.root)
-//                    val builder = MaterialAlertDialogBuilder(mainActivity)
-//                    builder.setMessage("할일을 입력해주세요.")
+
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                         mainActivity.showSoftInput(textInputEditTextTodoDetailPublicOwner)
@@ -315,8 +309,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                     dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
 
                     builder.setView(dialogNormalBinding.root)
-//                    val builder = MaterialAlertDialogBuilder(mainActivity)
-//                    builder.setMessage("날짜를 선택해주세요.")
+
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인", null)
                     builder.show()
@@ -349,9 +342,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 dialogNormalBinding.textViewDialogNormalContent.text = "수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다."
 
                 builder.setView(dialogNormalBinding.root)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setTitle("경고")
-//                builder.setMessage("수정하시면\n공유하고 있는 모든 인원에게\n변경되어 보여집니다.")
+
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("수정") { dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.modifyTodo(todoDataClass) {
@@ -365,14 +356,10 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                         var alarmTime = "${date} $todoTime:00" // 알람이 울리는 시간
                         var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
                         var calculateDate = (alarmDate.time - now.time.time)
-                        Log.d("lion", "time : $alarmTime")
 
-                        //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
                         var alarmCode = todoIdx.toInt()
-                        Log.d("lion", "code : $alarmCode")
-                        //                deleteAlarm(alarmCode)
+
                         if (calculateDate < 0) {
-                            Log.d("lion", "현재보다 이전 시간으로 알림 설정")
                         } else {
                             setAlarm(alarmCode, content, alarmTime)
                         }
@@ -393,9 +380,7 @@ class TodoDetailPublicOwnerFragment : Fragment() {
                 dialogNormalBinding.textViewDialogNormalContent.text = "삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다."
 
                 builder.setView(dialogNormalBinding.root)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setTitle("경고")
-//                builder.setMessage("삭제하시면\n공유하고 있는 모든 인원에게\n삭제되어 보여지지 않습니다.")
+
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
                     TodoRepository.removeTodo(todoIdx) {

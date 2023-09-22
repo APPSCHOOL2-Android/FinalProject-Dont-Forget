@@ -100,7 +100,6 @@ class MainHomeFragment : Fragment() {
                 onFocusChangeListener =
                     View.OnFocusChangeListener { _, hasFocus ->
                         if (hasFocus) {
-                            Log.d("asdasdasd", "메모 개수 ${mainHomeViewModel.todoList2.value?.size!!}")
                             mainHomeViewModel.getTodo(
                                 categoryIdxList
                             )
@@ -162,7 +161,6 @@ class MainHomeFragment : Fragment() {
                 selectedCategoryPosition = 0
                 val formattedMonth = String.format("%02d", month + 1)
                 selectedDate = "${year}-${formattedMonth}-${dayOfMonth}"
-                Log.d("asdasdasd", selectedDate)
 
                 // 고른 날에 맞는 todo가져오기
                 mainHomeViewModel.getTodoByDate(
@@ -179,7 +177,6 @@ class MainHomeFragment : Fragment() {
             selectedDate,
             mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
         )
-        Log.d("asdasdasd", selectedDate)
     }
 
     // 카테고리 탭
@@ -193,13 +190,8 @@ class MainHomeFragment : Fragment() {
 
             init {
                 binding.root.setOnClickListener {
-                    Log.d("asdasdasd", "탭 인덱스 : ${adapterPosition}")
                     if (adapterPosition != 0) {
                         // 전체가 아닌 카테고리
-                        Log.d(
-                            "asdasdasd",
-                            "카테고리 인덱스 : ${mainHomeViewModel.categories.value?.get(adapterPosition - 1)?.categoryIdx}"
-                        )
                         mainHomeViewModel.getCategoryByCategoryIdx(
                             mainHomeViewModel.categories.value?.get(
                                 adapterPosition - 1
@@ -359,10 +351,6 @@ class MainHomeFragment : Fragment() {
         override fun getItemCount(): Int = todoList.size
 
         override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-            Log.d(
-                "asdasdasd",
-                "인덱스 : ${mainHomeViewModel.todoList.value?.get(position)?.todoCategoryIdx}"
-            )
             val todo = todoList[position]
             holder.textViewTodo.run {
                 text = todo.todoContent
@@ -442,7 +430,6 @@ class MainHomeFragment : Fragment() {
 
                 TodoRepository.modifyTodo(todoDataClass) { task ->
                     memoList = mainHomeViewModel.getTodo()
-                    Log.d("asdasdasd", "todo idx : ${todo.todoIdx}")
                 }
 
                 if (isChecked) {
@@ -488,11 +475,6 @@ class MainHomeFragment : Fragment() {
         override fun getItemCount(): Int = memoList.size
 
         override fun onBindViewHolder(holder: MemoSearchHolder, position: Int) {
-//            Log.d(
-//                "asdasdasd",
-//                "내용 : ${mainHomeViewModel.todoList2.value?.get(position)?.todoContent}"
-//            )
-//            val todo = mainHomeViewModel.getTodo().get(position)
             val todo = memoList[position]
             val categories = mainHomeViewModel.getCategories()
             var isCategoryPublic: Long = 0
@@ -502,10 +484,6 @@ class MainHomeFragment : Fragment() {
                     holder.textViewCategory.setTextColor(i.categoryColor.toInt())
                 }
             }
-//            Log.d(
-//                "asdasdasd",
-//                "개인0 공용1 : ${isCategoryPublic}"
-//            )
 
             holder.textViewDate.text = todo.todoDate
             holder.textViewCategory.text = todo.todoCategoryName
@@ -571,7 +549,6 @@ class MainHomeFragment : Fragment() {
                 )
 
                 TodoRepository.modifyTodo(todoDataClass) { task ->
-                    Log.d("asdasdasd", "memo idx : ${todo.todoIdx}")
                 }
 
                 if (isChecked) {
@@ -620,7 +597,6 @@ class MainHomeFragment : Fragment() {
             .child("categoryInfo")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    Log.d("lion", "실시간 탐지 에러 : $p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
@@ -635,7 +611,6 @@ class MainHomeFragment : Fragment() {
                     binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
                     binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
                     binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
-                    Log.d("lion", "실시간 탐지 성공 : $p0")
                 }
             })
 
@@ -643,7 +618,6 @@ class MainHomeFragment : Fragment() {
             .child("todoInfo")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    Log.d("lion", "실시간 탐지 에러 : $p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
@@ -658,7 +632,6 @@ class MainHomeFragment : Fragment() {
                     binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
                     binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
                     binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
-                    Log.d("lion", "실시간 탐지 성공 : $p0")
                 }
             })
     }

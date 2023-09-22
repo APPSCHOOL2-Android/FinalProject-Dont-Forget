@@ -2,7 +2,6 @@ package com.test.dontforgetproject.UI.MainFriendsFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +19,6 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
-import com.test.dontforgetproject.databinding.DialogMainFriendsRequestDenyBinding
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainFriendsRequestBinding
 import com.test.dontforgetproject.databinding.RowMainFriendsRequestBinding
@@ -158,8 +155,6 @@ class MainFriendsRequestFragment : Fragment() {
                     binding.recyclerMainFriendsRequest.adapter?.notifyDataSetChanged()
 
                     // 내가 A 나에게 친구 요청 건사람이 B 일때 B->A 를 A 가 승낙할경우 A->B 도 같이 삭제
-
-
                     Toast.makeText(mainActivity, "친구추가 완료", Toast.LENGTH_SHORT).show()
                 }
 
@@ -269,9 +264,6 @@ class MainFriendsRequestFragment : Fragment() {
             }
             // 삭제
             holder.buttonRowMainFriendsRequestDeny.setOnClickListener {
-//                var dialogbinding = DialogMainFriendsRequestDenyBinding.inflate(layoutInflater)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setView(dialogbinding.root)
                 val dialogNormalBinding = DialogNormalBinding.inflate(layoutInflater)
                 val builder = MaterialAlertDialogBuilder(mainActivity)
 

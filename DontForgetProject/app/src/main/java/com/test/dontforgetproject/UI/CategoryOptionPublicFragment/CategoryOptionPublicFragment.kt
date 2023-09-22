@@ -4,13 +4,11 @@ import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +22,6 @@ import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicBinding
-import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
 
 class CategoryOptionPublicFragment : Fragment() {
     lateinit var categoryOptionPublicBinding: FragmentCategoryOptionPublicBinding
@@ -112,7 +109,6 @@ class CategoryOptionPublicFragment : Fragment() {
                     // 자신의 userIdx가 담긴 인덱스를 찾아 해당 위치의 값을 삭제
                     val indexOfUserIdx = categoryJoinUserIdxList.indexOf(userInfo.userIdx)
                     categoryJoinUserIdxList.removeAt(indexOfUserIdx)
-                    Log.i("indexOfUser", indexOfUserIdx.toString())
 
                     val categoryJoinUserNameList = ArrayList<String>()
                     categoryJoinUserNameList.add(categoryOwnerName)

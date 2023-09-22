@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,11 +38,9 @@ import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.UI.CategoryOptionPublicFragment.CategoryOptionPublicViewModel
 import com.test.dontforgetproject.databinding.DialogCategoryAddPeopleBinding
 import com.test.dontforgetproject.databinding.DialogCategoryNormalBinding
-import com.test.dontforgetproject.databinding.FragmentCategoryOptionPersonalBinding
 import com.test.dontforgetproject.databinding.FragmentCategoryOptionPublicOwnerBinding
 import com.test.dontforgetproject.databinding.RowCategoryOptionPublicOwnerBinding
 import com.test.dontforgetproject.databinding.RowDialogCategoryAddPeopleBinding
-import com.test.dontforgetproject.databinding.RowMainCategoryBinding
 
 
 class CategoryOptionPublicOwnerFragment : Fragment() {
@@ -121,19 +118,6 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
             }
 
             textViewCategoryOptionPublicOwnerColorPicker.setOnClickListener {
-//                MaterialColorPickerDialog
-//                    .Builder(mainActivity)        					// Pass Activity Instance
-//                    .setTitle("색상")           		// Default "Choose Color"
-//                    .setColorShape(ColorShape.CIRCLE)   	// Default ColorShape.CIRCLE
-//                    .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
-//                    .setDefaultColor(R.color.category1) 		// Pass Default Color
-//                    .setColorRes(resources.getIntArray(R.array.colors))
-//                    .setColorListener { color, colorHex ->
-//                        textViewCategoryOptionPublicOwnerColorPicker.backgroundTintList = ColorStateList.valueOf(color)
-//                        textInputCategoryOptionPublicOwnerName.boxStrokeColor = color
-//                        editTextCategoryOptionPublicOwnerName.setTextColor(color)
-//                    }
-//                    .showBottomSheet(childFragmentManager)
                 setCategoryColor(
                     textViewCategoryOptionPublicOwnerColorPicker,
                     textInputCategoryOptionPublicOwnerName,
@@ -248,9 +232,7 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                         val beforeJoinUserIdxList = c1.child("categoryJoinUserIdxList").value as ArrayList<Long>
                         val afterJoinUserIdxList = ArrayList<Long>()
                         afterJoinUserIdxList.addAll(categoryJoinUserIdxList)
-                        Log.i("ssss", afterJoinUserIdxList.toString())
                         afterJoinUserIdxList.removeAll(beforeJoinUserIdxList)
-                        Log.i("ssss", afterJoinUserIdxList.toString())
 
                         // 알림 idx 가져오기
                         AlertRepository.getAlertIdx {
@@ -282,7 +264,6 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
 
                 CategoryRepository.modifyCategory(categoryClass) {
                     for (i in 0 until categoryTodoList.size) {
-//                    Log.d("lion","change todo color")
                         val todoClass = TodoClass(
                             categoryTodoList.get(i).todoIdx,
                             categoryTodoList.get(i).todoContent,
@@ -299,7 +280,6 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                             categoryTodoList.get(i).todoOwnerIdx,
                             categoryTodoList.get(i).todoOwnerName
                         )
-//                    Log.d("lion", "class : $todoClass")
                         TodoRepository.modifyTodoByCategory(todoClass) {
 
                         }
@@ -378,7 +358,6 @@ class CategoryOptionPublicOwnerFragment : Fragment() {
                     if (position != RecyclerView.NO_POSITION) {
                         toggleSelection(position)
                     }
-                    Log.i("selected", selectedItems.toString())
                 }
             }
         }

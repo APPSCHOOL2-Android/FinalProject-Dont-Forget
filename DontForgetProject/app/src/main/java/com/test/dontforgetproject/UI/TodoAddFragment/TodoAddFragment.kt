@@ -2,7 +2,6 @@ package com.test.dontforgetproject.UI.TodoAddFragment
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,7 +9,6 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +23,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
-
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
@@ -39,13 +34,10 @@ import com.test.dontforgetproject.GeofenceBroadcastReceiver
 import com.test.dontforgetproject.GeofenceManager
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
-import com.test.dontforgetproject.MyApplication.Companion.locationLatitude
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
 import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.TodoRepository
-
-import com.test.dontforgetproject.Repository.UserRepository
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentTodoAddBinding
 import java.text.SimpleDateFormat
@@ -113,9 +105,6 @@ class TodoAddFragment : Fragment() {
                     MyApplication.locationLongitude = longitude.toString()
 
                 }else if(it.resultCode == Activity.RESULT_CANCELED){
-                    Log.d(
-                        "Lim TAG", "Place FAil"
-                    )
                 }
             }
         }
@@ -206,8 +195,7 @@ class TodoAddFragment : Fragment() {
                         val dateOne = sendDateFormats.format(Date(it))
                         date = dateOne
 
-//                        Toast.makeText(mainActivity,"선택한 날짜는 ${dates} 입니다",Toast.LENGTH_SHORT).show()
-                       textViewTodoAddDate.setText(dates)
+                        textViewTodoAddDate.setText(dates)
 
                         viewModel.date.value = dates
                     }
@@ -419,14 +407,11 @@ class TodoAddFragment : Fragment() {
                             var alarmTime = "${dates} $time:00" // 알람이 울리는 시간
                             var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
                             var calculateDate = (alarmDate.time - now.time.time)
-                            Log.d("lion", "time : $alarmTime")
 
                             //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
                             var alarmCode = idx.toInt()
-                            Log.d("lion", "code : $alarmCode")
                             //                deleteAlarm(alarmCode)
                             if (calculateDate < 0) {
-                                Log.d("lion", "현재보다 이전 시간으로 알림 설정")
                             } else {
                                 setAlarm(alarmCode, content, alarmTime)
                             }
@@ -483,17 +468,11 @@ class TodoAddFragment : Fragment() {
                                         }
                                     }
                                 }
-
                             }
                         }
-
-
-
                     }
-
                 }
             }
-
         }
         return  todoAddBinding.root
     }
@@ -506,5 +485,4 @@ class TodoAddFragment : Fragment() {
         alarmFunctions = AlarmFunctions(mainActivity)
         alarmFunctions.callAlarm(time, alarmCode, content)
     }
-
 }

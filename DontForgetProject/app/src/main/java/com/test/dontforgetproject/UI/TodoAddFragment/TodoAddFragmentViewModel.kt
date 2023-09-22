@@ -1,16 +1,10 @@
 package com.test.dontforgetproject.UI.TodoAddFragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide.init
-import com.google.firebase.database.FirebaseDatabase
-import com.test.dontforgetproject.DAO.CategoryClass
 import com.test.dontforgetproject.DAO.TodoClass
-
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.Repository.CategoryRepository
-import com.test.dontforgetproject.Repository.UserRepository
 
 class TodoAddFragmentViewModel :ViewModel(){
 

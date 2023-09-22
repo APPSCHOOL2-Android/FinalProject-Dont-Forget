@@ -7,39 +7,28 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.firebase.ui.auth.data.model.User
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.UI.MainHomeFragment.MainHomeFragment
-import com.test.dontforgetproject.UI.MainMyPageFragment.MainMyPageViewModel
 import com.test.dontforgetproject.UI.MainMyPageFragment.MyPageModifyViewModel
 import com.test.dontforgetproject.Util.LoadingDialog
-import com.test.dontforgetproject.databinding.FragmentMainMyPageBinding
 import com.test.dontforgetproject.databinding.FragmentMyPageModifyBinding
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,7 +36,6 @@ import java.util.ArrayList
 
 class MyPageModifyFragment : Fragment() {
     lateinit var fragmentMyPageModifyBinding: FragmentMyPageModifyBinding
-    lateinit var MainHomeFragment : MainHomeFragment
     lateinit var mainActivity: MainActivity
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
     lateinit var myPageModifyViewModel : MyPageModifyViewModel
@@ -143,9 +131,7 @@ class MyPageModifyFragment : Fragment() {
                 if (newImage != user.userImage) {
                     UserRepository.setUploadProfile(newImage, uploadUri!!) { result ->
                         if (result.isSuccessful) {
-                            Log.e("이미지 성공", "$uploadUri")
                         } else {
-                            Log.e("이미지 실패", "$uploadUri")
                         }
                     }
                 }

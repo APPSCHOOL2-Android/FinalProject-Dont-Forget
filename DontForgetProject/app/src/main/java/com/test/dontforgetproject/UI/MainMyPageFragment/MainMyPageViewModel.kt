@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
-import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Repository.UserRepository
 
 class MainMyPageViewModel : ViewModel() {

@@ -311,7 +311,6 @@ class CategoryAddPublicFragment : Fragment() {
                     if (position != RecyclerView.NO_POSITION) {
                         toggleSelection(position)
                     }
-                    Log.i("selected", selectedItems.toString())
                 }
             }
         }

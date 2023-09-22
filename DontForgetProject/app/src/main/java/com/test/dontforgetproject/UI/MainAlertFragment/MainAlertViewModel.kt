@@ -1,11 +1,9 @@
 package com.test.dontforgetproject.UI.MainAlertFragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.AlertClass
 import com.test.dontforgetproject.Repository.AlertRepository
-import com.test.dontforgetproject.Repository.TodoRepository
 
 class MainAlertViewModel : ViewModel() {
 

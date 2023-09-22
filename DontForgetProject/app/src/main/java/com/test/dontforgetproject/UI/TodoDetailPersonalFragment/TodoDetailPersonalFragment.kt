@@ -66,16 +66,13 @@ class TodoDetailPersonalFragment : Fragment() {
                     var placeDetail = place.address
 
                     placeAddress = placeDetail + "@" + placeName
-                    Log.d("lion","${placeAddress}")
                     fragmentTodoDetailPersonalBinding.textViewTodoDetailPersonalLocation.text = placeDetail
 
                     //장소 위도
                     latitude = place.latLng.latitude.toString()
-                    Log.d("lion","${latitude}")
 
                     //장소 경도
                     longitude = place.latLng.longitude.toString()
-                    Log.d("lion","${longitude}")
 
 
                     val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION // 또는 ACCESS_COARSE_LOCATION
@@ -92,7 +89,6 @@ class TodoDetailPersonalFragment : Fragment() {
                 }
             }
             else if(it.resultCode == Activity.RESULT_CANCELED) {
-                Log.d("lion", "Place Fail")
             }
         }
 
@@ -316,8 +312,6 @@ class TodoDetailPersonalFragment : Fragment() {
                     dialogNormalBinding.textViewDialogNormalContent.text = "날짜를 선택해주세요."
 
                     builder.setView(dialogNormalBinding.root)
-//                    val builder = MaterialAlertDialogBuilder(mainActivity)
-//                    builder.setMessage("날짜를 선택해주세요.")
                     builder.setNegativeButton("취소", null)
                     builder.setPositiveButton("확인", null)
                     builder.show()
@@ -356,14 +350,10 @@ class TodoDetailPersonalFragment : Fragment() {
                     var alarmTime = "${date} $time:00" // 알람이 울리는 시간
                     var alarmDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime)
                     var calculateDate = (alarmDate.time - now.time.time)
-                    Log.d("lion", "time : $alarmTime")
 
-                    //                val random = (1..100000) // 1~100000 범위에서 알람코드 랜덤으로 생성
                     var alarmCode = todoIdx.toInt()
-                    Log.d("lion", "code : $alarmCode")
-                    //                deleteAlarm(alarmCode)
+
                     if (calculateDate < 0) {
-                        Log.d("lion", "현재보다 이전 시간으로 알림 설정")
                     } else {
                         setAlarm(alarmCode, content, alarmTime)
                     }
@@ -382,9 +372,6 @@ class TodoDetailPersonalFragment : Fragment() {
                 dialogNormalBinding.textViewDialogNormalContent.text = "삭제하시겠습니까?"
 
                 builder.setView(dialogNormalBinding.root)
-//                val builder = MaterialAlertDialogBuilder(mainActivity)
-//                builder.setTitle("삭제")
-//                builder.setMessage("삭제하시겠습니까?")
 
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->

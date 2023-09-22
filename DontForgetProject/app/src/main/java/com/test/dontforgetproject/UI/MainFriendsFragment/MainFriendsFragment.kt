@@ -1,9 +1,7 @@
 package com.test.dontforgetproject.UI.MainFriendsFragment
 
-import android.app.Application
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -219,7 +217,6 @@ class MainFriendsFragment : Fragment() {
                                                                     JoinFriendRepository.setJoinFriendIdx(joinFriendIdx) {
 
                                                                         // TODO MainFriendMyRequestFragment 리싸이클러뷰 notifysetchange
-                                                                        // 아직 구현 미완
                                                                         mainFriendsMyRequestFragment.MRL.add(joinFriend)
 
                                                                         // TODO ALert 생성
@@ -260,7 +257,6 @@ class MainFriendsFragment : Fragment() {
                                     }
                                 }
                             }
-
                             builder.setNegativeButton("취소", null)
                             builder.show()
                         }
@@ -283,9 +279,7 @@ class MainFriendsFragment : Fragment() {
                     tab.text = tabName[i]
                 }
             tabLayoutMediator.attach()
-
         }
-
         return binding.root
     }
 
@@ -306,7 +300,5 @@ class MainFriendsFragment : Fragment() {
         override fun createFragment(position: Int): Fragment {
             return fragmentList[position]
         }
-
     }
-
 }

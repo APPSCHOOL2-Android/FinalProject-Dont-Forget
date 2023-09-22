@@ -2,7 +2,6 @@ package com.test.dontforgetproject.UI.MyPageWithDrawFragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -22,7 +20,6 @@ import com.test.dontforgetproject.Repository.CategoryRepository
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.Repository.UserRepository
-import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMyPageWithDrawBinding
 
 class MyPageWithDrawFragment : Fragment() {
@@ -122,11 +119,7 @@ class MyPageWithDrawFragment : Fragment() {
                         null
                     )
                 }
-
             }
         }
-
     }
-
-
 }

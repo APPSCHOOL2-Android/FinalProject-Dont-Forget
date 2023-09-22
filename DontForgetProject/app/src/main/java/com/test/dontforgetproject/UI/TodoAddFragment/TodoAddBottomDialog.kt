@@ -1,14 +1,11 @@
 package com.test.dontforgetproject.UI.TodoAddFragment
 
 import android.graphics.Color
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,12 +71,8 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
                     MyApplication.categoryFontColor = fontcolors
 
                     saveAction()
-
-//                    Toast.makeText(mainActivity,"선택한 카테고리는 ${viewModel.categoryInfo.value?.get(adapterPosition)?.todoCategoryName} 입니다",Toast.LENGTH_SHORT).show()
-
                 }
             }
-
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): allrecyclerviewAdapter.allviewholder {
@@ -122,5 +115,4 @@ class TodoAddBottomDialog:BottomSheetDialogFragment() {
         viewModel.categoryColor.value = MyApplication.categoryColor.toLong()
         dismiss()
     }
-
 }

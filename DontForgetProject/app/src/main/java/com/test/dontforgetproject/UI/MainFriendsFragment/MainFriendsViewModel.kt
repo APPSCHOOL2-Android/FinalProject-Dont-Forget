@@ -1,12 +1,9 @@
 package com.test.dontforgetproject.UI.MainFriendsFragment
 
-import android.graphics.Paint.Join
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.JoinFriend
-import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.Repository.JoinFriendRepository
 
 class MainFriendsViewModel : ViewModel() {
@@ -44,8 +41,6 @@ class MainFriendsViewModel : ViewModel() {
             joinFriendList.value = tempList
         }
     }
-
-    //
 
     // 이메일로 내게온 친구요청 불러오기
     fun getMyRequest(userIdx: Long) {

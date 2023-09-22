@@ -1,6 +1,5 @@
 package com.test.dontforgetproject.UI.JoinFragment
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -8,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +20,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.test.dontforgetproject.DAO.Friend
 import com.test.dontforgetproject.DAO.UserClass
 import com.test.dontforgetproject.MainActivity
@@ -145,7 +142,6 @@ class JoinFragment : Fragment() {
                 }else if(checkBoolean && userType == MyApplication.GOOGLE_LOGIN){
 
                     var userId = firebaseAuth.currentUser?.uid
-                    Log.e("아이디","$userId")
 
                     if (userId != null) {
                         makeUser(userName,email,userImage,userIntroduce,userId)
@@ -277,9 +273,6 @@ class JoinFragment : Fragment() {
                 }
             }
         }
-
         return albumLauncher
     }
-
-
 }

@@ -3,7 +3,6 @@ package com.test.dontforgetproject.UI.MainAlertFragment
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,6 @@ import com.test.dontforgetproject.MainActivity
 import com.test.dontforgetproject.MyApplication
 import com.test.dontforgetproject.R
 import com.test.dontforgetproject.Repository.AlertRepository
-import com.test.dontforgetproject.Repository.TodoRepository
 import com.test.dontforgetproject.databinding.DialogNormalBinding
 import com.test.dontforgetproject.databinding.FragmentMainAlertBinding
 import com.test.dontforgetproject.databinding.RowMainAlertBinding
@@ -71,12 +69,10 @@ class MainAlertFragment : Fragment() {
             .child("alertInfo")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    Log.d("lion", "실시간 탐지 에러 : $p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
-                    Log.d("lion", "실시간 탐지 성공 : $p0")
                 }
             })
 
@@ -111,7 +107,6 @@ class MainAlertFragment : Fragment() {
                 builder.setNegativeButton("취소",null)
                 builder.setPositiveButton("삭제"){ dialogInterface: DialogInterface, i: Int ->
                     for(position in 0 until userAlertList.size) {
-//                        Log.d("lion","position : ${userAlertList.get(position).alertContent}")
                         AlertRepository.removeAlert(userAlertList.get(position).alertIdx) {
                             mainAlertViewModel.getAlert(MyApplication.loginedUserInfo.userIdx)
                             fragmentMainAlertBinding.recyclerViewMainAlert.adapter?.notifyDataSetChanged()

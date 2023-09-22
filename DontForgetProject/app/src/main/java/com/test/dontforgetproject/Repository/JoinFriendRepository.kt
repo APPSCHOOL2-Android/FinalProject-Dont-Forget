@@ -93,7 +93,6 @@ class JoinFriendRepository {
             }
         }
 
-        // 요거 쓰시면 됩니다.
         // userIdx, userEmail 입력하여 관련된 모든 JoinFriend삭제
         fun deleteJoinFriendByMyData(userIdx : Long, userEmail : String){
             deleteJoinFriendByUserIdx(userIdx){

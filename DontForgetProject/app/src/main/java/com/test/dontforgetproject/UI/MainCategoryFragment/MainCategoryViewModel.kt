@@ -1,6 +1,5 @@
 package com.test.dontforgetproject.UI.MainCategoryFragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.dontforgetproject.DAO.CategoryClass
@@ -53,7 +52,6 @@ class MainCategoryViewModel() : ViewModel() {
                 tempCategoryList.add(categoryClass)
             }
             tempCategoryList.reverse()
-            Log.i("cccc", tempCategoryList.toString())
             categoryList.value = tempCategoryList
         }
     }
