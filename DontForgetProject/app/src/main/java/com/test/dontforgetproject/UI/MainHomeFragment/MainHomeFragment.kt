@@ -179,6 +179,13 @@ class MainHomeFragment : Fragment() {
         )
     }
 
+    private fun setTodoDataOtherDay() {
+        mainHomeViewModel.getTodoByDate(
+            selectedDate,
+            mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
+        )
+    }
+
     // 카테고리 탭
     inner class CategoryTabRecyclerViewAdapter :
         RecyclerView.Adapter<CategoryTabRecyclerViewAdapter.CategoryTabViewHolder>() {
@@ -603,14 +610,14 @@ class MainHomeFragment : Fragment() {
                     // 데이터를 다시 로드하고 어댑터에 설정
                     categoryIdxList =
                         mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
-                    setTodoData()
+                    val currentDate = getCurrentDate()
+                    if (currentDate == selectedDate) {
+                        setTodoData()
+                    } else{
+                        setTodoDataOtherDay()
+                    }
                     mainHomeViewModel.getTodo(categoryIdxList)
                     setCalendar()
-
-                    // 리사이클러뷰의 어댑터 초기화
-                    binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
-                    binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
-                    binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
                 }
             })
 
@@ -624,15 +631,20 @@ class MainHomeFragment : Fragment() {
                     // 데이터를 다시 로드하고 어댑터에 설정
                     categoryIdxList =
                         mainHomeViewModel.getCategoryAll(MyApplication.loginedUserInfo.userIdx, loadingDialog)
-                    setTodoData()
+                    val currentDate = getCurrentDate()
+                    if (currentDate == selectedDate) {
+                        setTodoData()
+                    } else{
+                        setTodoDataOtherDay()
+                    }
                     mainHomeViewModel.getTodo(categoryIdxList)
                     setCalendar()
-
-                    // 리사이클러뷰의 어댑터 초기화
-                    binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
-                    binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
-                    binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
                 }
             })
+
+        // 리사이클러뷰의 어댑터 초기화
+        binding.recyclerViewMainHomeFragmentCategory.adapter = CategoryTabRecyclerViewAdapter()
+        binding.recyclerViewMainHomeFragmentTodo.adapter = CategoryRecyclerViewAdapter()
+        binding.recyclerViewMainHomeFragmentMemoSearch.adapter = MemoSearchViewAdapter()
     }
 }
