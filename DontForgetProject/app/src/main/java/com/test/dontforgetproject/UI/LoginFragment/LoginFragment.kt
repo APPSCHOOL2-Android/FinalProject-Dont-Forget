@@ -98,7 +98,7 @@ class LoginFragment : Fragment() {
             buttonLoginGoogleLogin.setOnClickListener {
                 firebaseAuth = FirebaseAuth.getInstance()
                 val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                    .requestIdToken("194726734690-sm7nu0e0cjr12r4cu39547d10l09rf0r.apps.googleusercontent.com") // 웹 클라이언트 ID
                     .requestEmail() // 이메일 권한 요청 (선택 사항)
                     .build()
 
@@ -170,7 +170,7 @@ class LoginFragment : Fragment() {
                             }
                             else{
                                 val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                    .requestIdToken(getString(R.string.default_web_client_id)) // 웹 클라이언트 ID
+                                    .requestIdToken("194726734690-sm7nu0e0cjr12r4cu39547d10l09rf0r.apps.googleusercontent.com") // 웹 클라이언트 ID
                                     .requestEmail() // 이메일 권한 요청 (선택 사항)
                                     .build()
 
