@@ -99,3 +99,5 @@
 
 ### ✔️ 기타 참고 자료
 > [피그마 - 와이어프레임 및 UI 설계](https://www.figma.com/file/BDPXUXAmbWUU6STzcf2Sgn/%EA%B9%8C%EB%A8%B9%EC%A7%80%EB%A7%88-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?type=design&node-id=1%3A207&mode=design&t=LCaT3W8qxmLGm8A6-1)
+> 
+> [까먹지마 시연영상](https://youtu.be/0a50e3m10Kg?si=n0PfWxuJ_VKoNvh4)
