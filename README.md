@@ -11,7 +11,14 @@
 
 ![todo](https://github.com/APPSCHOOL2-Android/FinalProject-Dont-Forget/assets/86800087/794d6bf4-eceb-4970-9e0a-dcadafcb132f)
 
+
 <br>
+
+### 🏅 Award
+<img width="436" alt="image" src="https://github.com/APPSCHOOL2-Android/FinalProject-Dont-Forget/assets/86800087/ac30d579-6b51-4e41-9d12-8bef691123de">
+
+
+<br></br>
 
 ### 📍 주요 기능
 
