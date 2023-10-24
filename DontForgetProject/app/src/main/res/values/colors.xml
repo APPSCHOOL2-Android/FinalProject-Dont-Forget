@@ -2,4 +2,31 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name = "colorPrimary"> #7A97FF</color>
+    <color name = "accentRed">#FF4444</color>
+    <color name = "accentSemiGray">#F9F9F9</color>
+    <color name = "accentGray">#D9D9D9</color>
+
+
+    <color name="accentSemiDark">#323232</color>
+    <color name="accentDeepDarkGray">#383838</color>
+
+    <color name = "accentLightGray">#F5F5F5</color>
+    <color name = "accentDarkGray">#aaaaaa</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="textGray">#757575</color>
+
+    <!--카테고리 색상-->
+    <color name = "category1">#FACE34</color>
+    <color name = "category2">#FF8E42</color>
+    <color name = "category3">#79B6FF</color>
+    <color name = "category4">#E09AFF</color>
+    <color name = "category5">#C3A0FF</color>
+    <color name = "category6">#438444</color>
+    <color name = "category7">#007FA6</color>
+    <color name = "category8">#FF298D</color>
+    <color name = "category9">#7270E6</color>
+    <color name = "category10">#00D43E</color>
 </resources>

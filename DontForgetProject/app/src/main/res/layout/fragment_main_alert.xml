@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_mainAlert"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.MainAlertFragment.MainAlertFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_mainAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+        <Button
+            android:id="@+id/button_mainAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/margin_vertical_small1"
+            android:backgroundTint="@color/transparent"
+            android:fontFamily="@font/scdream_regular"
+            android:text="전체 읽음"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_small" />
+
+
+        <TextView
+            android:id="@+id/textView_mainAlert_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_size_normal"
+            android:layout_marginRight="@dimen/padding_size_normal"
+            android:layout_marginTop="@dimen/padding_size_normal"
+            android:textAlignment="center"
+            android:fontFamily="@font/scdream_regular"
+            android:text="조회된 알림이 없습니다."
+            android:textColor="@color/textGray"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_mainAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_size_normal"
+            android:paddingEnd="@dimen/padding_size_normal" />
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

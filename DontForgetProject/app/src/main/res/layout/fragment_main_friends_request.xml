@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_mainFriendsRequest"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.MainFriendsFragment.MainFriendsRequestFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_size_normal"
+        android:paddingTop="@dimen/padding_size_normal"
+        android:paddingEnd="@dimen/padding_size_normal">
+
+        <TextView
+            android:id="@+id/textView_mainFriendRequest_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_size_normal"
+            android:layout_marginRight="@dimen/padding_size_normal"
+            android:layout_marginTop="25dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/scdream_regular"
+            android:text="받은 친구 요청이 없습니다."
+            android:textColor="@color/textGray"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_mainFriendsRequest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/row_main_friends_request" />
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

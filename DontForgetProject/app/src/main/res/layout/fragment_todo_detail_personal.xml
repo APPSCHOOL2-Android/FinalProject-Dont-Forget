@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.TodoDetailPersonalFragment.TodoDetailPersonalFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_todoDetailPersonal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+    <LinearLayout
+        android:padding="@dimen/padding_size_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_todoDetailPersonal"
+            style="@style/Theme.DontForgetProject.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small2"
+            app:boxBackgroundMode="filled">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_todoDetailPersonal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:fontFamily="@font/scdream_regular"
+                android:hint="할일"
+                android:textSize="@dimen/font_size_big" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_todoDetailPersonal_category"
+            style="@style/Theme.DontForgetProject.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:clickable="false"
+            android:fontFamily="@font/scdream_regular"
+            android:text="카테고리"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_medium" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_vertical_big2">
+
+        </Space>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+
+                style="@style/Theme.DontForgetProject.CardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Theme.DontForgetProject.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_date"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_date"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="end"
+                android:text="2023.09.05."
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_alert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1"
+                style="@style/Theme.DontForgetProject.CardView">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Theme.DontForgetProject.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_notification"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_alert"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="end"
+                android:text="오전 3시"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_todoDetailPersonal_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_vertical_small1"
+                style="@style/Theme.DontForgetProject.CardView">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Theme.DontForgetProject.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/scdream_regular"
+                        android:text="@string/todo_location"
+                        android:textSize="@dimen/font_size_medium">
+
+                    </TextView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView_todoDetailPersonal_location"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="end"
+                android:text="서면역"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:id="@+id/linearLayout_todoDetailPersonal_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_todoDetailPersonal_edit"
+                style="@style/Theme.DontForgetProject.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="수정하기"
+                android:textSize="@dimen/font_size_big" />
+
+            <Button
+                android:id="@+id/button_todoDetailPersonal_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_vertical_small3"
+                android:layout_weight="1"
+                style="@style/Theme.DontForgetProject.Button"
+                android:fontFamily="@font/scdream_regular"
+                android:text="삭제하기"
+                android:textColor="@color/accentRed"
+                android:textSize="@dimen/font_size_big" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

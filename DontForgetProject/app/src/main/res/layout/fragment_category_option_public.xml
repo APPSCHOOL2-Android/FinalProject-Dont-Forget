@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.CategoryOptionPublicFragment.CategoryOptionPublicFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_categoryOptionPublic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_size_normal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_categoryOptionPublic_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름"
+            android:transitionGroup="true"
+            app:boxBackgroundColor="#00FFFFFF"
+            app:boxBackgroundMode="filled">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_categoryOptionPublic_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00FFFFFF"
+                android:enabled="false"
+                android:fontFamily="@font/scdream_regular"
+                android:inputType="text"
+                android:textSize="@dimen/font_size_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="@string/category_color"
+                android:textSize="@dimen/font_size_medium" />
+
+            <TextView
+                android:id="@+id/textView_categoryOptionPublic_colorPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:layout_marginBottom="@dimen/margin_vertical_small2"
+                android:background="@drawable/oval_style" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="@string/category_createBy"
+                android:textSize="@dimen/font_size_medium" />
+
+            <TextView
+                android:id="@+id/textView_categoryOptionPublic_ownerName"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:gravity="right"
+                android:text="이채연"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_big1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="@string/category_participation"
+                android:textSize="@dimen/font_size_medium" />
+
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small2"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="0dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_categoryOptionPublic"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:transitionGroup="true" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_big3"
+            android:orientation="horizontal">
+
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <Button
+                android:id="@+id/button_categoryOptionPublic_exit"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_bold"
+                android:text="@string/button_exit"
+                android:textColor="@color/accentRed"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

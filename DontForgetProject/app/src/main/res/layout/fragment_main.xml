@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.MainFragment.MainFragment">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_MainFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView_MainFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView_MainFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:itemActiveIndicatorStyle="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
+        android:background="@color/transparent"
+        android:backgroundTint="@color/transparent"
+        app:itemTextAppearanceActive="@style/bottom_text"
+        app:itemTextAppearanceInactive="@style/bottom_text"
+        app:itemIconTint="@drawable/selector_bottom_navigation_color"
+        app:itemBackground="@android:color/transparent"
+        app:itemTextColor="@drawable/selector_bottom_navigation_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_bottom_navigation" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.CategoryAddPersonalFragment.CategoryAddPersonalFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_categoryAddPersonal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_size_normal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_categoryAddPersonal_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름"
+            android:transitionGroup="true"
+            app:boxBackgroundColor="#00FFFFFF"
+            app:boxBackgroundMode="filled"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_categoryAddPersonal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00FFFFFF"
+                android:fontFamily="@font/scdream_regular"
+                android:inputType="text"
+                android:textSize="@dimen/font_size_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/Theme.DontForgetProject.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_regular"
+                android:text="@string/category_color"
+                android:textSize="@dimen/font_size_medium" />
+
+            <TextView
+                android:id="@+id/textView_categoryAddPersonal_colorPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:layout_marginBottom="@dimen/margin_vertical_small2"
+                android:background="@drawable/oval_style" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_big3"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <Button
+                android:id="@+id/button_categoryAddPersonal_submit"
+                style="@style/Theme.DontForgetProject.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/scdream_bold"
+                android:text="@string/button_toMake"
+                android:textSize="@dimen/font_size_medium" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

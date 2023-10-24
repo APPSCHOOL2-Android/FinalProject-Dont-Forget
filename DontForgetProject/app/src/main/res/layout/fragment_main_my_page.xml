@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.MainMyPageFragment.MainMyPageFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_mainMyPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_size_normal">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Theme.DontForgetProject.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#00FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="@dimen/padding_size_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView_myPage_profile"
+                    android:layout_width="@dimen/image_size_profile"
+                    android:layout_height="@dimen/image_size_profile"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_24px" />
+
+                <TextView
+                    android:id="@+id/textView_mainMyPage_name"
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="center"
+                    android:text="이름"
+                    android:textSize="@dimen/font_size_medium" />
+
+
+                <TextView
+                    android:id="@+id/textView_mainMyPage_email"
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="center"
+                    android:text="이메일"
+                    android:textSize="@dimen/font_size_medium" />
+
+                <TextView
+                    android:id="@+id/textView_mainMyPage_introduce"
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="center"
+                    android:text="자기소개 한줄"
+                    android:textSize="@dimen/font_size_medium" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_vertical_big3"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView_mainMyPage_modify"
+            style="@style/Theme.DontForgetProject.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small1"
+            android:layout_marginBottom="@dimen/margin_vertical_small1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="left"
+                    android:text="@string/myPage_modify"
+                    android:textSize="@dimen/font_size_big"></TextView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView_mainMyPage_theme"
+            style="@style/Theme.DontForgetProject.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small1"
+            android:layout_marginBottom="@dimen/margin_vertical_small1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="left"
+                    android:text="@string/myPage_theme"
+                    android:textSize="@dimen/font_size_big">
+
+
+                </TextView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView_mainMyPage_logout"
+            style="@style/Theme.DontForgetProject.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small1"
+            android:layout_marginBottom="@dimen/margin_vertical_small1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Theme.DontForgetProject.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="left"
+                    android:text="@string/myPage_logout"
+                    android:textSize="@dimen/font_size_big">
+
+
+                </TextView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView_mainMyPage_withDraw"
+            style="@style/Theme.DontForgetProject.CardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical_small1"
+            android:layout_marginBottom="@dimen/margin_vertical_small1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:gravity="left"
+                    android:text="@string/myPage_withdraw"
+                    android:textColor="@color/accentRed"
+                    android:textSize="@dimen/font_size_big">
+
+
+                </TextView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

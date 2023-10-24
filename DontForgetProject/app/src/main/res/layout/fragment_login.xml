@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.LoginFragment.LoginFragment">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:padding="@dimen/padding_size_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="오늘 할일">
+
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_bold"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:text="@string/app_name" >
+
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_vertical_big3">
+            </Space>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_login_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:endIconMode="clear_text"
+                app:boxBackgroundColor="#00FFFFFF"
+                app:boxBackgroundMode="filled"
+                android:hint="이메일">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditText_login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/font_size_medium"
+                    android:imeOptions="actionNext"
+                    android:fontFamily="@font/scdream_regular"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:hint="비밀번호"
+                app:boxBackgroundColor="#00FFFFFF"
+                app:boxBackgroundMode="filled"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditText_login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:textSize="@dimen/font_size_medium"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/scdream_regular" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_vertical_small3"
+                android:id="@+id/textView_login_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:textSize="@dimen/font_size_small"
+                android:textColor="@color/accentRed"
+                android:text=" 이메일 또는 비밀번호를 잘못 입력했습니다.\n
+입력하신 내용을 다시 확인해주세요" />
+
+            <Button
+                android:layout_marginTop="@dimen/margin_vertical_small3"
+                android:id="@+id/button_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_big"
+                style="@style/Theme.DontForgetProject.Button"
+                android:text="로그인" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_vertical_big1">
+            </Space>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textview_login_findPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_size_medium"
+                    android:fontFamily="@font/scdream_regular"
+                    android:text="비밀번호 찾기 " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_size_small"
+                    android:fontFamily="@font/scdream_regular"
+                    android:text=" | " />
+                <TextView
+                    android:id="@+id/textView_login_join"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/font_size_medium"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream_regular"
+                    android:text="회원가입하기" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_vertical_big1">
+            </Space>
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scdream_regular"
+                android:textSize="@dimen/font_size_medium"
+                android:text="간편로그인"/>
+
+            <ImageButton
+                android:id="@+id/button_login_googleLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_vertical_small2"
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/drawable_google_resize" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

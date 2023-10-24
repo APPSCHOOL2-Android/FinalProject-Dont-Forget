@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".UI.MainCategoryFragment.MainCategoryFragment" >
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_mainCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.DontForgetProject.Toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/padding_size_normal"
+        android:paddingStart="@dimen/padding_size_normal"
+        android:paddingEnd="@dimen/padding_size_normal">
+
+        <TextView
+            android:id="@+id/textView_mainCategory_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_size_normal"
+            android:layout_marginRight="@dimen/padding_size_normal"
+            android:layout_marginTop="25dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/scdream_regular"
+            android:text="추가된 카테고리가 없습니다."
+            android:textColor="@color/textGray"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_mainCategory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionGroup="true" />
+    </LinearLayout>
+
+</LinearLayout>

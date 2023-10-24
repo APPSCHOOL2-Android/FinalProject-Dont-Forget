@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="colors">
+        <item>@color/category1</item>
+        <item>@color/category2</item>
+        <item>@color/category3</item>
+        <item>@color/category4</item>
+        <item>@color/category5</item>
+        <item>@color/category6</item>
+        <item>@color/category7</item>
+        <item>@color/category8</item>
+        <item>@color/category9</item>
+        <item>@color/category10</item>
+    </array>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView_rowCategoryTab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Theme.DontForgetProject.CardView_Padding8"
+        android:layout_marginEnd="@dimen/margin_vertical_small2">
+
+        <TextView
+            android:id="@+id/textView_rowCategoryTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tab_text"
+            android:fontFamily="@font/scdream_regular"
+            android:text="전체"
+            android:textSize="@dimen/font_size_big" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

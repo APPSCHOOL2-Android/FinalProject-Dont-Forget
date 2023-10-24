@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_vertical_big1"
+    android:paddingTop="@dimen/margin_vertical_big1"
+    android:paddingRight="@dimen/margin_vertical_big1">
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/Theme.DontForgetProject.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/scdream_bold"
+        android:text="@string/category_participation_choose"
+        android:textSize="@dimen/font_size_big" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInput_dialogCategory_addPeople"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_vertical_small3"
+        android:transitionGroup="true"
+        app:boxBackgroundColor="#00FFFFFF"
+        app:boxBackgroundMode="filled"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_search_24px">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_dialogCategory_addPeople"
+            style="@style/Theme.DontForgetProject.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:fontFamily="@font/scdream_regular"
+            android:hint="검색"
+            android:inputType="text"
+            android:textSize="@dimen/font_size_medium" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView_dialogCategory_addPeople_noFriends"
+        style="@style/Theme.DontForgetProject.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/scdream_regular"
+        android:gravity="center"
+        android:text="추가할 수 있는 친구가 없습니다"
+        android:textSize="@dimen/font_size_medium"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_dialogCategory_addPeople"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
